@@ -1,0 +1,89 @@
+/**
+ * The single place where the shape of every clinical record type is
+ * defined -- the direct port of the original app's config/healthtrack.php.
+ *
+ * The generic clinical-records controller (controllers/patients/*) reads
+ * this to know which table to query and which fields to validate; the
+ * frontend's config/recordTypes.js mirrors it to render the matching forms
+ * and tabs. Add a field, or a whole new record type, here (and keep both
+ * copies of this file in sync, same duplication note as
+ * utils/calculateAge.js).
+ */
+export const RECORD_TYPES = {
+  "health-assessment": {
+    label: "Health Assessment",
+    singular: "Health Assessment",
+    table: "health_assessments",
+    dateField: "assessment_date",
+    dateLabel: "Assessment date",
+    fields: {
+      condition: { label: "Condition", type: "text", required: true, primary: true },
+      description: { label: "Description", type: "textarea", required: true, column: true },
+      status: { label: "Status", type: "select", required: true, column: true, options: { active: "Active", resolved: "Resolved", monitoring: "Monitoring" } },
+      medication: { label: "Medication", type: "text", required: false, column: true },
+      remarks: { label: "Remarks", type: "textarea", required: false, column: true },
+    },
+  },
+  "vital-signs": {
+    label: "Vital Signs",
+    singular: "Vital Signs Record",
+    table: "vital_signs",
+    dateField: "recorded_at",
+    dateLabel: "Date recorded",
+    fields: {
+      blood_pressure: { label: "Blood pressure", type: "text", required: true, primary: true },
+      temperature: { label: "Temperature (C)", type: "number", required: true, column: true },
+      pulse_rate: { label: "Pulse rate (bpm)", type: "number", required: true, column: true },
+      respiratory_rate: { label: "Respiratory rate (breaths/min)", type: "number", required: true, column: true },
+      height_cm: { label: "Height (cm)", type: "number", required: true, column: true },
+      weight_kg: { label: "Weight (kg)", type: "number", required: true, column: true },
+      bmi: { label: "Body Mass Index (BMI)", type: "number", required: true, column: true },
+      oxygen_saturation: { label: "Oxygen saturation (SpO2 %)", type: "number", required: true, column: true },
+      pain_score: { label: "Pain score (0-10)", type: "number", required: true, column: true },
+    },
+  },
+  "midwife-notes": {
+    label: "Midwife Notes",
+    singular: "Midwife Note",
+    table: "midwife_notes",
+    dateField: "consultation_date",
+    dateLabel: "Consultation date",
+    fields: {
+      notes: { label: "Notes", type: "textarea", required: true, primary: true },
+    },
+  },
+  "medical-history": {
+    label: "Medical History",
+    singular: "Medical History Entry",
+    table: "medical_histories",
+    dateField: "recorded_at",
+    dateLabel: "Date recorded",
+    fields: {
+      past_illnesses: { label: "Past illnesses", type: "textarea", required: true, primary: true },
+      chronic_conditions: { label: "Chronic conditions", type: "textarea", required: true, column: true },
+      past_surgeries: { label: "Past surgeries", type: "textarea", required: true, column: true },
+      previous_hospitalizations: { label: "Previous hospitalizations", type: "textarea", required: true, column: true },
+      family_medical_history: { label: "Family medical history", type: "textarea", required: true, column: true },
+      immunization_status: { label: "Immunization status", type: "text", required: true, column: true },
+    },
+  },
+  allergies: {
+    label: "Allergies",
+    singular: "Allergy",
+    table: "allergies",
+    dateField: "recorded_at",
+    dateLabel: "Date recorded",
+    fields: {
+      medication_allergies: { label: "Medication allergies", type: "textarea", required: true, primary: true },
+      food_allergies: { label: "Food allergies", type: "textarea", required: true, column: true },
+      environmental_allergies: { label: "Environmental allergies", type: "textarea", required: true, column: true },
+      reaction: { label: "Reaction", type: "textarea", required: true, column: true },
+      status: { label: "Status", type: "select", required: true, column: true, options: { active: "Active", resolved: "Resolved" } },
+      remarks: { label: "Remarks", type: "textarea", required: false, column: true },
+    },
+  },
+};
+
+export function isRecordType(key) {
+  return Object.prototype.hasOwnProperty.call(RECORD_TYPES, key);
+}
