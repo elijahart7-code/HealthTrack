@@ -1,5 +1,5 @@
-import { Navigate } from "react-router"; Calculating...
-import { getCurrentUser, homeRouteForRole } from "./auth";
+import { Navigate } from "react-router";
+import { getCurrentUser, homeRouteForRole } from "./auth.js";
 
 /**
  * Route guard -- the original app enforced this with 'role' middleware in

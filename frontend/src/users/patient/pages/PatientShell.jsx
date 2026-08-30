@@ -1,10 +1,10 @@
 import { useCallback, useEffect, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router";
-import { api } from "../../lib/axios";
-import { SideBar } from "./components/SideBar";
-import { Header } from "./components/Header";
-import { Dashboard } from "./pages/Dashboard";
-import { HealthInformation } from "./pages/HealthInformation";
+import { api } from "../../../lib/axios";
+import { SideBar } from "../components/SideBar";
+import { Header } from "../components/Header";
+import { Dashboard } from "../pages/Dashboard";
+import { HealthInformation } from "../pages/HealthInformation";
 
 export function PatientShell() {
   const [searchParams] = useSearchParams();

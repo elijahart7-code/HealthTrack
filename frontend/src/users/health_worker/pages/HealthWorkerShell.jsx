@@ -1,11 +1,11 @@
 import { useCallback, useEffect, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router";
-import { api } from "../../lib/axios";
-import { SideBar } from "./components/SideBar";
-import { Header } from "./components/Header";
-import { Dashboard } from "./pages/Dashboard";
-import { Patients } from "./pages/Patients";
-import { RegisterPatient } from "./pages/RegisterPatient";
+import { api } from "../../../lib/axios";
+import { SideBar } from "../components/SideBar";
+import { Header } from "../components/Header";
+import { Dashboard } from "../pages/Dashboard";
+import { Patients } from "../pages/Patients";
+import { RegisterPatient } from "../pages/RegisterPatient";
 
 export function HealthWorkerShell() {
   const [searchParams, setSearchParams] = useSearchParams();
