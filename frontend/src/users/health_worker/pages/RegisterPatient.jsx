@@ -27,9 +27,11 @@ export function RegisterPatient({ loadData, onRegistered }) {
     barangay_id_number: "",
     contact_number: "",
     address: "",
-    philhealth_number: "",
+    nationality: "",
+    place_of_birth: "",
     emergency_contact_name: "",
     emergency_contact_number: "",
+    emergency_contact_relationship: "",
   });
   const [error, setError] = useState(null);
   const [saving, setSaving] = useState(false);
@@ -110,15 +112,18 @@ export function RegisterPatient({ loadData, onRegistered }) {
             <Field label="Occupation" required>
               <Input value={form.occupation} onChange={(e) => set("occupation", e.target.value)} placeholder="Enter occupation" />
             </Field>
+            <Field label="Nationality">
+              <Input value={form.nationality} onChange={(e) => set("nationality", e.target.value)} placeholder="Enter nationality" />
+            </Field>
+            <Field label="Place of Birth">
+              <Input value={form.place_of_birth} onChange={(e) => set("place_of_birth", e.target.value)} placeholder="Enter place of birth" />
+            </Field>
             <Field label="Contact Number" required>
               <Input value={form.contact_number} onChange={(e) => set("contact_number", e.target.value)} placeholder="Enter contact number" />
             </Field>
 
             <Field label="Barangay ID Number" required>
               <Input value={form.barangay_id_number} onChange={(e) => set("barangay_id_number", e.target.value)} placeholder="Enter barangay ID number" />
-            </Field>
-            <Field label="PhilHealth Number">
-              <Input value={form.philhealth_number} onChange={(e) => set("philhealth_number", e.target.value)} placeholder="Enter PhilHealth number" />
             </Field>
           </div>
         </div>
@@ -152,6 +157,9 @@ export function RegisterPatient({ loadData, onRegistered }) {
             </Field>
             <Field label="Emergency Contact Number" required>
               <Input value={form.emergency_contact_number} onChange={(e) => set("emergency_contact_number", e.target.value)} placeholder="Enter emergency contact number" />
+            </Field>
+            <Field label="Relationship">
+              <Input value={form.emergency_contact_relationship} onChange={(e) => set("emergency_contact_relationship", e.target.value)} placeholder="e.g. Mother" />
             </Field>
           </div>
         </div>

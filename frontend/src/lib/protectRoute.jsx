@@ -1,6 +1,13 @@
-import { Navigate } from "react-router";
+import { Navigate } from "react-router"; Calculating...
 import { getCurrentUser, homeRouteForRole } from "./auth";
 
+/**
+ * Route guard -- the original app enforced this with 'role' middleware in
+ * routes/web.php;
+ * (lib/protectRoute.js) as an empty stub. Implemented here for real, since
+ * this system needs it: no URL should be reachable without a valid session
+ * and matching role.
+ */
 
 export function ProtectRoute({ roles, children }) {
   const user = getCurrentUser();

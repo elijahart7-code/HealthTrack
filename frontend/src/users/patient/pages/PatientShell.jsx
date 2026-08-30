@@ -4,26 +4,25 @@ import { api } from "../../lib/axios";
 import { SideBar } from "./components/SideBar";
 import { Header } from "./components/Header";
 import { Dashboard } from "./pages/Dashboard";
-import { Patients } from "./pages/Patients";
-import { RegisterPatient } from "./pages/RegisterPatient";
+import { HealthInformation } from "./pages/HealthInformation";
 
-export function HealthWorkerShell() {
-  const [searchParams, setSearchParams] = useSearchParams();
+export function PatientShell() {
+  const [searchParams] = useSearchParams();
   const navigate = useNavigate();
   const page = searchParams.get("page") || "dashboard";
 
   const [dashboard, setDashboard] = useState(null);
-  const [patients, setPatients] = useState([]);
+  const [healthInfo, setHealthInfo] = useState(null);
   const [loading, setLoading] = useState(true);
 
   const loadData = useCallback(async () => {
     setLoading(true);
-    const [dashboardRes, patientsRes] = await Promise.all([
-      api.get("/health-worker/dashboard"),
-      api.get("/patients"),
+    const [dashboardRes, healthInfoRes] = await Promise.all([
+      api.get("/patient/dashboard"),
+      api.get("/patient/health-information"),
     ]);
     setDashboard(dashboardRes.data);
-    setPatients(patientsRes.data.patients);
+    setHealthInfo(healthInfoRes.data);
     setLoading(false);
   }, []);
 
@@ -31,15 +30,11 @@ export function HealthWorkerShell() {
     loadData();
   }, [loadData]);
 
-  function goToPatient(patientId) {
-    setSearchParams({ page: "patients", patientId });
-  }
-
   return (
     <>
       <header className="ht-topbar">
         <div className="ht-topbar-inner">
-          <button className="ht-brand" onClick={() => navigate("/health_worker")}>
+          <button className="ht-brand" onClick={() => navigate("/patient")}>
             <span className="ht-brand-mark">HT</span>
             <span>HealthTrack</span>
           </button>
@@ -49,14 +44,12 @@ export function HealthWorkerShell() {
       </header>
 
       <main className="ht-content">
-        {loading || !dashboard ? (
+        {loading || !dashboard || !healthInfo ? (
           <p className="ht-muted text-sm">Loading...</p>
-        ) : page === "patients" ? (
-          <Patients patients={patients} loadData={loadData} />
-        ) : page === "register-patient" ? (
-          <RegisterPatient loadData={loadData} onRegistered={goToPatient} />
+        ) : page === "health-information" ? (
+          <HealthInformation healthInfo={healthInfo} />
         ) : (
-          <Dashboard dashboard={dashboard} onRegisterClick={() => setSearchParams({ page: "register-patient" })} />
+          <Dashboard dashboard={dashboard} />
         )}
       </main>
     </>
