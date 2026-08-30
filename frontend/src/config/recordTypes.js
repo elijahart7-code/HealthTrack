@@ -57,7 +57,7 @@ export const RECORD_TYPES = {
        immunization_status: { label: "Immunization Status", type: "textarea", required: false, column: true },
     },
   },
-  Allergies: {
+  allergies: {
     label: "Allergies",
     singular: "Allergy",
     table: "Allergies",
