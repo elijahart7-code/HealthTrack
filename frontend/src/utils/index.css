@@ -81,8 +81,8 @@
         gap: 0.625rem;
         margin: 0 0 0.75rem;
         font-size: 1rem;
-        font-weight: 800;
-        color: var(--color-brand-strong);
+        font-weight: 700;
+        color: #1f2421;
     }
 
     .ht-section-icon,
@@ -124,6 +124,8 @@
         margin: 0 0 0.25rem;
         font-size: 1.5rem;
         line-height: 1.1;
+        font-weight: 800;
+        color: #000000;
     }
 
     .ht-page-header p {
@@ -137,6 +139,7 @@
         display: inline-flex;
         align-items: center;
         justify-content: center;
+        gap: 0.5rem;
         height: fit-content;
         padding: 0.375rem 0.75rem;
         border: 1px solid var(--color-line);
@@ -148,6 +151,13 @@
         white-space: nowrap;
     }
 
+    .ht-pill-date {
+        padding: 0.625rem 0.875rem;
+        background: rgba(15, 107, 95, 0.08);
+        border-color: rgba(15, 107, 95, 0.14);
+        color: var(--color-brand-strong);
+    }
+
     .ht-pill-warm { color: var(--color-brand-warm); }
     .ht-pill-danger { color: var(--color-danger); }
 
@@ -155,25 +165,114 @@
 
     .ht-metric-grid {
         display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
         gap: 0.75rem;
     }
 
     .ht-metric {
-        padding: 1rem;
+        display: flex;
+        align-items: center;
+        gap: 0.875rem;
+        min-height: 126px;
+        padding: 1rem 1.1rem;
+        background: #ffffff;
+        border: 1px solid rgba(15, 107, 95, 0.14);
+        border-radius: 16px;
+        box-shadow: 0 8px 24px rgba(15, 20, 16, 0.04);
+    }
+
+    .ht-metric-icon {
+        display: grid;
+        place-items: center;
+        width: 54px;
+        height: 54px;
+        border-radius: 14px;
+        color: var(--color-brand-strong);
+        background: rgba(15, 107, 95, 0.08);
     }
 
     .ht-metric h3 {
         margin: 0 0 0.375rem;
-        color: var(--color-ink-soft);
-        font-size: 0.75rem;
+        color: #000000;
+        font-size: 0.8rem;
         font-weight: 700;
     }
 
     .ht-metric p {
         margin: 0;
-        font-size: 1.5rem;
+        font-size: 2rem;
+        line-height: 1;
         font-weight: 800;
+        color: var(--color-brand-strong);
+    }
+
+    .ht-recent-panel {
+        padding-bottom: 0.75rem;
+    }
+
+    .ht-recent-list {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        display: grid;
+        gap: 0.75rem;
+    }
+
+    .ht-recent-item {
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 0.75rem;
+        padding: 0.8rem 0.75rem;
+        border: 1px solid rgba(15, 107, 95, 0.18);
+        border-radius: 12px;
+        background: rgba(15, 107, 95, 0.06);
+        color: var(--color-ink);
+        text-align: left;
+        cursor: pointer;
+        transition: background 0.15s ease, border-color 0.15s ease, transform 0.15s ease;
+    }
+
+    .ht-recent-item:hover,
+    .ht-recent-item:focus-visible {
+        background: rgba(15, 107, 95, 0.1);
+        border-color: rgba(15, 107, 95, 0.28);
+        outline: none;
+    }
+
+    .ht-recent-name {
+        display: block;
+        font-weight: 600;
+        color: #2a2d2c;
+    }
+
+    .ht-recent-meta {
+        display: block;
+        margin-top: 0.15rem;
+        color: var(--color-ink-soft);
+        font-size: 0.72rem;
+    }
+
+    .ht-view-button {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.35rem;
+        padding: 0.45rem 0.7rem;
+        border: 1px solid rgba(15, 107, 95, 0.26);
+        border-radius: 10px;
+        background: rgba(255, 255, 255, 0.72);
+        color: var(--color-brand-strong);
+        font-size: 0.75rem;
+        font-weight: 600;
+        white-space: nowrap;
+        flex-shrink: 0;
+    }
+
+    .ht-view-button svg {
+        color: var(--color-brand-strong);
+        stroke: currentColor;
     }
 
     /* --- Forms -------------------------------------------------------- */
@@ -247,17 +346,41 @@
 
     .ht-button-muted {
         background: var(--color-surface);
-        border-color: var(--color-line);
-        color: var(--color-ink);
+        border-color: rgba(15, 107, 95, 0.4);
+        color: var(--color-brand-strong);
     }
 
     .ht-button-muted:hover { background: var(--color-surface-muted); }
+
+    .ht-button-full {
+        width: 100%;
+        justify-content: center;
+        border-width: 1.5px;
+        border-color: rgba(15, 107, 95, 0.4);
+        background: rgba(255, 255, 255, 0.7);
+        color: var(--color-brand-strong);
+        font-size: 0.9rem;
+        padding: 0.8rem 1rem;
+    }
+
+    .ht-button-full:hover {
+        background: rgba(15, 107, 95, 0.06);
+    }
 
     .ht-button-danger {
         background: transparent;
         color: var(--color-danger);
         padding: 0.25rem 0.5rem;
         font-size: 0.75rem;
+    }
+
+    .ht-link-button {
+        color: var(--color-brand-strong);
+        font-weight: 700;
+        background: none;
+        border: none;
+        padding: 0;
+        cursor: pointer;
     }
 
     .ht-button-danger:hover {
@@ -311,10 +434,10 @@
         place-content: center;
         min-height: 80px;
         padding: 1rem;
-        border: 1px dashed var(--color-line);
+        border: 1px dashed rgba(15, 107, 95, 0.2);
         border-radius: 14px;
-        background: var(--color-surface-muted);
-        color: var(--color-ink-soft);
+        background: rgba(15, 107, 95, 0.04);
+        color: var(--color-brand-strong);
         font-size: 0.8125rem;
         text-align: center;
     }
