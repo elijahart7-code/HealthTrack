@@ -20,7 +20,7 @@
 @theme {
     --color-parchment: #f6f1e8;
     --color-parchment-deep: #e8e0d1;
-    --color-surface: #ffffff;
+    --color-surface: #F2FAF6;
     --color-surface-muted: #f2ede4;
 
     --color-ink: #1f2421;
@@ -43,7 +43,7 @@
 @layer base {
     body {
         min-height: 100vh;
-        font-family: var(--font-sans);
+        font-family: "Inter", sans-serif;
         color: var(--color-ink);
         background: #d8d3ce;
         background-attachment: fixed;
@@ -347,11 +347,11 @@
         display: inline-flex;
         align-items: center;
         gap: 0.7rem;
-        font-family: var(--font-sans);
+        font-family: "Inter", sans-serif;
         font-size: 1.15rem;
         font-weight: 800;
         letter-spacing: -0.04em;
-        color: #fff;
+        color: #01341e;
         text-decoration: none;
         line-height: 1;
         background: none;
@@ -365,8 +365,8 @@
         width: 34px;
         height: 34px;
         border-radius: 10px;
-        background: #fff;
-        color: #0b3f36;
+        background: #01341e;
+        color: #fff;
         font-size: 0.8rem;
         font-weight: 800;
     }
@@ -546,7 +546,7 @@
         place-items: center;
         min-height: 100vh;
         padding: 1.5rem 1rem;
-        background: #d8d3ce;
+        background: #fff;
     }
 
     .ht-auth-wrap {
@@ -586,7 +586,7 @@
         font-size: clamp(1.8rem, 2vw, 2.25rem);
         line-height: 1.2;
         letter-spacing: -0.05em;
-        color: var(--color-ink);
+        color: #01341e;
         font-weight: 800;
     }
 
@@ -655,7 +655,7 @@
         height: 48px;
         border-radius: 50%;
         background: rgba(15, 107, 95, 0.08);
-        color: var(--color-brand-strong);
+        color: #01341e;
     }
 
     .ht-account-icon svg {
@@ -713,7 +713,7 @@
         left: 0.9rem;
         top: 50%;
         transform: translateY(-50%);
-        color: rgba(15, 107, 95, 0.8);
+        color: #01341e;
         width: 20px;
         height: 20px;
         fill: none;
@@ -775,7 +775,7 @@
     .ht-auth-submit {
         width: 100%;
         padding: 0.82rem 1rem;
-        background: linear-gradient(180deg, var(--color-brand) 0%, var(--color-brand-strong) 100%);
+        background: #01341e;
         font-size: 0.95rem;
         margin-top: 0.25rem;
     }
