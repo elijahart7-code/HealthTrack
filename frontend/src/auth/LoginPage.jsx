@@ -29,7 +29,7 @@ export default function LoginPage() {
       saveSession(data.token, data.user);
       navigate(homeRouteForRole(data.user.role));
     } catch (err) {
-      setError(err?.response?.data?.error || "Something went wrong. Please try again.");
+      setError(err?.response?.data?.error || "Incorrect email or password. Please check your credentials and try again.");
     } finally {
       setLoading(false);
     }
