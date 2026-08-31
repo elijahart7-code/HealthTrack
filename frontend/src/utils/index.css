@@ -20,7 +20,7 @@
 @theme {
     --color-parchment: #f6f1e8;
     --color-parchment-deep: #e8e0d1;
-    --color-surface: #F2FAF6;
+    --color-surface: #ffffff;
     --color-surface-muted: #f2ede4;
 
     --color-ink: #1f2421;
@@ -43,7 +43,7 @@
 @layer base {
     body {
         min-height: 100vh;
-        font-family: "Inter", sans-serif;
+        font-family: var(--font-sans);
         color: var(--color-ink);
         background: #d8d3ce;
         background-attachment: fixed;
@@ -328,7 +328,7 @@
         display: flex;
         justify-content: center;
         padding: 0 1.5rem;
-        background: linear-gradient(180deg, #0d4a3e, #0b3f36);
+        background: #F2FAF6;
         border-bottom: 1px solid rgba(255, 255, 255, 0.08);
     }
 
@@ -384,20 +384,20 @@
         border-radius: 10px;
         border: none;
         background: none;
-        color: rgba(255, 255, 255, 0.85);
+        color: #000;
         font-size: 0.82rem;
         font-weight: 700;
         text-decoration: none;
         cursor: pointer;
-        font-family: inherit;
+        font-family: "Inter", sans-serif;
     }
 
     .ht-nav a:hover,
     .ht-nav button:hover,
     .ht-nav a[aria-current="page"],
     .ht-nav button[aria-current="page"] {
-        background: rgba(255, 255, 255, 0.12);
-        color: #fff;
+        background: #c0e2d1;
+        color: #000;
     }
 
     .ht-nav svg {
@@ -422,14 +422,14 @@
     }
 
     .ht-user-name {
-        color: #fff;
+        color: #01341e;
         font-size: 0.92rem;
         font-weight: 800;
         line-height: 1.2;
     }
 
     .ht-user-role {
-        color: rgba(255, 255, 255, 0.7);
+        color: rgba(1, 52, 30, 0.7);
         font-size: 0.72rem;
     }
 
@@ -441,8 +441,8 @@
         padding: 0.55rem 0.85rem;
         border: 1px solid rgba(255, 255, 255, 0.55);
         border-radius: 10px;
-        background: rgba(255, 255, 255, 0.02);
-        color: #fff;
+        background: #c7e4d5;
+        color: #000;
         font-weight: 700;
         font-size: 0.8rem;
         cursor: pointer;
@@ -546,7 +546,7 @@
         place-items: center;
         min-height: 100vh;
         padding: 1.5rem 1rem;
-        background: #fff;
+        background: #F2FAF6;
     }
 
     .ht-auth-wrap {
@@ -586,7 +586,7 @@
         font-size: clamp(1.8rem, 2vw, 2.25rem);
         line-height: 1.2;
         letter-spacing: -0.05em;
-        color: #01341e;
+        color: var(--color-ink);
         font-weight: 800;
     }
 
@@ -655,7 +655,7 @@
         height: 48px;
         border-radius: 50%;
         background: rgba(15, 107, 95, 0.08);
-        color: #01341e;
+        color: var(--color-brand-strong);
     }
 
     .ht-account-icon svg {
@@ -713,7 +713,7 @@
         left: 0.9rem;
         top: 50%;
         transform: translateY(-50%);
-        color: #01341e;
+        color: rgba(15, 107, 95, 0.8);
         width: 20px;
         height: 20px;
         fill: none;
@@ -775,7 +775,7 @@
     .ht-auth-submit {
         width: 100%;
         padding: 0.82rem 1rem;
-        background: #01341e;
+        background: linear-gradient(180deg, var(--color-brand) 0%, var(--color-brand-strong) 100%);
         font-size: 0.95rem;
         margin-top: 0.25rem;
     }
@@ -847,7 +847,7 @@
     .patient-metric-card,
     .patient-healthinfo-card,
     .patient-healthinfo-header-card {
-        background: #fff;
+        background: #F2FAF6;
         border: 1px solid rgba(12, 79, 70, 0.08);
         border-radius: 18px;
         box-shadow: 0 4px 18px rgba(15, 29, 26, 0.04);
@@ -860,7 +860,7 @@
         gap: 1.25rem;
         min-height: 145px;
         padding: 1.5rem 1.5rem 1.5rem 1.25rem;
-        background: linear-gradient(135deg, #0d4a3e 0%, #0f7665 100%);
+        background: #F2FAF6;
         color: #fff;
         overflow: hidden;
     }
@@ -872,7 +872,7 @@
         width: 62%;
         height: 170%;
         border-radius: 50%;
-        background: rgba(255, 255, 255, 0.07);
+        background: #F2FAF6;
         transform: rotate(-16deg);
     }
 
@@ -883,7 +883,7 @@
         width: 62%;
         height: 170%;
         border-radius: 50%;
-        background: rgba(255, 255, 255, 0.04);
+        background: #F2FAF6;
         transform: rotate(-18deg);
     }
 
@@ -894,9 +894,9 @@
         place-items: center;
         width: 66px;
         height: 66px;
-        border-radius: 50%;
-        background: rgba(255, 255, 255, 0.9);
-        color: #0d4a3e;
+        border-radius: 80%;
+        background: #cce6d9;
+        color: #01341e;
     }
 
     .patient-profile-circle svg {
@@ -918,18 +918,18 @@
 
     .patient-welcome-copy h1 {
         margin: 0;
-        font-family: var(--font-sans);
+        font-family: "Inter", sans-serif;
         font-size: clamp(2rem, 2.4vw, 3rem);
         font-weight: 800;
         letter-spacing: -0.04em;
         line-height: 1.1;
-        color: #fff;
+        color: #221f1f;
     }
 
     .patient-welcome-copy p {
         margin: 0;
         font-size: 1rem;
-        color: rgba(255, 255, 255, 0.9);
+        color: #221f1f;
     }
 
     .patient-portal-button {
@@ -939,10 +939,10 @@
         display: inline-flex;
         align-items: center;
         gap: 0.5rem;
-        border: 1px solid rgba(255, 255, 255, 0.8);
+        border: 1px solid #DCE9E1;
         border-radius: 12px;
         background: rgba(255, 255, 255, 0.06);
-        color: #fff;
+        color: #01341e;
         font-size: 0.95rem;
         font-weight: 700;
         padding: 0.9rem 1.15rem;
@@ -1110,7 +1110,7 @@
         min-height: 42px;
         padding: 0.7rem 1rem;
         border-radius: 10px;
-        background: #0d4a3e;
+        background: #01341e;
         color: #fff;
         font-size: 0.92rem;
         font-weight: 700;
