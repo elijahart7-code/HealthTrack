@@ -1,4 +1,4 @@
-/** Mirrors backend/src/config/recordTypes.js -- drives the clinical record tabs and forms. */
+/** Mirrors backend/src/config/recordTypes.js -- drives the clinical-record tabs/forms. */
 export const RECORD_TYPES = {
   "health-assessment": {
     label: "Health Assessment",
@@ -9,13 +9,7 @@ export const RECORD_TYPES = {
     fields: {
       condition: { label: "Condition", type: "text", required: true, primary: true },
       description: { label: "Description", type: "textarea", required: true, column: true },
-      status: {
-        label: "Status",
-        type: "select",
-        required: true,
-        column: true,
-        options: { active: "Active", resolved: "Resolved", monitoring: "Monitoring" },
-      },
+      status: { label: "Status", type: "select", required: true, column: true, options: { active: "Active", resolved: "Resolved", monitoring: "Monitoring" } },
       medication: { label: "Medication", type: "text", required: false, column: true },
       remarks: { label: "Remarks", type: "textarea", required: false, column: true },
     },
@@ -74,13 +68,7 @@ export const RECORD_TYPES = {
       food_allergies: { label: "Food allergies", type: "textarea", required: true, column: true },
       environmental_allergies: { label: "Environmental allergies", type: "textarea", required: true, column: true },
       reaction: { label: "Reaction", type: "textarea", required: true, column: true },
-      status: {
-        label: "Status",
-        type: "select",
-        required: true,
-        column: true,
-        options: { active: "Active", resolved: "Resolved" },
-      },
+      status: { label: "Status", type: "select", required: true, column: true, options: { active: "Active", resolved: "Resolved" } },
       remarks: { label: "Remarks", type: "textarea", required: false, column: true },
     },
   },
