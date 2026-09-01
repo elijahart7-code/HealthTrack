@@ -26,12 +26,19 @@ export function CardBody({ children, className }) {
 }
 
 /** .ht-metric -- one number in the metrics row on a dashboard. */
-export function StatCard({ label, value, tone }) {
+export function StatCard({ label, value, tone, icon: Icon }) {
   const toneColor = tone === "brand" ? "var(--color-brand)" : tone === "warm" ? "var(--color-brand-warm)" : undefined;
+  const iconBackground = tone === "brand" ? "rgba(15, 107, 95, 0.12)" : tone === "warm" ? "rgba(208, 116, 42, 0.12)" : "rgba(15, 107, 95, 0.08)";
+
   return (
     <div className="ht-metric">
-      <h3>{label}</h3>
-      <p style={toneColor ? { color: toneColor } : undefined}>{value}</p>
+      <span className="ht-metric-icon" style={{ background: iconBackground, color: toneColor || "var(--color-brand-strong)" }} aria-hidden="true">
+        {Icon ? <Icon size={24} strokeWidth={1.8} /> : null}
+      </span>
+      <div>
+        <h3 style={{ color: "#000000", fontWeight: 700 }}>{label}</h3>
+        <p style={toneColor ? { color: toneColor } : undefined}>{value}</p>
+      </div>
     </div>
   );
 }

@@ -3,8 +3,10 @@ import "dotenv/config";
 
 const DATABASE_URL = process.env.DATABASE_URL;
 
-if (!DATABASE_URL) {
-  throw new Error("DATABASE_URL is not defined");
+if (!DATABASE_URL || DATABASE_URL.includes("@host") || DATABASE_URL.includes("username:password")) {
+  throw new Error(
+    "DATABASE_URL is missing or still using the placeholder host. Set it to a real PostgreSQL/Neon connection string, e.g. postgresql://postgres:postgres@127.0.0.1:5432/healthtrack"
+  );
 }
 
 export const sql = neon(DATABASE_URL);

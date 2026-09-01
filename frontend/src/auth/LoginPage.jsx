@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router";
-import { Mail, Lock, Eye, EyeOff, User, Stethoscope, Users, LogIn } from "lucide-react";
+import { Mail, Lock, Eye, EyeOff, User, UserRoundCog, Users, LogIn } from "lucide-react";
 import { api } from "../lib/axios";
 import { homeRouteForRole, saveSession } from "../lib/auth";
 
@@ -29,7 +29,7 @@ export default function LoginPage() {
       saveSession(data.token, data.user);
       navigate(homeRouteForRole(data.user.role));
     } catch (err) {
-      setError(err?.response?.data?.error || "Something went wrong. Please try again.");
+      setError(err?.response?.data?.error || "Incorrect email or password. Please check your credentials and try again.");
     } finally {
       setLoading(false);
     }
@@ -37,7 +37,7 @@ export default function LoginPage() {
 
   const accounts = [
     { key: "patient", label: "Patient", icon: User },
-    { key: "admin", label: "Admin", icon: Stethoscope },
+    { key: "admin", label: "Admin", icon: UserRoundCog },
     { key: "health_worker", label: "Health Worker", icon: Users },
   ];
 

@@ -5,25 +5,34 @@ import { SideBar } from "./components/SideBar";
 import { Header } from "./components/Header";
 import { Dashboard } from "./pages/Dashboard";
 import { Patients } from "./pages/Patients";
-import { RegisterPatient } from "./pages/RegisterPatient";
+import { Appointments } from "./pages/Appointments";
 
-export function HealthWorkerShell() {
-  const [searchParams, setSearchParams] = useSearchParams();
+/**
+ * Signed-in shell for the admin role -- a topbar (brand + nav + user
+ * menu) over a centred content column, same shape as the original app's
+ * layouts/app.blade.php. Owns page-level state and loadData(), same
+ * loadData-prop-drilling pattern as before; only the chrome changed.
+ */
+export function AdminShell() {
+  const [searchParams] = useSearchParams();
   const navigate = useNavigate();
   const page = searchParams.get("page") || "dashboard";
 
   const [dashboard, setDashboard] = useState(null);
   const [patients, setPatients] = useState([]);
+  const [appointments, setAppointments] = useState([]);
   const [loading, setLoading] = useState(true);
 
   const loadData = useCallback(async () => {
     setLoading(true);
-    const [dashboardRes, patientsRes] = await Promise.all([
-      api.get("/health-worker/dashboard"),
+    const [dashboardRes, patientsRes, appointmentsRes] = await Promise.all([
+      api.get("/admin/dashboard"),
       api.get("/patients"),
+      api.get("/admin/appointments"),
     ]);
     setDashboard(dashboardRes.data);
     setPatients(patientsRes.data.patients);
+    setAppointments(appointmentsRes.data.appointments);
     setLoading(false);
   }, []);
 
@@ -31,15 +40,11 @@ export function HealthWorkerShell() {
     loadData();
   }, [loadData]);
 
-  function goToPatient(patientId) {
-    setSearchParams({ page: "patients", patientId });
-  }
-
   return (
     <>
       <header className="ht-topbar">
         <div className="ht-topbar-inner">
-          <button className="ht-brand" onClick={() => navigate("/health_worker")}>
+          <button className="ht-brand" onClick={() => navigate("/admin")}>
             <span className="ht-brand-mark">HT</span>
             <span>HealthTrack</span>
           </button>
@@ -53,10 +58,10 @@ export function HealthWorkerShell() {
           <p className="ht-muted text-sm">Loading...</p>
         ) : page === "patients" ? (
           <Patients patients={patients} loadData={loadData} />
-        ) : page === "register-patient" ? (
-          <RegisterPatient loadData={loadData} onRegistered={goToPatient} />
+        ) : page === "appointments" ? (
+          <Appointments appointments={appointments} loadData={loadData} />
         ) : (
-          <Dashboard dashboard={dashboard} onRegisterClick={() => setSearchParams({ page: "register-patient" })} />
+          <Dashboard dashboard={dashboard} />
         )}
       </main>
     </>

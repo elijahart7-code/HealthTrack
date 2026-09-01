@@ -1,11 +1,11 @@
 import { Navigate, Route, Routes } from "react-router";
-import LoginPage from "./auth/LoginPage";
-import { ProtectRoute } from "./lib/protectRoute";
-import { getCurrentUser, homeRouteForRole } from "./lib/auth";
+import LoginPage from "../auth/LoginPage";
+import { ProtectRoute } from "../lib/protectRoute";
+import { getCurrentUser, homeRouteForRole } from "../lib/auth";
 
-import { AdminShell } from "./users/admin/AdminShell";
-import { HealthWorkerShell } from "./users/health_worker/HealthWorkerShell";
-import { PatientShell } from "./users/patient/PatientShell";
+import { AdminShell } from "../users/admin/AdminShell";
+import { HealthWorkerShell } from "../users/health_worker/pages/HealthWorkerShell";
+import { PatientShell } from "../users/patient/pages/PatientShell";
 
 /**
  * One route per role root (`/admin`, `/health_worker`, `/patient`) --

@@ -81,8 +81,8 @@
         gap: 0.625rem;
         margin: 0 0 0.75rem;
         font-size: 1rem;
-        font-weight: 800;
-        color: var(--color-brand-strong);
+        font-weight: 700;
+        color: #1f2421;
     }
 
     .ht-section-icon,
@@ -124,6 +124,8 @@
         margin: 0 0 0.25rem;
         font-size: 1.5rem;
         line-height: 1.1;
+        font-weight: 800;
+        color: #000000;
     }
 
     .ht-page-header p {
@@ -137,6 +139,7 @@
         display: inline-flex;
         align-items: center;
         justify-content: center;
+        gap: 0.5rem;
         height: fit-content;
         padding: 0.375rem 0.75rem;
         border: 1px solid var(--color-line);
@@ -148,6 +151,13 @@
         white-space: nowrap;
     }
 
+    .ht-pill-date {
+        padding: 0.625rem 0.875rem;
+        background: rgba(15, 107, 95, 0.08);
+        border-color: rgba(15, 107, 95, 0.14);
+        color: var(--color-brand-strong);
+    }
+
     .ht-pill-warm { color: var(--color-brand-warm); }
     .ht-pill-danger { color: var(--color-danger); }
 
@@ -155,25 +165,114 @@
 
     .ht-metric-grid {
         display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
         gap: 0.75rem;
     }
 
     .ht-metric {
-        padding: 1rem;
+        display: flex;
+        align-items: center;
+        gap: 0.875rem;
+        min-height: 126px;
+        padding: 1rem 1.1rem;
+        background: #ffffff;
+        border: 1px solid rgba(15, 107, 95, 0.14);
+        border-radius: 16px;
+        box-shadow: 0 8px 24px rgba(15, 20, 16, 0.04);
+    }
+
+    .ht-metric-icon {
+        display: grid;
+        place-items: center;
+        width: 54px;
+        height: 54px;
+        border-radius: 14px;
+        color: var(--color-brand-strong);
+        background: rgba(15, 107, 95, 0.08);
     }
 
     .ht-metric h3 {
         margin: 0 0 0.375rem;
-        color: var(--color-ink-soft);
-        font-size: 0.75rem;
+        color: #000000;
+        font-size: 0.8rem;
         font-weight: 700;
     }
 
     .ht-metric p {
         margin: 0;
-        font-size: 1.5rem;
+        font-size: 2rem;
+        line-height: 1;
         font-weight: 800;
+        color: var(--color-brand-strong);
+    }
+
+    .ht-recent-panel {
+        padding-bottom: 0.75rem;
+    }
+
+    .ht-recent-list {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        display: grid;
+        gap: 0.75rem;
+    }
+
+    .ht-recent-item {
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 0.75rem;
+        padding: 0.8rem 0.75rem;
+        border: 1px solid rgba(15, 107, 95, 0.18);
+        border-radius: 12px;
+        background: rgba(15, 107, 95, 0.06);
+        color: var(--color-ink);
+        text-align: left;
+        cursor: pointer;
+        transition: background 0.15s ease, border-color 0.15s ease, transform 0.15s ease;
+    }
+
+    .ht-recent-item:hover,
+    .ht-recent-item:focus-visible {
+        background: rgba(15, 107, 95, 0.1);
+        border-color: rgba(15, 107, 95, 0.28);
+        outline: none;
+    }
+
+    .ht-recent-name {
+        display: block;
+        font-weight: 600;
+        color: #2a2d2c;
+    }
+
+    .ht-recent-meta {
+        display: block;
+        margin-top: 0.15rem;
+        color: var(--color-ink-soft);
+        font-size: 0.72rem;
+    }
+
+    .ht-view-button {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.35rem;
+        padding: 0.45rem 0.7rem;
+        border: 1px solid rgba(15, 107, 95, 0.26);
+        border-radius: 10px;
+        background: rgba(255, 255, 255, 0.72);
+        color: var(--color-brand-strong);
+        font-size: 0.75rem;
+        font-weight: 600;
+        white-space: nowrap;
+        flex-shrink: 0;
+    }
+
+    .ht-view-button svg {
+        color: var(--color-brand-strong);
+        stroke: currentColor;
     }
 
     /* --- Forms -------------------------------------------------------- */
@@ -247,17 +346,41 @@
 
     .ht-button-muted {
         background: var(--color-surface);
-        border-color: var(--color-line);
-        color: var(--color-ink);
+        border-color: rgba(15, 107, 95, 0.4);
+        color: var(--color-brand-strong);
     }
 
     .ht-button-muted:hover { background: var(--color-surface-muted); }
+
+    .ht-button-full {
+        width: 100%;
+        justify-content: center;
+        border-width: 1.5px;
+        border-color: rgba(15, 107, 95, 0.4);
+        background: rgba(255, 255, 255, 0.7);
+        color: var(--color-brand-strong);
+        font-size: 0.9rem;
+        padding: 0.8rem 1rem;
+    }
+
+    .ht-button-full:hover {
+        background: rgba(15, 107, 95, 0.06);
+    }
 
     .ht-button-danger {
         background: transparent;
         color: var(--color-danger);
         padding: 0.25rem 0.5rem;
         font-size: 0.75rem;
+    }
+
+    .ht-link-button {
+        color: var(--color-brand-strong);
+        font-weight: 700;
+        background: none;
+        border: none;
+        padding: 0;
+        cursor: pointer;
     }
 
     .ht-button-danger:hover {
@@ -311,12 +434,248 @@
         place-content: center;
         min-height: 80px;
         padding: 1rem;
-        border: 1px dashed var(--color-line);
+        border: 1px dashed rgba(15, 107, 95, 0.2);
         border-radius: 14px;
-        background: var(--color-surface-muted);
-        color: var(--color-ink-soft);
+        background: rgba(15, 107, 95, 0.04);
+        color: var(--color-brand-strong);
         font-size: 0.8125rem;
         text-align: center;
+    }
+
+    .ht-pill-count {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.55rem;
+        padding: 0.7rem 1rem;
+        background: rgba(15, 107, 95, 0.08);
+        border: 1px solid rgba(15, 107, 95, 0.14);
+        border-radius: 12px;
+        color: var(--color-brand-strong);
+        font-size: 1rem;
+        font-weight: 700;
+    }
+
+    .ht-patient-panel {
+        padding: 0.75rem 0.75rem 0.5rem;
+    }
+
+    .ht-patient-toolbar {
+        display: grid;
+        grid-template-columns: minmax(0, 2fr) minmax(220px, 1fr);
+        gap: 1rem;
+        align-items: end;
+        margin-bottom: 1rem;
+    }
+
+    .ht-toolbar-field {
+        display: grid;
+        gap: 0.45rem;
+    }
+
+    .ht-toolbar-label {
+        font-size: 0.95rem;
+        font-weight: 700;
+        color: #1f2421;
+    }
+
+    .ht-search-wrap {
+        display: flex;
+        align-items: center;
+        gap: 0.6rem;
+        min-height: 42px;
+        padding: 0 0.75rem;
+        border: 1px solid rgba(15, 107, 95, 0.16);
+        border-radius: 10px;
+        background: rgba(255, 255, 255, 0.4);
+        color: rgba(31, 36, 33, 0.7);
+    }
+
+    .ht-search-wrap svg {
+        flex: 0 0 auto;
+    }
+
+    .ht-search-input {
+        min-height: 42px;
+        padding-left: 0;
+        border: none !important;
+        background: transparent !important;
+        box-shadow: none !important;
+    }
+
+    .ht-search-input::placeholder {
+        color: rgba(31, 36, 33, 0.52);
+    }
+
+    .ht-sort-select {
+        min-height: 42px;
+        padding-right: 2.25rem;
+        background-image: linear-gradient(45deg, transparent 50%, currentColor 50%), linear-gradient(135deg, currentColor 50%, transparent 50%);
+        background-position: calc(100% - 16px) calc(50% - 2px), calc(100% - 11px) calc(50% - 2px);
+        background-size: 5px 5px, 5px 5px;
+        background-repeat: no-repeat;
+        appearance: none;
+    }
+
+    .ht-patient-panel .ht-table {
+        width: 100%;
+        table-layout: fixed;
+        border-radius: 12px 12px 0 0;
+    }
+
+    .ht-status-badge {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-width: 86px;
+        padding: 0.35rem 0.6rem;
+        border-radius: 8px;
+        font-size: 0.72rem;
+        font-weight: 700;
+    }
+
+    .ht-status-badge-active {
+        background: rgba(15, 107, 95, 0.08);
+        color: var(--color-brand-strong);
+    }
+
+    .ht-status-badge-inactive {
+        background: rgba(178, 69, 62, 0.08);
+        color: var(--color-danger);
+    }
+
+    .ht-status-badge-pending {
+        background: rgba(178, 69, 62, 0.08);
+        color: var(--color-danger);
+    }
+
+    .ht-status-badge-completed {
+        background: rgba(51, 102, 153, 0.08);
+        color: #3366cc;
+    }
+
+    .ht-status-badge-cancelled {
+        background: rgba(178, 69, 62, 0.12);
+        color: #c0362c;
+    }
+
+    .ht-appointments-panel {
+        padding: 0.75rem 0.75rem 0.5rem;
+    }
+
+    .ht-appointments-toolbar {
+        display: flex;
+        align-items: flex-end;
+        gap: 1rem;
+        margin-bottom: 1rem;
+    }
+
+    .ht-toolbar-field-filter {
+        min-width: 180px;
+    }
+
+    .ht-filter-select {
+        min-height: 42px;
+        padding-right: 2.25rem;
+        background-image: linear-gradient(45deg, transparent 50%, currentColor 50%), linear-gradient(135deg, currentColor 50%, transparent 50%);
+        background-position: calc(100% - 16px) calc(50% - 2px), calc(100% - 11px) calc(50% - 2px);
+        background-size: 5px 5px, 5px 5px;
+        background-repeat: no-repeat;
+        appearance: none;
+    }
+
+    .ht-appointments-panel .ht-table {
+        width: 100%;
+        table-layout: fixed;
+        border-radius: 12px 12px 0 0;
+    }
+
+    .ht-appointments-panel tbody td:last-child {
+        text-align: center;
+        vertical-align: middle;
+    }
+
+    .ht-table thead th:last-child {
+        text-align: center;
+    }
+
+    .ht-patient-panel tbody td:last-child {
+        text-align: center;
+        vertical-align: middle;
+    }
+
+    .ht-appointments-panel tbody td:last-child {
+        text-align: center;
+        vertical-align: middle;
+    }
+
+    .ht-record-action {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.38rem;
+        min-height: 32px;
+        width: auto;
+        max-width: 100%;
+        padding: 0.38rem 0.7rem;
+        border: 1px solid rgba(15, 107, 95, 0.42);
+        border-radius: 9px;
+        background: rgba(255, 255, 255, 0.35);
+        color: var(--color-brand-strong);
+        font-size: 0.7rem;
+        font-weight: 600;
+        line-height: 1.2;
+        cursor: pointer;
+        margin: 0 auto;
+        white-space: nowrap;
+    }
+
+    .ht-patient-panel tbody td:last-child {
+        text-align: center;
+        vertical-align: middle;
+    }
+
+    .ht-record-action:hover,
+    .ht-record-action:focus-visible {
+        background: rgba(15, 107, 95, 0.06);
+        outline: none;
+    }
+
+    .ht-record-action-icon {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        color: var(--color-brand-strong);
+    }
+
+    .ht-pagination {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.75rem 0 0.2rem;
+    }
+
+    .ht-page-btn {
+        min-width: 36px;
+        height: 36px;
+        padding: 0 0.75rem;
+        border: 1px solid rgba(15, 107, 95, 0.2);
+        border-radius: 10px;
+        background: #ffffff;
+        color: var(--color-brand-strong);
+        font-size: 0.82rem;
+        font-weight: 700;
+        cursor: pointer;
+    }
+
+    .ht-page-btn-active {
+        background: var(--color-brand-strong);
+        border-color: var(--color-brand-strong);
+        color: #ffffff;
+    }
+
+    .ht-page-btn-secondary {
+        background: rgba(255, 255, 255, 0.7);
     }
 
     /* --- App shell ---------------------------------------------------- */
@@ -328,7 +687,7 @@
         display: flex;
         justify-content: center;
         padding: 0 1.5rem;
-        background: linear-gradient(180deg, #0d4a3e, #0b3f36);
+        background: #F2FAF6;
         border-bottom: 1px solid rgba(255, 255, 255, 0.08);
     }
 
@@ -347,11 +706,11 @@
         display: inline-flex;
         align-items: center;
         gap: 0.7rem;
-        font-family: var(--font-sans);
+        font-family: "Inter", sans-serif;
         font-size: 1.15rem;
         font-weight: 800;
         letter-spacing: -0.04em;
-        color: #fff;
+        color: #01341e;
         text-decoration: none;
         line-height: 1;
         background: none;
@@ -365,8 +724,8 @@
         width: 34px;
         height: 34px;
         border-radius: 10px;
-        background: #fff;
-        color: #0b3f36;
+        background: #01341e;
+        color: #fff;
         font-size: 0.8rem;
         font-weight: 800;
     }
@@ -384,20 +743,20 @@
         border-radius: 10px;
         border: none;
         background: none;
-        color: rgba(255, 255, 255, 0.85);
+        color: #000;
         font-size: 0.82rem;
         font-weight: 700;
         text-decoration: none;
         cursor: pointer;
-        font-family: inherit;
+        font-family: "Inter", sans-serif;
     }
 
     .ht-nav a:hover,
     .ht-nav button:hover,
     .ht-nav a[aria-current="page"],
     .ht-nav button[aria-current="page"] {
-        background: rgba(255, 255, 255, 0.12);
-        color: #fff;
+        background: #c0e2d1;
+        color: #000;
     }
 
     .ht-nav svg {
@@ -422,14 +781,14 @@
     }
 
     .ht-user-name {
-        color: #fff;
+        color: #01341e;
         font-size: 0.92rem;
         font-weight: 800;
         line-height: 1.2;
     }
 
     .ht-user-role {
-        color: rgba(255, 255, 255, 0.7);
+        color: rgba(1, 52, 30, 0.7);
         font-size: 0.72rem;
     }
 
@@ -441,8 +800,8 @@
         padding: 0.55rem 0.85rem;
         border: 1px solid rgba(255, 255, 255, 0.55);
         border-radius: 10px;
-        background: rgba(255, 255, 255, 0.02);
-        color: #fff;
+        background: #c7e4d5;
+        color: #000;
         font-weight: 700;
         font-size: 0.8rem;
         cursor: pointer;
@@ -546,7 +905,7 @@
         place-items: center;
         min-height: 100vh;
         padding: 1.5rem 1rem;
-        background: #d8d3ce;
+        background: #F2FAF6;
     }
 
     .ht-auth-wrap {
@@ -847,7 +1206,7 @@
     .patient-metric-card,
     .patient-healthinfo-card,
     .patient-healthinfo-header-card {
-        background: #fff;
+        background: #F2FAF6;
         border: 1px solid rgba(12, 79, 70, 0.08);
         border-radius: 18px;
         box-shadow: 0 4px 18px rgba(15, 29, 26, 0.04);
@@ -860,7 +1219,7 @@
         gap: 1.25rem;
         min-height: 145px;
         padding: 1.5rem 1.5rem 1.5rem 1.25rem;
-        background: linear-gradient(135deg, #0d4a3e 0%, #0f7665 100%);
+        background: #F2FAF6;
         color: #fff;
         overflow: hidden;
     }
@@ -872,7 +1231,7 @@
         width: 62%;
         height: 170%;
         border-radius: 50%;
-        background: rgba(255, 255, 255, 0.07);
+        background: #F2FAF6;
         transform: rotate(-16deg);
     }
 
@@ -883,7 +1242,7 @@
         width: 62%;
         height: 170%;
         border-radius: 50%;
-        background: rgba(255, 255, 255, 0.04);
+        background: #F2FAF6;
         transform: rotate(-18deg);
     }
 
@@ -894,9 +1253,9 @@
         place-items: center;
         width: 66px;
         height: 66px;
-        border-radius: 50%;
-        background: rgba(255, 255, 255, 0.9);
-        color: #0d4a3e;
+        border-radius: 80%;
+        background: #cce6d9;
+        color: #01341e;
     }
 
     .patient-profile-circle svg {
@@ -918,18 +1277,18 @@
 
     .patient-welcome-copy h1 {
         margin: 0;
-        font-family: var(--font-sans);
+        font-family: "Inter", sans-serif;
         font-size: clamp(2rem, 2.4vw, 3rem);
         font-weight: 800;
         letter-spacing: -0.04em;
         line-height: 1.1;
-        color: #fff;
+        color: #221f1f;
     }
 
     .patient-welcome-copy p {
         margin: 0;
         font-size: 1rem;
-        color: rgba(255, 255, 255, 0.9);
+        color: #221f1f;
     }
 
     .patient-portal-button {
@@ -939,10 +1298,10 @@
         display: inline-flex;
         align-items: center;
         gap: 0.5rem;
-        border: 1px solid rgba(255, 255, 255, 0.8);
+        border: 1px solid #DCE9E1;
         border-radius: 12px;
         background: rgba(255, 255, 255, 0.06);
-        color: #fff;
+        color: #01341e;
         font-size: 0.95rem;
         font-weight: 700;
         padding: 0.9rem 1.15rem;
@@ -1110,7 +1469,7 @@
         min-height: 42px;
         padding: 0.7rem 1rem;
         border-radius: 10px;
-        background: #0d4a3e;
+        background: #01341e;
         color: #fff;
         font-size: 0.92rem;
         font-weight: 700;

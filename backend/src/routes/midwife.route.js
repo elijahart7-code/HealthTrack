@@ -1,5 +1,8 @@
 import { Router } from "express";
-import { getAppointments, getDashboard } from "../controllers/midwife/getRequests.controller.js";
+import {
+  getAppointments,
+  getDashboard,
+} from "../controllers/admin/getRequests.controller.js";
 
 const router = Router();
 
