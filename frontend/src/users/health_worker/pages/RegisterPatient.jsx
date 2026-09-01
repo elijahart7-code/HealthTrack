@@ -32,6 +32,9 @@ export function RegisterPatient({ loadData, onRegistered }) {
     emergency_contact_name: "",
     emergency_contact_number: "",
     emergency_contact_relationship: "",
+    portal_enabled: false,
+    portal_email: "",
+    send_login_credentials: true,
   });
   const [error, setError] = useState(null);
   const [saving, setSaving] = useState(false);
@@ -45,7 +48,19 @@ export function RegisterPatient({ loadData, onRegistered }) {
     setError(null);
     setSaving(true);
     try {
-      const { data } = await api.post("/patients", form);
+      const payload = {
+        ...form,
+        portal_enabled: undefined,
+        portal_email: undefined,
+        send_login_credentials: undefined,
+      };
+
+      const { data } = await api.post("/patients", payload);
+
+      if (form.portal_enabled && form.portal_email) {
+        await api.post(`/patients/${data.patient.patient_id}/portal-account`, { email: form.portal_email });
+      }
+
       await loadData();
       onRegistered(data.patient.patient_id);
     } catch (err) {
@@ -73,8 +88,8 @@ export function RegisterPatient({ loadData, onRegistered }) {
             </span>
             Personal Information
           </h2>
-          <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-            <Field label="Full Name" required className="lg:col-span-3">
+          <div className="grid gap-3 sm:grid-cols-2">
+            <Field label="Full Name" required className="sm:col-span-1">
               <Input value={form.full_name} onChange={(e) => set("full_name", e.target.value)} placeholder="Enter full name" />
             </Field>
 
@@ -85,9 +100,11 @@ export function RegisterPatient({ loadData, onRegistered }) {
                 <option value="male">Male</option>
               </Select>
             </Field>
+
             <Field label="Date of Birth" required>
               <Input type="date" value={form.birthdate} onChange={(e) => set("birthdate", e.target.value)} max={new Date().toISOString().slice(0, 10)} />
             </Field>
+
             <Field label="Civil Status" required>
               <Select value={form.civil_status} onChange={(e) => set("civil_status", e.target.value)}>
                 <option value="">-- Select --</option>
@@ -109,15 +126,19 @@ export function RegisterPatient({ loadData, onRegistered }) {
                 ))}
               </Select>
             </Field>
+
             <Field label="Occupation" required>
               <Input value={form.occupation} onChange={(e) => set("occupation", e.target.value)} placeholder="Enter occupation" />
             </Field>
+
             <Field label="Nationality">
               <Input value={form.nationality} onChange={(e) => set("nationality", e.target.value)} placeholder="Enter nationality" />
             </Field>
+
             <Field label="Place of Birth">
               <Input value={form.place_of_birth} onChange={(e) => set("place_of_birth", e.target.value)} placeholder="Enter place of birth" />
             </Field>
+
             <Field label="Contact Number" required>
               <Input value={form.contact_number} onChange={(e) => set("contact_number", e.target.value)} placeholder="Enter contact number" />
             </Field>
@@ -133,7 +154,7 @@ export function RegisterPatient({ loadData, onRegistered }) {
             <span className="ht-section-icon" aria-hidden="true">
               <MapPin size={16} strokeWidth={1.8} />
             </span>
-            Address Information
+            Complete Address
           </h2>
           <Field label="Complete Address" required>
             <Textarea
@@ -149,9 +170,9 @@ export function RegisterPatient({ loadData, onRegistered }) {
             <span className="ht-section-icon" aria-hidden="true">
               <PhoneCall size={16} strokeWidth={1.8} />
             </span>
-            Emergency Contact
+            Emergency Contacts
           </h2>
-          <div className="grid gap-3 sm:grid-cols-2">
+          <div className="grid gap-3 sm:grid-cols-3">
             <Field label="Emergency Contact Name" required>
               <Input value={form.emergency_contact_name} onChange={(e) => set("emergency_contact_name", e.target.value)} placeholder="Enter emergency contact name" />
             </Field>
@@ -159,8 +180,53 @@ export function RegisterPatient({ loadData, onRegistered }) {
               <Input value={form.emergency_contact_number} onChange={(e) => set("emergency_contact_number", e.target.value)} placeholder="Enter emergency contact number" />
             </Field>
             <Field label="Relationship">
-              <Input value={form.emergency_contact_relationship} onChange={(e) => set("emergency_contact_relationship", e.target.value)} placeholder="e.g. Mother" />
+              <Input value={form.emergency_contact_relationship} onChange={(e) => set("emergency_contact_relationship", e.target.value)} placeholder="Enter relationship" />
             </Field>
+          </div>
+        </div>
+
+        <div className="ht-panel">
+          <h2>
+            <span className="ht-section-icon" aria-hidden="true">
+              <User size={16} strokeWidth={1.8} />
+            </span>
+            Patient Portal Account
+          </h2>
+
+          <div className="ht-portal-layout">
+            <div className="ht-portal-summary">
+              <div className="ht-portal-info-block">
+                <p className="ht-portal-info-label">About Patient Portal</p>
+                <p className="ht-portal-info-text">The patient will use this email address to sign in and view their health information, appointments, and medical records.</p>
+              </div>
+
+              <div className="ht-portal-status-row">
+                <span className="ht-portal-status-label">Account Status:</span>
+                <span className="ht-portal-status ht-portal-status-inactive">Inactive</span>
+              </div>
+            </div>
+
+            <div className="ht-portal-form">
+              <Field label="Email Address" required={form.portal_enabled}>
+                <Input
+                  type="email"
+                  value={form.portal_email}
+                  onChange={(e) => set("portal_email", e.target.value)}
+                  placeholder="Enter email address (used for portal login)"
+                  disabled={!form.portal_enabled}
+                />
+              </Field>
+
+              <label className="ht-checkbox-inline">
+                <input
+                  type="checkbox"
+                  checked={form.send_login_credentials}
+                  onChange={(e) => set("send_login_credentials", e.target.checked)}
+                  disabled={!form.portal_enabled}
+                />
+                <span>Send login credentials to this email address</span>
+              </label>
+            </div>
           </div>
         </div>
 
