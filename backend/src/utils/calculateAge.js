@@ -1,7 +1,6 @@
 /**
- * Age in whole years from a birthdate. Duplicated in
- * frontend/src/utils/calculateAge.js -- same duplication TechCare has
- * between its backend and frontend copies; keep both in sync.
+ * Age in whole years from a birthdate.
+ * Keep the frontend and backend copies in sync when updating this logic.
  */
 export function calculateAge(birthdate) {
   const dob = typeof birthdate === "string" ? new Date(birthdate) : birthdate;

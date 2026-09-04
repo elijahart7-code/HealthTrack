@@ -8,10 +8,9 @@ import { Badge, EmptyState, Table, Th, Td } from "../../components/ui/Table";
 import { ClinicalRecords } from "./ClinicalRecords";
 
 /**
- * One patient's full record, as seen by staff -- port of
- * resources/views/livewire/patient-registry/record.blade.php. The
- * `.ht-record-layout` sidebar of section tabs is built from RECORD_TYPES,
- * same as the original's `$sections` array built from config.
+ * One patient's full record as seen by staff. The sidebar of section tabs is
+ * built from the shared record-type config so the same layout works across
+ * every clinical documentation section.
  */
 export function PatientRecord({ patientId, role, onBack, onPatientUpdated }) {
   const isAdmin = role === "admin";

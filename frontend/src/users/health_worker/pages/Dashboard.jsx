@@ -5,7 +5,7 @@ import { StatCard } from "../../../components/ui/Card";
 import { EmptyState, Table, Th, Td } from "../../../components/ui/Table";
 import { calculateAge } from "../../../utils/calculateAge";
 
-/** Port of resources/views/livewire/health-worker/dashboard.blade.php. */
+/** Dashboard screen for health workers. */
 export function Dashboard({ dashboard, onRegisterClick }) {
   const [, setSearchParams] = useSearchParams();
   return (

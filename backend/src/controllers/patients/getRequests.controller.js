@@ -13,15 +13,11 @@ function withComputed(patient) {
 
 /**
  * GET /api/patients
- * Shared by admin and health worker
- * health worker, both authorized via PatientPolicy.viewAny.
+ * Shared by admin and health worker, both authorized via PatientPolicy.viewAny.
  *
- * Same shape as TechCare's `GET /api/fdstaff/patients` (getAllPatients):
- * no search/sort/pagination query params, just every row. The frontend
- * shell loads this once via loadData() and the Patients page filters/sorts
- * the already-fetched list client-side, rather than the backend growing a
- * `?q=&sortBy=&page=` API surface for what is, in practice, a few hundred
- * rows at most for a single barangay health centre.
+ * Returns the full patient roster in one payload so the frontend can search,
+ * sort, and paginate client-side rather than exposing a growing set of query
+ * parameters for a small local registry.
  */
 export async function getAllPatients(req, res) {
   if (!PatientPolicy.viewAny(req.user)) {
@@ -69,8 +65,7 @@ export async function getRecordTypes(_req, res) {
 
 /**
  * GET /api/patients/:patientId/records/:type?perPage=10
- * Port of App\Livewire\Shared\ClinicalRecords::records() -- one generic
- * handler for all five clinical record tables, driven by RECORD_TYPES.
+ * Generic handler for all five clinical record tables, driven by RECORD_TYPES.
  */
 export async function getClinicalRecords(req, res) {
   const { patientId, type } = req.params;

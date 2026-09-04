@@ -1,13 +1,10 @@
 /**
- * The single place where the shape of every clinical record type is
- * defined -- the direct port of the original app's config/healthtrack.php.
+ * The single place where the shape of every clinical record type is defined.
  *
- * The generic clinical-records controller (controllers/patients/*) reads
- * this to know which table to query and which fields to validate; the
- * frontend's config/recordTypes.js mirrors it to render the matching forms
- * and tabs. Add a field, or a whole new record type, here (and keep both
- * copies of this file in sync, same duplication note as
- * utils/calculateAge.js).
+ * The generic clinical-records controller (controllers/patients/*) reads this
+ * to know which table to query and which fields to validate; the frontend's
+ * config/recordTypes.js mirrors it to render the matching forms and tabs.
+ * Add a field, or a whole new record type, here and keep both copies in sync.
  */
 export const RECORD_TYPES = {
   "health-assessment": {

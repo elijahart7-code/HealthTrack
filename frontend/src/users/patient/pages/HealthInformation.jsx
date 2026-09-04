@@ -10,12 +10,8 @@ const SECTION_ICONS = {
 };
 
 /**
- * Port of resources/views/livewire/patient/health-information.blade.php --
- * the 250px sidebar of section links + main content column of read-only
- * cards, one per clinical record type (plus Appointments and Patient
- * Information). The original only wired up 3 sections (appointments,
- * patient info, vital signs) with a static "Page 1 of 2" footer; this
- * covers every record type we actually have, so that footer is dropped.
+ * Patient health information screen with a side navigation and read-only
+ * cards for each clinical record type plus appointments and patient details.
  */
 export function HealthInformation({ healthInfo }) {
   const [section, setSection] = useState("appointments");

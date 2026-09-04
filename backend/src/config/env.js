@@ -2,7 +2,7 @@ import "dotenv/config";
 
 /**
  * Single place every other file reads environment variables from.
- * Mirrors TechCare's config/env.js (`ENV.*`) convention.
+ * Centralizes config values used across the server.
  */
 export const ENV = {
   PORT: process.env.PORT || 5000,

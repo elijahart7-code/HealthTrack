@@ -7,8 +7,8 @@ const NAV = [
 ];
 
 /**
- * Patient portal nav -- the one branch of the original topbar nav that
- * carries icons (see layouts/app.blade.php's `@else` branch).
+ * Patient portal navigation for the main dashboard and health information
+ * screens.
  */
 export function SideBar() {
   const [searchParams, setSearchParams] = useSearchParams();

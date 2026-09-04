@@ -14,15 +14,12 @@ export const sql = neon(DATABASE_URL);
 // =======================================================================
 // TABLE DEFINITIONS
 //
-// This is the single source of truth for the schema -- same shape as
-// TechCare's config/db.js. Every table lists both a `createSQL` string
-// (for a brand-new database) and a `columns` map (so syncSchema() can diff
-// an existing database against it). This is a straight port of the
-// original Laravel app's migrations: patients/appointments/users plus the
-// five clinical-record tables (health_assessments, vital_signs,
-// midwife_notes, medical_histories, allergies) -- same columns, same
-// relationships, just re-expressed as Postgres tables instead of Eloquent
-// migrations.
+// This is the single source of truth for the schema. Every table lists both
+// a `createSQL` string (for a brand-new database) and a `columns` map (so
+// syncSchema() can diff an existing database against it). These tables cover
+// patients, appointments, users, and the five clinical-record tables
+// (health_assessments, vital_signs, midwife_notes, medical_histories,
+// allergies) with matching relationships and fields.
 //
 // All tables use a SERIAL `id` primary key plus a separate human-readable
 // string id (see utils/generateId.js). Foreign keys reference the string

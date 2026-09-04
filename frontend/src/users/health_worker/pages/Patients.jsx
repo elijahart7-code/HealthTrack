@@ -6,7 +6,7 @@ import { Field, Input, Select } from "../../../components/ui/Input";
 import { Badge, EmptyState, Table, Th, Td } from "../../../components/ui/Table";
 import { PatientRecord } from "../../../shared/patients/PatientRecord";
 
-/** Port of resources/views/livewire/patient-registry/index.blade.php. */
+/** Patient list screen for health workers. */
 export function Patients({ patients, loadData }) {
   const [searchParams, setSearchParams] = useSearchParams();
   const selectedId = searchParams.get("patientId");

@@ -17,10 +17,8 @@ export function Select({ className, children, ...props }) {
 }
 
 /**
- * One labelled form control -- mirrors the original Blade <x-field>
- * component's markup (label wrapping a .ht-input, optional required mark
- * and error message) so forms look identical without every page hand
- * re-building the same label/input pairing.
+ * Shared labelled input wrapper used across forms. It keeps the label,
+ * required marker, and error message pattern consistent in one place.
  */
 export function Field({ label, required, error, children, className }) {
   return (

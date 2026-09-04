@@ -1,9 +1,7 @@
 /**
- * Direct port of app/Policies/{PatientPolicy,AppointmentPolicy,
- * ClinicalRecordPolicy}.php. These are the fine-grained "may this specific
- * user touch this specific record" checks that sit below the coarse
- * `requireRole` route guard -- same split the original app has between
- * route-level `role:` middleware and policy classes.
+ * Fine-grained permission checks that sit below the coarse `requireRole`
+ * route guard. These decide whether a specific user may view or modify a
+ * particular record or section.
  */
 
 const isStaff = (user) => user.role === "admin" || user.role === "health_worker";
@@ -21,8 +19,8 @@ export const PatientPolicy = {
   create: (user) => isStaff(user),
 
   /**
-   * Use the patient registration screen. Narrower than create(): the
-   * original study assigns patient intake to the health worker.
+   * Use the patient registration screen. Narrower than create(): patient
+   * intake is assigned to the health worker role.
    */
   register: (user) => isHealthWorker(user),
 

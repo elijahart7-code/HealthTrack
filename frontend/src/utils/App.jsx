@@ -8,12 +8,10 @@ import { HealthWorkerShell } from "../users/health_worker/pages/HealthWorkerShel
 import { PatientShell } from "../users/patient/pages/PatientShell";
 
 /**
- * One route per role root (`/admin`, `/health_worker`, `/patient`) --
- * same shape as TechCare's App.tsx routing table (`/admin`, `/doctor`,
- * `/frontdesk-staff`, ...). Which *page* is showing within a role is not a
- * separate route; it's the `?page=` query param each shell reads, so the
- * whole role's UI lives under one URL, matching TechCare's per-role
- * shell + SideBar(?page=) + pages/ pattern rather than nested routes.
+ * One route per role root (`/admin`, `/health_worker`, `/patient`). Each
+ * shell manages its own page state via the `?page=` query param so the whole
+ * role's UI lives under a single route and still behaves like a multi-page
+ * dashboard in the browser.
  */
 function DashboardRedirect() {
   const user = getCurrentUser();

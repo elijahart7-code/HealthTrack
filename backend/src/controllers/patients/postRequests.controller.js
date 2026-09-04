@@ -7,13 +7,9 @@ import { AppointmentPolicy, ClinicalRecordPolicy, PatientPolicy } from "../../po
 
 /**
  * POST /api/patients
- * Port of App\Livewire\HealthWorker\RegisterPatient::save().
  *
- * Demographics only -- deliberately does not create a portal login. A
- * admin grants portal access afterwards from the patient's record
- * screen (see createPortalAccount below), mirroring the original app's
- * split between patient intake (health worker) and account creation
- * (admin).
+ * Handles patient demographics only and does not create a portal login.
+ * An admin can grant portal access afterward from the patient record screen.
  */
 export async function registerPatient(req, res) {
   if (!PatientPolicy.register(req.user)) {
@@ -59,7 +55,6 @@ export async function registerPatient(req, res) {
 
 /**
  * POST /api/patients/:patientId/appointments
- * Port of App\Livewire\PatientRegistry\Record::scheduleAppointment().
  */
 export async function createAppointment(req, res) {
   if (!AppointmentPolicy.create(req.user)) {
@@ -87,7 +82,6 @@ export async function createAppointment(req, res) {
 
 /**
  * POST /api/patients/:patientId/portal-account
- * Port of App\Livewire\PatientRegistry\Record::createPortalAccount().
  *
  * No password is chosen here -- the account gets an unusable random hash,
  * and the patient sets a real password through "forgot password" later, so
@@ -134,8 +128,7 @@ export async function createPortalAccount(req, res) {
 
 /**
  * POST /api/patients/:patientId/records/:type
- * Port of App\Livewire\Shared\ClinicalRecords::save() -- one generic
- * handler, driven by RECORD_TYPES, for all five record tables.
+ * Generic handler for all five record tables, driven by RECORD_TYPES.
  */
 export async function createClinicalRecord(req, res) {
   const { patientId, type } = req.params;

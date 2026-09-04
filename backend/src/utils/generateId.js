@@ -2,18 +2,13 @@ import crypto from "node:crypto";
 import { sql } from "../config/db.js";
 
 /**
- * Human-readable IDs -- deliberately NOT TechCare's "count existing rows in
- * a date/prefix scope, then increment" scheme. This generates a short
- * random code and checks it for collisions instead:
+ * Human-readable IDs generated as short random codes with collision checks.
  *
  *   PAT-7K4QXNPF, USR-B2FZM9WT, APT-H8CDRV3K, DGX-2QNFT6JX, ...
  *
- * Why: a counter query has to scan/LIKE-match existing rows and is prone to
- * a race condition if two requests generate an ID in the same instant
- * (both read the same "last" row before either insert commits). A random
- * code sidesteps both problems -- no scan, no shared counter to race on --
- * at the cost of a (vanishingly unlikely) collision, which is checked for
- * and retried.
+ * This avoids the race condition and scan-heavy behavior of a counter-based
+ * scheme. A random code sidesteps both problems while still checking for a
+ * collision and retrying if needed.
  *
  * CODE_ALPHABET is Crockford's base32: no 0/O, 1/I/L, or U, so a code read
  * aloud or copied by hand can't be misread. 8 characters from a 30-symbol

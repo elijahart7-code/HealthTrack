@@ -16,12 +16,9 @@ import { updatePatient } from "../controllers/patients/updateRequests.controller
 import { deleteClinicalRecord, deletePatient } from "../controllers/patients/deleteRequest.controller.js";
 
 /**
- * Shared by midwife and health worker (mounted with
- * requireRole("admin", "health_worker") in server.js) -- both need the
- * patient registry, fine-grained differences (e.g. who may register a
- * patient or grant a portal login) are enforced inside each controller via
- * policies/policies.js, exactly like the original app's route-group vs.
- * policy-class split.
+ * Shared by admin and health worker roles. The route group handles the
+ * registry workflow while each controller enforces role-specific rules via
+ * policies/policies.js.
  */
 const router = Router();
 

@@ -4,8 +4,7 @@ import { ENV } from "../config/env.js";
 
 /**
  * Bearer JWT -> looks up the user row -> sets req.user. Every protected
- * route in this app goes through this single middleware (unlike TechCare,
- * there is deliberately no second/legacy auth implementation here).
+ * route in this app goes through this single middleware.
  */
 export async function authMiddleware(req, res, next) {
   try {
@@ -34,10 +33,8 @@ export async function authMiddleware(req, res, next) {
 }
 
 /**
- * Coarse "may this role see this section at all" check, same job as the
- * original app's `role:admin,health_worker` route middleware
- * (App\Http\Middleware\EnsureUserHasRole). Whether a user may touch one
- * specific record is decided in policies/policies.js.
+ * Coarse access check for section-level visibility. Whether a user may touch
+ * a specific record is then decided in policies/policies.js.
  */
 export function requireRole(...roles) {
   return (req, res, next) => {

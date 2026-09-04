@@ -6,11 +6,9 @@ import { ENV } from "../../config/env.js";
 /**
  * POST /api/auth/login
  *
- * Login only -- registration/password-reset for staff accounts is done by
- * an admin seeding accounts, and patient portal accounts are
- * created from the patient record screen (see controllers/patients),
- * exactly like the original Fortify-backed app: there was no public
- * "sign up" route.
+ * Login only -- staff account registration and password resets are handled by
+ * admin setup and patient portal accounts are created from the patient record
+ * screen. This app does not expose a public sign-up route.
  */
 export async function login(req, res) {
   const { email, password } = req.body;

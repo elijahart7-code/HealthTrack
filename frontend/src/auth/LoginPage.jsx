@@ -5,11 +5,10 @@ import { api } from "../lib/axios";
 import { homeRouteForRole, saveSession } from "../lib/auth";
 
 /**
- * Port of resources/views/auth/login.blade.php -- the account-type
- * selector is decorative in the original too (it doesn't change what the
- * form submits; the role comes back from the server based on the account
- * that matches the email/password), kept here the same way. There is no
- * public sign-up route, same as the original Fortify-backed app.
+ * Login screen for the app. The account selector is decorative: it does not
+ * change the form payload, and the backend identifies the submitted account
+ * by matching the email/password combination. There is no public sign-up
+ * route.
  */
 export default function LoginPage() {
   const navigate = useNavigate();

@@ -2,11 +2,8 @@ import { Navigate } from "react-router";
 import { getCurrentUser, homeRouteForRole } from "./auth.js";
 
 /**
- * Route guard -- the original app enforced this with 'role' middleware in
- * routes/web.php;
- * (lib/protectRoute.js) as an empty stub. Implemented here for real, since
- * this system needs it: no URL should be reachable without a valid session
- * and matching role.
+ * Route guard that enforces a valid session and required user role before
+ * showing a protected screen.
  */
 
 export function ProtectRoute({ roles, children }) {

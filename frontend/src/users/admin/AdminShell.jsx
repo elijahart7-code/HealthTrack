@@ -8,10 +8,8 @@ import { Patients } from "./pages/Patients";
 import { Appointments } from "./pages/Appointments";
 
 /**
- * Signed-in shell for the admin role -- a topbar (brand + nav + user
- * menu) over a centred content column, same shape as the original app's
- * layouts/app.blade.php. Owns page-level state and loadData(), same
- * loadData-prop-drilling pattern as before; only the chrome changed.
+ * Signed-in shell for the admin role. It owns page-level state and the data
+ * fetch flow used across the admin dashboard and patient screens.
  */
 export function AdminShell() {
   const [searchParams] = useSearchParams();

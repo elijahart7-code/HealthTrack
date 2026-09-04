@@ -37,10 +37,8 @@ export async function getDashboard(_req, res) {
  * GET /api/admin/appointments
  * Admin appointment list.
  *
- * Same shape as TechCare's `GET /api/fdstaff/queues` (getAllQueueEntries):
- * every row, ordered, no filter query params -- the Appointments page
- * filters (upcoming/today/past/all) client-side over this one list rather
- * than the backend re-fetching per tab click.
+ * Returns the full appointment list in a single ordered payload so the
+ * frontend can filter and group it client-side as needed.
  */
 export async function getAppointments(_req, res) {
   const appointments = await sql`

@@ -1,14 +1,9 @@
 /**
- * Optional demo-data seed, run with: npm run seed
+ * Optional demo-data seed, run with: npm run seed.
  *
- * TechCare itself has no separate seed step (the schema is provisioned on
- * boot and that's it) but the original Laravel app shipped a
- * DatabaseSeeder with three demo logins, which is genuinely useful for
- * trying the app out -- ported here as an opt-in script rather than
- * something that runs automatically.
- *
- * Every seeded account uses the password "password". Fine for local
- * development/demo; never use this on a real deployment.
+ * This script creates a few demo accounts for local testing and development.
+ * Every seeded account uses the password "password" and is intended only for
+ * local/demo use, never for a real deployment.
  */
 import bcrypt from "bcryptjs";
 import { connectNeon, sql } from "../config/db.js";

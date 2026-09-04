@@ -9,11 +9,8 @@ const BLOOD_TYPES = ["A+", "A-", "B+", "B-", "AB+", "AB-", "O+", "O-"];
 const CIVIL_STATUSES = ["single", "married", "widowed", "separated"];
 
 /**
- * Registers a new patient. Demographics only -- no portal login is created
- * here (see PatientRecord's account form for that). Port of
- * resources/views/livewire/health-worker/register-patient.blade.php --
- * same three sectioned panels (Personal Information, Address Information,
- * Emergency Contact), each with an icon + title header.
+ * Registers a new patient. This form captures demographics only; portal login
+ * creation is handled elsewhere through the patient record screen.
  */
 export function RegisterPatient({ loadData, onRegistered }) {
   const [, setSearchParams] = useSearchParams();

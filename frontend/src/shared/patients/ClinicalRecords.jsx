@@ -5,10 +5,9 @@ import { Field, Input, Select, Textarea } from "../../components/ui/Input";
 import { Badge, EmptyState, Table, Th, Td } from "../../components/ui/Table";
 
 /**
- * Table + form for one clinical record type -- driven entirely by
- * RECORD_TYPES, direct port of
- * resources/views/livewire/shared/clinical-records.blade.php (one
- * component, no per-type branching).
+ * Table + form for one clinical record type. It is driven entirely by the
+ * shared `RECORD_TYPES` config and renders generic fields without any
+ * per-record-type branching.
  */
 export function ClinicalRecords({ patientId, type, role, readOnly = false }) {
   const definition = RECORD_TYPES[type];

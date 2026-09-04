@@ -2,7 +2,7 @@
   "name": "healthtrack",
   "private": true,
   "version": "1.0.0",
-  "description": "HealthTrack -- barangay patient information management system (Express + Neon Postgres + React stack, ported from the Laravel/Livewire original, same TechCare-style architecture).",
+  "description": "HealthTrack -- barangay patient information management system (Express + Neon Postgres + React stack).",
   "scripts": {
     "dev": "npm run dev --prefix backend",
     "build": "npm install --prefix backend && npm install --prefix frontend && npm run build --prefix frontend",

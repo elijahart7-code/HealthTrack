@@ -1,6 +1,5 @@
 /**
- * Standard page title block -- mirrors the original Blade
- * <x-page-header title="..." subtitle="..."> component.
+ * Standard page title block used at the top of dashboard and registry pages.
  *
  *   <PageHeader title="Patients" subtitle="Everyone registered.">
  *     <span className="ht-pill">128 registered</span>

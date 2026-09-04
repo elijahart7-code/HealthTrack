@@ -5,11 +5,9 @@
 | HealthTrack stylesheet
 |------------------------------------------------------------------------------
 |
-| Ported from the original Laravel app's resources/css/app.css -- same
-| design tokens, same named component classes (.ht-card, .ht-button,
-| .ht-table, ...), so the two apps look like the same product even though
-| this one is React + Tailwind v4 underneath. Tailwind is configured here,
-| in CSS -- there is no tailwind.config.js.
+| Shared design tokens and reusable component classes live here so consistent
+| styling can be reused across the app. Tailwind is configured here in CSS,
+| and the .ht-* utility classes are used for repeated UI patterns.
 |
 | Use the .ht-* classes for anything that repeats, plain Tailwind utilities
 | for one-off spacing/layout. Keep new component classes here rather than
