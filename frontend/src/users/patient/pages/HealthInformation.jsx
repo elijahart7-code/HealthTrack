@@ -1,597 +1,239 @@
-import { Home, Calendar, User, Activity, Lock, HelpCircle, FileText, Eye } from "lucide-react";
+import { useState } from "react";
+import { Home, Calendar, User, Activity, Lock, HelpCircle, FileText } from "lucide-react";
 
+const SECTION_ICONS = {
+  appointments: Calendar,
+  "patient-information": User,
+  "midwife-notes": FileText,
+  "medical-history": FileText,
+  allergies: Activity,
+};
+
+/**
+ * Port of resources/views/livewire/patient/health-information.blade.php --
+ * the 250px sidebar of section links + main content column of read-only
+ * cards, one per clinical record type (plus Appointments and Patient
+ * Information). The original only wired up 3 sections (appointments,
+ * patient info, vital signs) with a static "Page 1 of 2" footer; this
+ * covers every record type we actually have, so that footer is dropped.
+ */
 export function HealthInformation({ healthInfo }) {
-  if (!healthInfo?.patient) {
+  const [section, setSection] = useState("appointments");
+
+  if (!healthInfo.patient) {
     return (
-      <div className="patient-healthinfo-page">
-        <div className="patient-healthinfo-main">
-          <div className="patient-healthinfo-card">
-            <div className="patient-empty-state">
-              Your account is not linked to a patient record yet.
-              <span className="mt-2 block text-xs">
-                Please contact the Barangay Health Center of Mambog I so a
-                health worker can link it.
-              </span>
-            </div>
-          </div>
+      <div className="ht-panel">
+        <div className="ht-empty">
+          Your account is not linked to a patient record yet.
+          <span className="mt-2 block text-xs">
+            Please contact the Barangay Health Center of Mambog I so a health worker can link it.
+          </span>
         </div>
       </div>
     );
   }
 
-  const {
-    patient,
-    recordTypes = {},
-    records = {},
-    appointments = [],
-  } = healthInfo;
+  const { patient, recordTypes, records, appointments } = healthInfo;
+  const patientName = `${patient.first_name} ${patient.middle_name || ""} ${patient.last_name}`.replace(/\s+/g, " ").trim();
 
-  /* --------------------------------
-     PATIENT NAME
-  -------------------------------- */
-  const patientName =
-    `${patient.first_name || ""} ${patient.middle_name || ""} ${
-      patient.last_name || ""
-    }`
-      .replace(/\s+/g, " ")
-      .trim();
-
-  /* --------------------------------
-     FIND VITAL SIGNS RECORD TYPE
-  -------------------------------- */
-  const vitalKey = Object.keys(recordTypes).find(
-    (key) =>
-      key.toLowerCase() === "vital-signs" ||
-      key.toLowerCase() === "vital_signs" ||
-      key.toLowerCase() === "vitals"
-  );
-
-  const vitalDefinition = vitalKey ? recordTypes[vitalKey] : null;
-  const vitalRecords = vitalKey ? records[vitalKey] || [] : [];
-
-  /* --------------------------------
-     GET LATEST VITAL SIGNS
-  -------------------------------- */
-  const latestVital =
-    vitalRecords.length > 0
-      ? vitalRecords[vitalRecords.length - 1]
-      : null;
-
-  /* --------------------------------
-     VITAL SIGN DISPLAY
-  -------------------------------- */
-  const vitalSigns = [
-    {
-      label: "Blood Pressure",
-      value:
-        latestVital?.blood_pressure ||
-        latestVital?.bp ||
-        latestVital?.bloodPressure ||
-        "--",
-      unit: "mmHg",
-    },
-    {
-      label: "Heart Rate",
-      value:
-        latestVital?.heart_rate ||
-        latestVital?.heartRate ||
-        "--",
-      unit: "bpm",
-    },
-    {
-      label: "Temperature",
-      value:
-        latestVital?.temperature ||
-        "--",
-      unit: "°C",
-    },
-    {
-      label: "Respiratory Rate",
-      value:
-        latestVital?.respiratory_rate ||
-        latestVital?.respiratoryRate ||
-        "--",
-      unit: "breaths/min",
-    },
-    {
-      label: "Height",
-      value:
-        latestVital?.height ||
-        "--",
-      unit: "cm",
-    },
-    {
-      label: "Weight",
-      value:
-        latestVital?.weight ||
-        "--",
-      unit: "kg",
-    },
-    {
-      label: "BMI",
-      value:
-        latestVital?.bmi ||
-        "--",
-      unit: "kg/m²",
-    },
-    {
-      label: "Pulse Rate",
-      value:
-        latestVital?.pulse_rate ||
-        latestVital?.pulseRate ||
-        "--",
-      unit: "bpm",
-    },
+  const navItems = [
+    { key: "appointments", label: "Appointments" },
+    { key: "patient-information", label: "Patient Information" },
+    ...Object.entries(recordTypes).map(([key, def]) => ({ key, label: def.label })),
   ];
-
-  const vitalDate =
-    latestVital?.recorded_at ||
-    latestVital?.date_recorded ||
-    latestVital?.created_at ||
-    latestVital?.updated_at ||
-    null;
-
-  /* --------------------------------
-     SCROLL TO SECTION
-  -------------------------------- */
-  const scrollToSection = (id) => {
-    document.getElementById(id)?.scrollIntoView({
-      behavior: "smooth",
-      block: "start",
-    });
-  };
 
   return (
     <div className="patient-healthinfo-page">
-
-      {/* =====================================================
-          SIDEBAR
-      ====================================================== */}
       <aside className="patient-healthinfo-sidebar">
-
-        <nav
-          className="patient-healthinfo-nav"
-          aria-label="Health information navigation"
-        >
-
-          {/* OVERVIEW */}
-          <button
-            type="button"
-            className="patient-sidebar-item"
-            onClick={() => scrollToSection("health-information-top")}
-          >
+        <nav className="patient-healthinfo-nav" aria-label="Health information navigation">
+          <button className="patient-sidebar-item">
             <span className="patient-sidebar-icon">
               <Home size={18} strokeWidth={1.8} />
             </span>
-
             <span>Overview</span>
           </button>
 
-          {/* LABEL */}
-          <div className="patient-sidebar-label">
-            MY HEALTH INFORMATION
-          </div>
+          <div className="patient-sidebar-label">MY HEALTH INFORMATION</div>
 
-          {/* APPOINTMENTS */}
-          <button
-            type="button"
-            className="patient-sidebar-item is-active"
-            onClick={() => scrollToSection("appointments")}
-          >
-            <span className="patient-sidebar-icon">
-              <Calendar size={18} strokeWidth={1.8} />
-            </span>
-
-            <span>Appointments</span>
-          </button>
-
-          {/* PATIENT INFORMATION */}
-          <button
-            type="button"
-            className="patient-sidebar-item"
-            onClick={() => scrollToSection("patient-information")}
-          >
-            <span className="patient-sidebar-icon">
-              <User size={18} strokeWidth={1.8} />
-            </span>
-
-            <span>Patient Information</span>
-          </button>
-
-          {/* VITAL SIGNS */}
-          <button
-            type="button"
-            className="patient-sidebar-item"
-            onClick={() => scrollToSection("vital-signs")}
-          >
-            <span className="patient-sidebar-icon">
-              <Activity size={18} strokeWidth={1.8} />
-            </span>
-
-            <span>Vital Signs</span>
-          </button>
+          {navItems.map((item) => {
+            const Icon = SECTION_ICONS[item.key] || FileText;
+            return (
+              <button
+                key={item.key}
+                onClick={() => setSection(item.key)}
+                className={`patient-sidebar-item ${section === item.key ? "is-active" : ""}`}
+              >
+                <span className="patient-sidebar-icon">
+                  <Icon size={18} strokeWidth={1.8} />
+                </span>
+                <span>{item.label}</span>
+              </button>
+            );
+          })}
         </nav>
 
-        {/* =================================================
-            HELP CARD
-        ================================================== */}
         <div className="patient-help-card">
-
           <div className="patient-help-icon">
             <HelpCircle size={24} strokeWidth={1.8} />
           </div>
-
           <h3>Need help?</h3>
-
-          <p>
-            Contact your midwife or health worker for assistance.
-          </p>
-
+          <p>Contact your admin or health worker for assistance.</p>
         </div>
       </aside>
 
-
-      {/* =====================================================
-          MAIN CONTENT
-      ====================================================== */}
-      <main
-        className="patient-healthinfo-main"
-        id="health-information-top"
-      >
-
-        {/* =================================================
-            PAGE HEADER
-        ================================================== */}
+      <main className="patient-healthinfo-main">
         <section className="patient-healthinfo-header-card">
-
           <div className="patient-healthinfo-header-copy">
-
             <div className="patient-panel-icon patient-panel-icon-large">
               <FileText size={22} strokeWidth={1.8} />
             </div>
-
             <div>
               <h1>My Health Information</h1>
-
-              <p>
-                Everything has been recorded here at the Barangay Health
-                Center of Mambog I.
-              </p>
+              <p>Everything has been recorded here at the Barangay Health Center of Mambog I.</p>
             </div>
-
           </div>
-
           <span className="patient-readonly-pill">
             <Lock size={16} strokeWidth={1.8} />
             Read Only
           </span>
-
         </section>
 
-
-        {/* =====================================================
-            APPOINTMENTS
-        ====================================================== */}
-        <section
-          className="patient-healthinfo-card"
-          id="appointments"
-        >
-
-          <div className="patient-card-header">
-
-            <div className="patient-card-title">
-
-              <span className="patient-panel-icon patient-panel-icon-small">
-                <Calendar size={18} strokeWidth={1.8} />
-              </span>
-
-              <h2>Appointments</h2>
-
+        {section === "appointments" && (
+          <section className="patient-healthinfo-card">
+            <div className="patient-card-header">
+              <div className="patient-card-title">
+                <span className="patient-panel-icon patient-panel-icon-small">
+                  <Calendar size={18} strokeWidth={1.8} />
+                </span>
+                <h2>Appointments</h2>
+              </div>
+              <span className="patient-card-total">{appointments.length} total</span>
             </div>
 
-            <span className="patient-card-total">
-              {appointments.length} total
-            </span>
-
-          </div>
-
-
-          {appointments.length === 0 ? (
-
-            <div className="patient-empty-state">
-              No appointments recorded.
-            </div>
-
-          ) : (
-
-            <div className="patient-table-wrap">
-
-              <table className="patient-health-table">
-
-                <thead>
-                  <tr>
-                    <th>Date and Time</th>
-                    <th>Reason</th>
-                    <th>Status</th>
-                  </tr>
-                </thead>
-
-                <tbody>
-
-                  {appointments.map((appointment) => (
-
-                    <tr key={appointment.appointment_id}>
-
-                      <td className="patient-date-cell">
-
-                        {appointment.scheduled_at
-                          ? new Date(
-                              appointment.scheduled_at
-                            ).toLocaleString([], {
-                              month: "short",
-                              day: "2-digit",
-                              year: "numeric",
-                              hour: "numeric",
-                              minute: "2-digit",
-                            })
-                          : "--"}
-
-                      </td>
-
-                      <td>
-                        {appointment.reason || "--"}
-                      </td>
-
-                      <td>
-                        <span className="patient-status-pill">
-                          {appointment.status || "--"}
-                        </span>
-                      </td>
-
+            {appointments.length === 0 ? (
+              <div className="patient-empty-state">No appointments recorded.</div>
+            ) : (
+              <div className="patient-table-wrap">
+                <table className="patient-health-table">
+                  <thead>
+                    <tr>
+                      <th>Date and Time</th>
+                      <th>Reason</th>
+                      <th>Status</th>
                     </tr>
+                  </thead>
+                  <tbody>
+                    {appointments.map((a) => (
+                      <tr key={a.appointment_id}>
+                        <td className="patient-date-cell">{new Date(a.scheduled_at).toLocaleString()}</td>
+                        <td>{a.reason}</td>
+                        <td>
+                          <span className="patient-status-pill">{a.status}</span>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            )}
 
-                  ))}
+            <div className="patient-table-footer">Showing 1 to {appointments.length} of {appointments.length} appointments</div>
+          </section>
+        )}
 
-                </tbody>
-
-              </table>
-
+        {section === "patient-information" && (
+          <section className="patient-healthinfo-card">
+            <div className="patient-card-header">
+              <div className="patient-card-title">
+                <span className="patient-panel-icon patient-panel-icon-small">
+                  <User size={18} strokeWidth={1.8} />
+                </span>
+                <h2>Patient Information</h2>
+              </div>
             </div>
 
-          )}
-
-          <div className="patient-table-footer">
-
-            Showing 1 to {appointments.length} of{" "}
-            {appointments.length} appointments
-
-          </div>
-
-        </section>
-
-
-        {/* =====================================================
-            PATIENT INFORMATION
-        ====================================================== */}
-        <section
-          className="patient-healthinfo-card"
-          id="patient-information"
-        >
-
-          <div className="patient-card-header">
-
-            <div className="patient-card-title">
-
-              <span className="patient-panel-icon patient-panel-icon-small">
-                <User size={18} strokeWidth={1.8} />
-              </span>
-
-              <h2>Patient Information</h2>
-
+            <div className="patient-information-grid">
+              <InfoField label="Full Name" value={patientName || "Patient"} />
+              <InfoField label="Gender" value={patient.sex ? patient.sex.charAt(0).toUpperCase() + patient.sex.slice(1) : null} />
+              <InfoField label="Date of Birth" value={patient.birthdate ? new Date(patient.birthdate).toLocaleDateString() : null} />
+              <InfoField label="Age" value={patient.age !== undefined ? `${patient.age} years old` : null} />
+              <InfoField label="Contact Number" value={patient.contact_number} />
+              <InfoField label="Address" value={patient.address} wide />
+              <InfoField label="Blood Type" value={patient.blood_type} />
+              <InfoField label="Civil Status" value={patient.civil_status} />
             </div>
+          </section>
+        )}
 
-            <button
-              type="button"
-              className="patient-view-all-button"
-              onClick={() => {}}
-            >
-              <Eye size={16} strokeWidth={1.8} />
-              View All
-            </button>
-
-          </div>
-
-
-          <div className="patient-information-grid">
-
-            <InfoField
-              label="Full Name"
-              value={patientName || "Patient"}
-            />
-
-            <InfoField
-              label="Gender"
-              value={
-                patient.sex
-                  ? patient.sex.charAt(0).toUpperCase() +
-                    patient.sex.slice(1)
-                  : null
-              }
-            />
-
-            <InfoField
-              label="Date of Birth"
-              value={
-                patient.birthdate
-                  ? new Date(
-                      patient.birthdate
-                    ).toLocaleDateString("en-US", {
-                      month: "short",
-                      day: "2-digit",
-                      year: "numeric",
-                    })
-                  : null
-              }
-            />
-
-            <InfoField
-              label="Age"
-              value={
-                patient.age !== undefined &&
-                patient.age !== null
-                  ? `${patient.age} years old`
-                  : null
-              }
-            />
-
-            <InfoField
-              label="Contact Number"
-              value={patient.contact_number}
-            />
-
-            <InfoField
-              label="Address"
-              value={patient.address}
-            />
-
-            <InfoField
-              label="Blood Type"
-              value={patient.blood_type}
-            />
-
-          </div>
-
-        </section>
-
-
-        {/* =====================================================
-            VITAL SIGNS
-        ====================================================== */}
-        <section
-          className="patient-healthinfo-card"
-          id="vital-signs"
-        >
-
-          <div className="patient-card-header">
-
-            <div className="patient-card-title">
-
-              <span className="patient-panel-icon patient-panel-icon-small">
-                <Activity size={18} strokeWidth={1.8} />
-              </span>
-
-              <h2>Vital Signs</h2>
-
-            </div>
-
-            <button
-              type="button"
-              className="patient-view-all-button"
-              onClick={() => {}}
-            >
-              <Eye size={16} strokeWidth={1.8} />
-              View All
-            </button>
-
-          </div>
-
-
-          {latestVital ? (
-
-            <div className="patient-table-wrap">
-
-              <table className="patient-health-table">
-
-                <thead>
-
-                  <tr>
-                    <th>Measurement</th>
-                    <th>Result</th>
-                    <th>Unit</th>
-                    <th>Date Recorded</th>
-                  </tr>
-
-                </thead>
-
-                <tbody>
-
-                  {vitalSigns.map((vital) => (
-
-                    <tr key={vital.label}>
-
-                      <td>
-                        {vital.label}
-                      </td>
-
-                      <td>
-                        {vital.value}
-                      </td>
-
-                      <td>
-                        {vital.unit}
-                      </td>
-
-                      <td className="patient-date-cell">
-
-                        {vitalDate
-                          ? new Date(
-                              vitalDate
-                            ).toLocaleDateString("en-US", {
-                              month: "short",
-                              day: "2-digit",
-                              year: "numeric",
-                            })
-                          : "--"}
-
-                      </td>
-
-                    </tr>
-
-                  ))}
-
-                </tbody>
-
-              </table>
-
-            </div>
-
-          ) : (
-
-            <div className="patient-empty-state">
-              No vital signs recorded.
-            </div>
-
-          )}
-
-
-          <div className="patient-table-footer">
-            Showing latest vital signs
-          </div>
-
-        </section>
-
+        {Object.entries(recordTypes).map(
+          ([key, definition]) =>
+            section === key && (
+              <RecordSection key={key} definition={definition} records={records[key]} />
+            )
+        )}
       </main>
     </div>
   );
 }
 
-
-/* =========================================================
-   PATIENT INFORMATION FIELD
-========================================================= */
-
-function InfoField({ label, value }) {
+function InfoField({ label, value, wide }) {
   return (
-    <div className="patient-info-field">
-
-      <span className="patient-info-label">
-        {label}
-      </span>
-
-      <span className="patient-info-value">
-        {value || "Not provided"}
-      </span>
-
+    <div className={`patient-info-field ${wide ? "patient-info-field-wide" : ""}`}>
+      <span className="patient-info-label">{label}</span>
+      <span className="patient-info-value">{value || "Not provided"}</span>
     </div>
+  );
+}
+
+function RecordSection({ definition, records }) {
+  const columnFields = Object.entries(definition.fields).filter(([, f]) => f.column || f.primary);
+
+  return (
+    <section className="patient-healthinfo-card">
+      <div className="patient-card-header">
+        <div className="patient-card-title">
+          <span className="patient-panel-icon patient-panel-icon-small">
+            <FileText size={18} strokeWidth={1.8} />
+          </span>
+          <h2>{definition.label}</h2>
+        </div>
+        <span className="patient-card-total">{records.length} total</span>
+      </div>
+
+      {records.length === 0 ? (
+        <div className="patient-empty-state">No {definition.label.toLowerCase()} recorded.</div>
+      ) : (
+        <div className="patient-table-wrap">
+          <table className="patient-health-table">
+            <thead>
+              <tr>
+                {columnFields.map(([column, field]) => (
+                  <th key={column}>{field.label}</th>
+                ))}
+                <th>{definition.dateLabel}</th>
+              </tr>
+            </thead>
+            <tbody>
+              {records.map((record) => (
+                <tr key={record.record_id}>
+                  {columnFields.map(([column, field]) => (
+                    <td key={column}>
+                      {field.type === "select"
+                        ? record[column]
+                          ? field.options?.[record[column]] || record[column]
+                          : "--"
+                        : record[column] || "--"}
+                    </td>
+                  ))}
+                  <td className="patient-date-cell">{new Date(record[definition.dateField]).toLocaleDateString()}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      )}
+
+      <div className="patient-table-footer">Showing latest {definition.label.toLowerCase()}</div>
+    </section>
   );
 }
