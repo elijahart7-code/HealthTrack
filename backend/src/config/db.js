@@ -1,5 +1,8 @@
 import { neon } from "@neondatabase/serverless";
+import pg from "pg";
 import "dotenv/config";
+
+const { Pool } = pg;
 
 const DATABASE_URL = process.env.DATABASE_URL;
 
@@ -9,7 +12,26 @@ if (!DATABASE_URL || DATABASE_URL.includes("@host") || DATABASE_URL.includes("us
   );
 }
 
-export const sql = neon(DATABASE_URL);
+function createLocalSql(connectionString) {
+  const pool = new Pool({ connectionString });
+
+  const sql = (strings, ...values) => {
+    const text = strings.reduce(
+      (query, string, index) => query + string + (index < values.length ? `$${index + 1}` : ""),
+      ""
+    );
+    return pool.query(text, values).then(({ rows }) => rows);
+  };
+
+  sql.query = (text, values = []) => pool.query(text, values).then(({ rows }) => rows);
+
+  return sql;
+}
+
+const databaseUrl = new URL(DATABASE_URL);
+export const sql = ["localhost", "127.0.0.1", "::1"].includes(databaseUrl.hostname)
+  ? createLocalSql(DATABASE_URL)
+  : neon(DATABASE_URL);
 
 // =======================================================================
 // TABLE DEFINITIONS

@@ -4,7 +4,7 @@ import { ProtectRoute } from "../lib/protectRoute";
 import { getCurrentUser, homeRouteForRole } from "../lib/auth";
 
 import { AdminShell } from "../users/admin/AdminShell";
-import { HealthWorkerShell } from "../users/health_worker/pages/HealthWorkerShell";
+import { HealthWorkerShell } from "../users/health_worker/HealthWorkerShell";
 import { PatientShell } from "../users/patient/pages/PatientShell";
 
 /**
