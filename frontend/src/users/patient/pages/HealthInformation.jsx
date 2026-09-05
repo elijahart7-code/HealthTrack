@@ -1,14 +1,14 @@
 import { useState } from "react";
 import {
   Home,
-  Calendar,
-  User,
-  Activity,
-  Lock,
-  HelpCircle,
-  FileText,
+  CalendarDays,
+  UserRound,
+  HeartPulse,
+  LockKeyhole,
   Eye,
   ShieldPlus,
+  FileText,
+  LogOut,
 } from "lucide-react";
 
 export function HealthInformation({ healthInfo }) {
@@ -16,633 +16,330 @@ export function HealthInformation({ healthInfo }) {
 
   if (!healthInfo?.patient) {
     return (
-      <div className="ht-panel">
-        <div className="ht-empty">
+      <div style={styles.page}>
+        <div style={styles.empty}>
           Your account is not linked to a patient record yet.
-          <span className="mt-2 block text-xs">
-            Please contact the Barangay Health Center of Mambog I so a health
-            worker can link it.
-          </span>
         </div>
       </div>
     );
   }
 
-  const { patient, appointments = [], records = {}, recordTypes = {} } =
-    healthInfo;
+  const {
+    patient,
+    appointments = [],
+    records = {},
+    recordTypes = {},
+  } = healthInfo;
 
-  const patientName =
-    `${patient.first_name || ""} ${patient.middle_name || ""} ${
-      patient.last_name || ""
-    }`
-      .replace(/\s+/g, " ")
-      .trim();
+  const patientName = [
+    patient.first_name,
+    patient.middle_name,
+    patient.last_name,
+  ]
+    .filter(Boolean)
+    .join(" ");
 
-  // Get Vital Signs from your existing data
   const vitalSigns =
     records["vital-signs"] ||
     records["vital_signs"] ||
-    records.vitalSigns ||
+    records["vitalSigns"] ||
     [];
 
-  // If your backend uses a record type definition,
-  // use its fields to display the vital signs.
   const vitalDefinition =
     recordTypes["vital-signs"] ||
     recordTypes["vital_signs"] ||
-    recordTypes.vitalSigns;
+    recordTypes["vitalSigns"];
 
   return (
-    <div className="patient-healthinfo-page">
+    <div style={styles.page}>
 
       {/* =====================================================
-          LEFT SIDEBAR
+          TOP HEADER
       ===================================================== */}
-      <aside className="patient-healthinfo-sidebar">
+      <header style={styles.topHeader}>
 
-        <nav
-          className="patient-healthinfo-nav"
-          aria-label="Health information navigation"
-        >
+        {/* LOGO */}
+        <div style={styles.logoArea}>
+          <div style={styles.logoBox}>HT</div>
+          <span style={styles.logoText}>HealthTrack</span>
+        </div>
+
+        {/* TOP NAVIGATION */}
+        <div style={styles.topNavigation}>
+
+          <button
+            style={styles.topNavButton}
+            onClick={() => {}}
+          >
+            Dashboard
+          </button>
+
+          <button
+            style={{
+              ...styles.topNavButton,
+              ...styles.topNavActive,
+            }}
+          >
+            My Health Information
+          </button>
+
+        </div>
+
+        {/* USER */}
+        <div style={styles.userArea}>
+
+          <div style={styles.userName}>
+            <strong>{patientName || "Juan Dela Cruz"}</strong>
+            <span>Patient</span>
+          </div>
+
+          <button style={styles.logoutButton}>
+            <LogOut size={17} />
+            Log out
+          </button>
+
+        </div>
+
+      </header>
+
+
+      {/* =====================================================
+          MAIN LAYOUT
+      ===================================================== */}
+      <div style={styles.layout}>
+
+
+        {/* ===================================================
+            SIDEBAR
+        =================================================== */}
+        <aside style={styles.sidebar}>
 
           {/* OVERVIEW */}
           <button
-            type="button"
             onClick={() => setActiveSection("overview")}
-            className={`patient-sidebar-item ${
-              activeSection === "overview" ? "is-active" : ""
-            }`}
+            style={{
+              ...styles.sidebarItem,
+              ...(activeSection === "overview"
+                ? styles.sidebarOverviewActive
+                : {}),
+            }}
           >
-            <span className="patient-sidebar-icon">
-              <Home size={20} strokeWidth={1.8} />
-            </span>
-
+            <Home size={23} strokeWidth={1.7} />
             <span>Overview</span>
           </button>
 
 
-          {/* TITLE */}
-          <div className="patient-sidebar-label">
+          {/* SIDEBAR TITLE */}
+          <div style={styles.sidebarTitle}>
             MY HEALTH INFORMATION
           </div>
 
 
           {/* APPOINTMENTS */}
           <button
-            type="button"
             onClick={() => setActiveSection("appointments")}
-            className={`patient-sidebar-item ${
-              activeSection === "appointments" ? "is-active" : ""
-            }`}
+            style={{
+              ...styles.sidebarItem,
+              ...(activeSection === "appointments"
+                ? styles.sidebarActive
+                : {}),
+            }}
           >
-            <span className="patient-sidebar-icon">
-              <Calendar size={20} strokeWidth={1.8} />
-            </span>
-
+            <CalendarDays size={23} strokeWidth={1.7} />
             <span>Appointments</span>
           </button>
 
 
           {/* PATIENT INFORMATION */}
           <button
-            type="button"
-            onClick={() => setActiveSection("patient-information")}
-            className={`patient-sidebar-item ${
-              activeSection === "patient-information" ? "is-active" : ""
-            }`}
+            onClick={() =>
+              setActiveSection("patient-information")
+            }
+            style={{
+              ...styles.sidebarItem,
+              ...(activeSection === "patient-information"
+                ? styles.sidebarActive
+                : {}),
+            }}
           >
-            <span className="patient-sidebar-icon">
-              <User size={20} strokeWidth={1.8} />
-            </span>
-
+            <UserRound size={23} strokeWidth={1.7} />
             <span>Patient Information</span>
           </button>
 
 
           {/* VITAL SIGNS */}
           <button
-            type="button"
             onClick={() => setActiveSection("vital-signs")}
-            className={`patient-sidebar-item ${
-              activeSection === "vital-signs" ? "is-active" : ""
-            }`}
+            style={{
+              ...styles.sidebarItem,
+              ...(activeSection === "vital-signs"
+                ? styles.sidebarActive
+                : {}),
+            }}
           >
-            <span className="patient-sidebar-icon">
-              <Activity size={20} strokeWidth={1.8} />
-            </span>
-
+            <HeartPulse size={23} strokeWidth={1.7} />
             <span>Vital Signs</span>
           </button>
 
-        </nav>
 
+          {/* =================================================
+              HELP CARD
+          ================================================= */}
+          <div style={styles.helpCard}>
 
-        {/* =================================================
-            NEED HELP
-        ================================================= */}
-        <div className="patient-help-card">
-
-          <div className="patient-help-icon">
-            <ShieldPlus size={34} strokeWidth={1.7} />
-          </div>
-
-          <div>
-            <h3>Need help?</h3>
-
-            <p>
-              Contact your midwife or
-              <br />
-              health worker for assistance.
-            </p>
-          </div>
-
-        </div>
-
-      </aside>
-
-
-      {/* =====================================================
-          MAIN CONTENT
-      ===================================================== */}
-      <main className="patient-healthinfo-main">
-
-
-        {/* =================================================
-            PAGE HEADER
-        ================================================= */}
-        <section className="patient-healthinfo-header-card">
-
-          <div className="patient-healthinfo-header-copy">
-
-            <div className="patient-panel-icon patient-panel-icon-large">
-              <FileText size={23} strokeWidth={1.8} />
+            <div style={styles.helpIcon}>
+              <ShieldPlus
+                size={42}
+                strokeWidth={1.5}
+              />
             </div>
 
             <div>
-              <h1>My Health Information</h1>
+              <h3 style={styles.helpTitle}>
+                Need help?
+              </h3>
 
-              <p>
-                Everything has been recorded here at Barangay Health
-                Center of Mambog I.
+              <p style={styles.helpText}>
+                Contact your midwife or
+                <br />
+                health worker for assistance.
               </p>
             </div>
 
           </div>
 
-
-          <span className="patient-readonly-pill">
-            <Lock size={15} strokeWidth={1.8} />
-            Read Only
-          </span>
-
-        </section>
+        </aside>
 
 
-        {/* =================================================
-            OVERVIEW PAGE
-        ================================================= */}
-        {activeSection === "overview" && (
-          <>
+        {/* ===================================================
+            CONTENT
+        =================================================== */}
+        <main style={styles.content}>
 
-            {/* =============================================
-                APPOINTMENTS
-            ============================================= */}
-            <section className="patient-healthinfo-card">
 
-              <div className="patient-card-header">
+          {/* =================================================
+              PAGE HEADER
+          ================================================= */}
+          <section style={styles.pageHeader}>
 
-                <div className="patient-card-title">
+            <div style={styles.pageHeaderLeft}>
 
-                  <span className="patient-panel-icon patient-panel-icon-small">
-                    <Calendar size={19} strokeWidth={1.8} />
-                  </span>
-
-                  <h2>Appointments</h2>
-
-                </div>
-
-                <span className="patient-card-total">
-                  {appointments.length} total
-                </span>
-
+              <div style={styles.headerIcon}>
+                <FileText
+                  size={27}
+                  strokeWidth={1.6}
+                />
               </div>
 
+              <div>
+                <h1 style={styles.pageTitle}>
+                  My Health Information
+                </h1>
 
-              {appointments.length === 0 ? (
-
-                <div className="patient-empty-state">
-                  No appointments recorded.
-                </div>
-
-              ) : (
-
-                <div className="patient-table-wrap">
-
-                  <table className="patient-health-table">
-
-                    <thead>
-                      <tr>
-                        <th>Date and Time</th>
-                        <th>Reason</th>
-                        <th>Status</th>
-                      </tr>
-                    </thead>
-
-                    <tbody>
-
-                      {appointments.slice(0, 2).map((appointment) => (
-
-                        <tr key={appointment.appointment_id}>
-
-                          <td className="patient-date-cell">
-
-                            <Calendar
-                              size={16}
-                              strokeWidth={1.8}
-                            />
-
-                            {formatDateTime(
-                              appointment.scheduled_at
-                            )}
-
-                          </td>
-
-                          <td>
-                            {appointment.reason || "--"}
-                          </td>
-
-                          <td>
-
-                            <span className="patient-status-pill">
-                              {appointment.status || "Confirmed"}
-                            </span>
-
-                          </td>
-
-                        </tr>
-
-                      ))}
-
-                    </tbody>
-
-                  </table>
-
-                </div>
-
-              )}
-
-
-              <div className="patient-table-footer">
-
-                Showing 1 to{" "}
-                {Math.min(appointments.length, 2)} appointments
-
+                <p style={styles.pageSubtitle}>
+                  Everything has been recorded here at
+                  Barangay Health Center of Mambog I.
+                </p>
               </div>
-
-            </section>
-
-
-            {/* =============================================
-                PATIENT INFORMATION
-            ============================================= */}
-            <section className="patient-healthinfo-card">
-
-              <div className="patient-card-header">
-
-                <div className="patient-card-title">
-
-                  <span className="patient-panel-icon patient-panel-icon-small">
-                    <User size={19} strokeWidth={1.8} />
-                  </span>
-
-                  <h2>Patient Information</h2>
-
-                </div>
-
-
-                <button
-                  type="button"
-                  className="patient-view-all-btn"
-                  onClick={() =>
-                    setActiveSection("patient-information")
-                  }
-                >
-                  <Eye size={17} strokeWidth={1.8} />
-                  View All
-                </button>
-
-              </div>
-
-
-              <div className="patient-information-grid">
-
-                <InfoField
-                  label="Full Name"
-                  value={patientName}
-                />
-
-                <InfoField
-                  label="Gender"
-                  value={formatGender(patient.sex)}
-                />
-
-                <InfoField
-                  label="Date of Birth"
-                  value={formatDate(patient.birthdate)}
-                />
-
-                <InfoField
-                  label="Age"
-                  value={
-                    patient.age !== undefined &&
-                    patient.age !== null
-                      ? `${patient.age} years old`
-                      : null
-                  }
-                />
-
-                <InfoField
-                  label="Contact Number"
-                  value={patient.contact_number}
-                />
-
-                <InfoField
-                  label="Address"
-                  value={patient.address}
-                />
-
-                <InfoField
-                  label="Blood Type"
-                  value={patient.blood_type}
-                />
-
-              </div>
-
-            </section>
-
-
-            {/* =============================================
-                VITAL SIGNS
-            ============================================= */}
-            <section className="patient-healthinfo-card">
-
-              <div className="patient-card-header">
-
-                <div className="patient-card-title">
-
-                  <span className="patient-panel-icon patient-panel-icon-small">
-                    <Activity size={19} strokeWidth={1.8} />
-                  </span>
-
-                  <h2>Vital Signs</h2>
-
-                </div>
-
-
-                <button
-                  type="button"
-                  className="patient-view-all-btn"
-                  onClick={() =>
-                    setActiveSection("vital-signs")
-                  }
-                >
-                  <Eye size={17} strokeWidth={1.8} />
-                  View All
-                </button>
-
-              </div>
-
-
-              {vitalSigns.length === 0 ? (
-
-                <div className="patient-empty-state">
-                  No vital signs recorded.
-                </div>
-
-              ) : (
-
-                <VitalSignsTable
-                  records={vitalSigns}
-                  definition={vitalDefinition}
-                />
-
-              )}
-
-
-              <div className="patient-table-footer">
-                Showing latest vital signs
-              </div>
-
-            </section>
-
-
-            {/* =============================================
-                PAGE NAVIGATION
-            ============================================= */}
-            <div className="patient-pagination">
-
-              <span>Page 1 of 2</span>
-
-              <button type="button">
-                Next Page
-              </button>
 
             </div>
 
-          </>
-        )}
+
+            <div style={styles.readOnly}>
+              <LockKeyhole
+                size={16}
+                strokeWidth={1.8}
+              />
+              Read Only
+            </div>
+
+          </section>
 
 
-        {/* =================================================
-            APPOINTMENTS VIEW ALL
-        ================================================= */}
-        {activeSection === "appointments" && (
-          <AppointmentsPage appointments={appointments} />
-        )}
+          {/* =================================================
+              OVERVIEW
+          ================================================= */}
+          {activeSection === "overview" && (
+            <>
+              <AppointmentsCard
+                appointments={appointments}
+                onViewAll={() =>
+                  setActiveSection("appointments")
+                }
+              />
+
+              <PatientInformationCard
+                patient={patient}
+                patientName={patientName}
+                onViewAll={() =>
+                  setActiveSection("patient-information")
+                }
+              />
+
+              <VitalSignsCard
+                records={vitalSigns}
+                definition={vitalDefinition}
+                onViewAll={() =>
+                  setActiveSection("vital-signs")
+                }
+              />
+
+              {/* PAGE FOOTER */}
+              <div style={styles.pagination}>
+
+                <span style={styles.pageNumber}>
+                  Page 1 of 2
+                </span>
+
+                <button style={styles.nextButton}>
+                  Next Page
+                </button>
+
+              </div>
+            </>
+          )}
 
 
-        {/* =================================================
-            PATIENT INFORMATION VIEW ALL
-        ================================================= */}
-        {activeSection === "patient-information" && (
-          <PatientInformationPage patient={patient} />
-        )}
+          {/* =================================================
+              APPOINTMENTS
+          ================================================= */}
+          {activeSection === "appointments" && (
+            <AppointmentsCard
+              appointments={appointments}
+              onViewAll={() => {}}
+              full
+            />
+          )}
 
 
-        {/* =================================================
-            VITAL SIGNS VIEW ALL
-        ================================================= */}
-        {activeSection === "vital-signs" && (
-          <VitalSignsPage
-            records={vitalSigns}
-            definition={vitalDefinition}
-          />
-        )}
-
-      </main>
-    </div>
-  );
-}
+          {/* =================================================
+              PATIENT INFORMATION
+          ================================================= */}
+          {activeSection === "patient-information" && (
+            <PatientInformationCard
+              patient={patient}
+              patientName={patientName}
+              onViewAll={() => {}}
+              full
+            />
+          )}
 
 
-/* ============================================================
-   INFO FIELD
-============================================================ */
+          {/* =================================================
+              VITAL SIGNS
+          ================================================= */}
+          {activeSection === "vital-signs" && (
+            <VitalSignsCard
+              records={vitalSigns}
+              definition={vitalDefinition}
+              onViewAll={() => {}}
+              full
+            />
+          )}
 
-function InfoField({ label, value }) {
-  return (
-    <div className="patient-info-field">
-
-      <span className="patient-info-label">
-        {label}
-      </span>
-
-      <span className="patient-info-value">
-        {value || "Not provided"}
-      </span>
-
-    </div>
-  );
-}
-
-
-/* ============================================================
-   VITAL SIGNS TABLE
-============================================================ */
-
-function VitalSignsTable({ records, definition }) {
-
-  /*
-   * If your backend provides field definitions,
-   * use those fields.
-   */
-  if (definition?.fields) {
-
-    const fields = Object.entries(definition.fields)
-      .filter(([, field]) => field.column || field.primary);
-
-    return (
-      <div className="patient-table-wrap">
-
-        <table className="patient-health-table">
-
-          <thead>
-
-            <tr>
-
-              {fields.map(([column, field]) => (
-                <th key={column}>
-                  {field.label}
-                </th>
-              ))}
-
-              <th>
-                {definition.dateLabel || "Date Recorded"}
-              </th>
-
-            </tr>
-
-          </thead>
-
-
-          <tbody>
-
-            {records.slice(0, 8).map((record) => (
-
-              <tr key={record.record_id}>
-
-                {fields.map(([column, field]) => (
-
-                  <td key={column}>
-
-                    {field.type === "select"
-                      ? field.options?.[record[column]] ||
-                        record[column] ||
-                        "--"
-                      : record[column] || "--"}
-
-                  </td>
-
-                ))}
-
-                <td className="patient-date-cell">
-
-                  {formatDate(
-                    record[definition.dateField]
-                  )}
-
-                </td>
-
-              </tr>
-
-            ))}
-
-          </tbody>
-
-        </table>
+        </main>
 
       </div>
-    );
-  }
-
-
-  /*
-   * Fallback for a common Vital Signs data structure.
-   */
-  return (
-    <div className="patient-table-wrap">
-
-      <table className="patient-health-table">
-
-        <thead>
-
-          <tr>
-            <th>Measurement</th>
-            <th>Result</th>
-            <th>Unit</th>
-            <th>Date Recorded</th>
-          </tr>
-
-        </thead>
-
-        <tbody>
-
-          {records.slice(0, 8).map((record, index) => (
-
-            <tr key={record.record_id || index}>
-
-              <td>
-                {record.measurement ||
-                  record.type ||
-                  record.name ||
-                  "--"}
-              </td>
-
-              <td>
-                {record.result ||
-                  record.value ||
-                  "--"}
-              </td>
-
-              <td>
-                {record.unit || "--"}
-              </td>
-
-              <td className="patient-date-cell">
-                {formatDate(
-                  record.recorded_at ||
-                    record.date_recorded ||
-                    record.created_at
-                )}
-              </td>
-
-            </tr>
-
-          ))}
-
-        </tbody>
-
-      </table>
 
     </div>
   );
@@ -650,73 +347,103 @@ function VitalSignsTable({ records, definition }) {
 
 
 /* ============================================================
-   APPOINTMENTS PAGE
+   APPOINTMENTS CARD
 ============================================================ */
 
-function AppointmentsPage({ appointments }) {
+function AppointmentsCard({
+  appointments,
+  onViewAll,
+  full = false,
+}) {
+  const shownAppointments = full
+    ? appointments
+    : appointments.slice(0, 2);
 
   return (
-    <section className="patient-healthinfo-card">
+    <section style={styles.card}>
 
-      <div className="patient-card-header">
+      {/* CARD HEADER */}
+      <div style={styles.cardHeader}>
 
-        <div className="patient-card-title">
+        <div style={styles.cardTitleArea}>
 
-          <span className="patient-panel-icon patient-panel-icon-small">
-            <Calendar size={19} />
-          </span>
+          <div style={styles.cardIcon}>
+            <CalendarDays
+              size={22}
+              strokeWidth={1.7}
+            />
+          </div>
 
-          <h2>Appointments</h2>
+          <h2 style={styles.cardTitle}>
+            Appointments
+          </h2>
 
         </div>
 
-        <span className="patient-card-total">
+        <span style={styles.totalBadge}>
           {appointments.length} total
         </span>
 
       </div>
 
 
-      {appointments.length === 0 ? (
+      {/* TABLE */}
+      {appointments.length > 0 ? (
 
-        <div className="patient-empty-state">
-          No appointments recorded.
-        </div>
+        <div style={styles.tableContainer}>
 
-      ) : (
-
-        <div className="patient-table-wrap">
-
-          <table className="patient-health-table">
+          <table style={styles.table}>
 
             <thead>
+
               <tr>
-                <th>Date and Time</th>
-                <th>Reason</th>
-                <th>Status</th>
+                <th style={styles.th}>
+                  Date and Time
+                </th>
+
+                <th style={styles.th}>
+                  Reason
+                </th>
+
+                <th style={styles.th}>
+                  Status
+                </th>
               </tr>
+
             </thead>
 
             <tbody>
 
-              {appointments.map((appointment) => (
+              {shownAppointments.map((appointment) => (
 
                 <tr key={appointment.appointment_id}>
 
-                  <td>
-                    {formatDateTime(
-                      appointment.scheduled_at
-                    )}
+                  <td style={styles.td}>
+
+                    <div style={styles.dateCell}>
+                      <CalendarDays
+                        size={16}
+                        strokeWidth={1.7}
+                      />
+
+                      {formatDateTime(
+                        appointment.scheduled_at
+                      )}
+                    </div>
+
                   </td>
 
-                  <td>
+                  <td style={styles.td}>
                     {appointment.reason || "--"}
                   </td>
 
-                  <td>
-                    <span className="patient-status-pill">
-                      {appointment.status || "Confirmed"}
+                  <td style={styles.td}>
+
+                    <span style={styles.status}>
+                      {appointment.status ||
+                        "Confirmed"}
                     </span>
+
                   </td>
 
                 </tr>
@@ -729,6 +456,22 @@ function AppointmentsPage({ appointments }) {
 
         </div>
 
+      ) : (
+
+        <div style={styles.emptyInside}>
+          No appointments recorded.
+        </div>
+
+      )}
+
+
+      {/* FOOTER */}
+      {!full && (
+        <div style={styles.tableFooter}>
+          Showing 1 to{" "}
+          {Math.min(appointments.length, 2)}{" "}
+          appointments
+        </div>
       )}
 
     </section>
@@ -737,37 +480,52 @@ function AppointmentsPage({ appointments }) {
 
 
 /* ============================================================
-   PATIENT INFORMATION PAGE
+   PATIENT INFORMATION CARD
 ============================================================ */
 
-function PatientInformationPage({ patient }) {
-
-  const patientName =
-    `${patient.first_name || ""} ${
-      patient.middle_name || ""
-    } ${patient.last_name || ""}`
-      .replace(/\s+/g, " ")
-      .trim();
-
+function PatientInformationCard({
+  patient,
+  patientName,
+  onViewAll,
+  full = false,
+}) {
   return (
-    <section className="patient-healthinfo-card">
+    <section style={styles.card}>
 
-      <div className="patient-card-header">
+      {/* HEADER */}
+      <div style={styles.cardHeader}>
 
-        <div className="patient-card-title">
+        <div style={styles.cardTitleArea}>
 
-          <span className="patient-panel-icon patient-panel-icon-small">
-            <User size={19} />
-          </span>
+          <div style={styles.cardIcon}>
+            <UserRound
+              size={22}
+              strokeWidth={1.7}
+            />
+          </div>
 
-          <h2>Patient Information</h2>
+          <h2 style={styles.cardTitle}>
+            Patient Information
+          </h2>
 
         </div>
+
+
+        {!full && (
+          <button
+            onClick={onViewAll}
+            style={styles.viewAllButton}
+          >
+            <Eye size={17} strokeWidth={1.7} />
+            View All
+          </button>
+        )}
 
       </div>
 
 
-      <div className="patient-information-grid">
+      {/* INFORMATION */}
+      <div style={styles.patientGrid}>
 
         <InfoField
           label="Full Name"
@@ -787,7 +545,8 @@ function PatientInformationPage({ patient }) {
         <InfoField
           label="Age"
           value={
-            patient.age !== undefined
+            patient.age !== undefined &&
+            patient.age !== null
               ? `${patient.age} years old`
               : null
           }
@@ -808,10 +567,12 @@ function PatientInformationPage({ patient }) {
           value={patient.blood_type}
         />
 
-        <InfoField
-          label="Civil Status"
-          value={patient.civil_status}
-        />
+        {full && (
+          <InfoField
+            label="Civil Status"
+            value={patient.civil_status}
+          />
+        )}
 
       </div>
 
@@ -821,42 +582,78 @@ function PatientInformationPage({ patient }) {
 
 
 /* ============================================================
-   VITAL SIGNS PAGE
+   VITAL SIGNS CARD
 ============================================================ */
 
-function VitalSignsPage({ records, definition }) {
+function VitalSignsCard({
+  records,
+  definition,
+  onViewAll,
+  full = false,
+}) {
+  const shownRecords = full
+    ? records
+    : records.slice(0, 8);
 
   return (
-    <section className="patient-healthinfo-card">
+    <section style={styles.card}>
 
-      <div className="patient-card-header">
+      {/* HEADER */}
+      <div style={styles.cardHeader}>
 
-        <div className="patient-card-title">
+        <div style={styles.cardTitleArea}>
 
-          <span className="patient-panel-icon patient-panel-icon-small">
-            <Activity size={19} />
-          </span>
+          <div style={styles.cardIcon}>
+            <HeartPulse
+              size={22}
+              strokeWidth={1.7}
+            />
+          </div>
 
-          <h2>Vital Signs</h2>
+          <h2 style={styles.cardTitle}>
+            Vital Signs
+          </h2>
 
         </div>
+
+
+        {!full && (
+          <button
+            onClick={onViewAll}
+            style={styles.viewAllButton}
+          >
+            <Eye size={17} strokeWidth={1.7} />
+            View All
+          </button>
+        )}
 
       </div>
 
 
-      {records.length === 0 ? (
+      {shownRecords.length > 0 ? (
 
-        <div className="patient-empty-state">
-          No vital signs recorded.
+        <div style={styles.tableContainer}>
+
+          <VitalSignsTable
+            records={shownRecords}
+            definition={definition}
+          />
+
         </div>
 
       ) : (
 
-        <VitalSignsTable
-          records={records}
-          definition={definition}
-        />
+        <div style={styles.emptyInside}>
+          No vital signs recorded.
+        </div>
 
+      )}
+
+
+      {!full && (
+        <div style={styles.tableFooter}>
+          Showing latest vital signs
+        </div>
       )}
 
     </section>
@@ -865,7 +662,195 @@ function VitalSignsPage({ records, definition }) {
 
 
 /* ============================================================
-   DATE HELPERS
+   VITAL SIGNS TABLE
+============================================================ */
+
+function VitalSignsTable({
+  records,
+  definition,
+}) {
+
+  /*
+   * Use your existing backend record definition
+   * when available.
+   */
+  if (definition?.fields) {
+
+    const fields = Object.entries(
+      definition.fields
+    ).filter(
+      ([, field]) => field.column || field.primary
+    );
+
+    return (
+      <table style={styles.table}>
+
+        <thead>
+          <tr>
+
+            {fields.map(([column, field]) => (
+              <th
+                key={column}
+                style={styles.th}
+              >
+                {field.label}
+              </th>
+            ))}
+
+            <th style={styles.th}>
+              {definition.dateLabel ||
+                "Date Recorded"}
+            </th>
+
+          </tr>
+        </thead>
+
+
+        <tbody>
+
+          {records.map((record, index) => (
+
+            <tr
+              key={
+                record.record_id || index
+              }
+            >
+
+              {fields.map(([column, field]) => (
+
+                <td
+                  key={column}
+                  style={styles.td}
+                >
+
+                  {field.type === "select"
+                    ? field.options?.[
+                        record[column]
+                      ] ||
+                      record[column] ||
+                      "--"
+                    : record[column] || "--"}
+
+                </td>
+
+              ))}
+
+              <td
+                style={styles.td}
+              >
+                {formatDate(
+                  record[
+                    definition.dateField
+                  ]
+                )}
+              </td>
+
+            </tr>
+
+          ))}
+
+        </tbody>
+
+      </table>
+    );
+  }
+
+
+  /*
+   * Fallback for common vital-sign format.
+   */
+  return (
+    <table style={styles.table}>
+
+      <thead>
+        <tr>
+
+          <th style={styles.th}>
+            Measurement
+          </th>
+
+          <th style={styles.th}>
+            Result
+          </th>
+
+          <th style={styles.th}>
+            Unit
+          </th>
+
+          <th style={styles.th}>
+            Date Recorded
+          </th>
+
+        </tr>
+      </thead>
+
+
+      <tbody>
+
+        {records.map((record, index) => (
+
+          <tr key={record.record_id || index}>
+
+            <td style={styles.td}>
+              {record.measurement ||
+                record.type ||
+                record.name ||
+                "--"}
+            </td>
+
+            <td style={styles.td}>
+              {record.result ||
+                record.value ||
+                "--"}
+            </td>
+
+            <td style={styles.td}>
+              {record.unit || "--"}
+            </td>
+
+            <td style={styles.td}>
+              {formatDate(
+                record.recorded_at ||
+                  record.date_recorded ||
+                  record.created_at
+              )}
+            </td>
+
+          </tr>
+
+        ))}
+
+      </tbody>
+
+    </table>
+  );
+}
+
+
+/* ============================================================
+   INFORMATION FIELD
+============================================================ */
+
+function InfoField({ label, value }) {
+
+  return (
+    <div style={styles.infoField}>
+
+      <span style={styles.infoLabel}>
+        {label}
+      </span>
+
+      <span style={styles.infoValue}>
+        {value || "Not provided"}
+      </span>
+
+    </div>
+  );
+}
+
+
+/* ============================================================
+   HELPERS
 ============================================================ */
 
 function formatDate(date) {
@@ -878,11 +863,14 @@ function formatDate(date) {
     return date;
   }
 
-  return parsed.toLocaleDateString("en-US", {
-    month: "short",
-    day: "2-digit",
-    year: "numeric",
-  });
+  return parsed.toLocaleDateString(
+    "en-US",
+    {
+      month: "short",
+      day: "2-digit",
+      year: "numeric",
+    }
+  );
 }
 
 
@@ -896,13 +884,16 @@ function formatDateTime(date) {
     return date;
   }
 
-  return parsed.toLocaleString("en-US", {
-    month: "short",
-    day: "2-digit",
-    year: "numeric",
-    hour: "numeric",
-    minute: "2-digit",
-  });
+  return parsed.toLocaleString(
+    "en-US",
+    {
+      month: "short",
+      day: "2-digit",
+      year: "numeric",
+      hour: "numeric",
+      minute: "2-digit",
+    }
+  );
 }
 
 
@@ -915,3 +906,494 @@ function formatGender(gender) {
     gender.slice(1).toLowerCase()
   );
 }
+
+
+/* ============================================================
+   INLINE STYLES
+============================================================ */
+
+const styles = {
+
+  page: {
+    minHeight: "100vh",
+    background: "#f1f8f5",
+    color: "#171b19",
+    fontFamily:
+      "Inter, Arial, Helvetica, sans-serif",
+    boxSizing: "border-box",
+  },
+
+
+  /* ================= TOP HEADER ================= */
+
+  topHeader: {
+    height: "76px",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "space-between",
+    padding: "0 22px 0 18px",
+    background: "#f1f8f5",
+    boxSizing: "border-box",
+  },
+
+
+  logoArea: {
+    display: "flex",
+    alignItems: "center",
+    gap: "10px",
+    minWidth: "270px",
+  },
+
+
+  logoBox: {
+    width: "43px",
+    height: "43px",
+    borderRadius: "10px",
+    background: "#087b50",
+    color: "#ffffff",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    fontWeight: "800",
+    fontSize: "17px",
+  },
+
+
+  logoText: {
+    fontSize: "19px",
+    fontWeight: "600",
+  },
+
+
+  topNavigation: {
+    display: "flex",
+    alignItems: "center",
+    gap: "8px",
+  },
+
+
+  topNavButton: {
+    border: "none",
+    background: "transparent",
+    padding: "12px 25px",
+    borderRadius: "10px",
+    fontSize: "14px",
+    fontWeight: "600",
+    cursor: "pointer",
+  },
+
+
+  topNavActive: {
+    background: "#e3eee9",
+    boxShadow:
+      "inset 0 0 0 1px rgba(100,130,115,.06)",
+  },
+
+
+  userArea: {
+    display: "flex",
+    alignItems: "center",
+    gap: "10px",
+    minWidth: "270px",
+    justifyContent: "flex-end",
+  },
+
+
+  userName: {
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "flex-end",
+    lineHeight: "1.1",
+    fontSize: "14px",
+  },
+
+
+  logoutButton: {
+    display: "flex",
+    alignItems: "center",
+    gap: "7px",
+    border: "1px solid #aab8b1",
+    background: "#e9f1ed",
+    borderRadius: "10px",
+    padding: "10px 13px",
+    fontSize: "14px",
+    fontWeight: "600",
+    cursor: "pointer",
+  },
+
+
+  /* ================= LAYOUT ================= */
+
+  layout: {
+    display: "grid",
+    gridTemplateColumns: "360px minmax(0, 1fr)",
+    gap: "10px",
+    padding: "0 16px 25px",
+    boxSizing: "border-box",
+  },
+
+
+  /* ================= SIDEBAR ================= */
+
+  sidebar: {
+    minHeight: "calc(100vh - 95px)",
+    paddingRight: "8px",
+    boxSizing: "border-box",
+  },
+
+
+  sidebarItem: {
+    width: "100%",
+    height: "57px",
+    display: "flex",
+    alignItems: "center",
+    gap: "20px",
+    padding: "0 18px",
+    marginBottom: "3px",
+    border: "1px solid transparent",
+    background: "transparent",
+    borderRadius: "7px",
+    color: "#111614",
+    fontSize: "15px",
+    fontWeight: "600",
+    textAlign: "left",
+    cursor: "pointer",
+  },
+
+
+  sidebarOverviewActive: {
+    background: "#f1f8f5",
+    border: "1px solid #aab8b1",
+  },
+
+
+  sidebarActive: {
+    background: "#dcebe4",
+  },
+
+
+  sidebarTitle: {
+    fontSize: "14px",
+    fontWeight: "700",
+    margin: "9px 18px 10px",
+    letterSpacing: "0.1px",
+  },
+
+
+  /* ================= HELP CARD ================= */
+
+  helpCard: {
+    margin: "72px 3px 0",
+    minHeight: "176px",
+    border: "1px solid #d7e1dc",
+    background: "#edf5f1",
+    borderRadius: "0px",
+    padding: "22px 16px",
+    display: "flex",
+    alignItems: "center",
+    gap: "17px",
+    boxSizing: "border-box",
+  },
+
+
+  helpIcon: {
+    width: "68px",
+    height: "68px",
+    border: "1.5px solid #76827d",
+    borderRadius: "50%",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    flexShrink: 0,
+  },
+
+
+  helpTitle: {
+    fontSize: "15px",
+    margin: "0 0 10px",
+    fontWeight: "700",
+  },
+
+
+  helpText: {
+    margin: 0,
+    fontSize: "14px",
+    lineHeight: "1.45",
+    fontWeight: "500",
+  },
+
+
+  /* ================= CONTENT ================= */
+
+  content: {
+    minWidth: 0,
+    paddingLeft: "0px",
+  },
+
+
+  /* ================= PAGE HEADER ================= */
+
+  pageHeader: {
+    minHeight: "84px",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "space-between",
+    padding: "5px 14px 12px",
+    boxSizing: "border-box",
+  },
+
+
+  pageHeaderLeft: {
+    display: "flex",
+    alignItems: "center",
+    gap: "14px",
+  },
+
+
+  headerIcon: {
+    width: "56px",
+    height: "56px",
+    borderRadius: "50%",
+    background: "#e4eee9",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    flexShrink: 0,
+  },
+
+
+  pageTitle: {
+    margin: 0,
+    fontSize: "21px",
+    fontWeight: "700",
+    lineHeight: "1.2",
+  },
+
+
+  pageSubtitle: {
+    margin: "3px 0 0",
+    fontSize: "15px",
+    lineHeight: "1.3",
+  },
+
+
+  readOnly: {
+    display: "flex",
+    alignItems: "center",
+    gap: "8px",
+    border: "1px solid #a8b5af",
+    background: "#e9f1ed",
+    borderRadius: "10px",
+    padding: "10px 13px",
+    fontSize: "14px",
+    fontWeight: "600",
+    whiteSpace: "nowrap",
+  },
+
+
+  /* ================= CARD ================= */
+
+  card: {
+    background: "#f4f9f7",
+    border: "1px solid #dbe6e1",
+    borderRadius: "10px",
+    marginBottom: "8px",
+    padding: "14px 15px 8px",
+    boxSizing: "border-box",
+    overflow: "hidden",
+  },
+
+
+  cardHeader: {
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "space-between",
+    minHeight: "48px",
+  },
+
+
+  cardTitleArea: {
+    display: "flex",
+    alignItems: "center",
+    gap: "13px",
+  },
+
+
+  cardIcon: {
+    width: "48px",
+    height: "48px",
+    borderRadius: "50%",
+    background: "#e5efea",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    flexShrink: 0,
+  },
+
+
+  cardTitle: {
+    margin: 0,
+    fontSize: "20px",
+    fontWeight: "700",
+  },
+
+
+  totalBadge: {
+    border: "1px solid #8c9993",
+    background: "#e8f0ec",
+    borderRadius: "17px",
+    padding: "8px 15px",
+    fontSize: "14px",
+    fontWeight: "700",
+  },
+
+
+  viewAllButton: {
+    display: "flex",
+    alignItems: "center",
+    gap: "6px",
+    border: "1px solid #9ba9a2",
+    background: "#e8f0ec",
+    borderRadius: "10px",
+    padding: "6px 11px",
+    fontSize: "14px",
+    fontWeight: "600",
+    cursor: "pointer",
+  },
+
+
+  /* ================= TABLE ================= */
+
+  tableContainer: {
+    width: "100%",
+    overflow: "hidden",
+    border: "1px solid #aab7b1",
+    borderRadius: "10px",
+    boxSizing: "border-box",
+  },
+
+
+  table: {
+    width: "100%",
+    borderCollapse: "collapse",
+    tableLayout: "fixed",
+    fontSize: "14px",
+  },
+
+
+  th: {
+    background: "#dce9e3",
+    padding: "8px 18px",
+    textAlign: "left",
+    fontWeight: "700",
+    borderBottom: "1px solid #b7c2bd",
+  },
+
+
+  td: {
+    padding: "7px 18px",
+    borderBottom: "1px solid #bcc7c2",
+    fontWeight: "500",
+    verticalAlign: "middle",
+  },
+
+
+  dateCell: {
+    display: "flex",
+    alignItems: "center",
+    gap: "9px",
+  },
+
+
+  status: {
+    fontWeight: "700",
+  },
+
+
+  tableFooter: {
+    height: "36px",
+    border: "1px solid #aab7b1",
+    borderTop: "none",
+    borderRadius: "0 0 10px 10px",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    fontSize: "14px",
+    fontWeight: "600",
+    marginTop: "-1px",
+  },
+
+
+  emptyInside: {
+    padding: "25px",
+    textAlign: "center",
+    fontSize: "14px",
+  },
+
+
+  /* ================= PATIENT INFO ================= */
+
+  patientGrid: {
+    display: "grid",
+    gridTemplateColumns:
+      "1.25fr 0.85fr 1fr 0.75fr",
+    columnGap: "20px",
+    rowGap: "13px",
+    padding: "7px 18px 9px",
+  },
+
+
+  infoField: {
+    display: "flex",
+    flexDirection: "column",
+    gap: "5px",
+    minWidth: 0,
+  },
+
+
+  infoLabel: {
+    fontSize: "14px",
+    fontWeight: "700",
+  },
+
+
+  infoValue: {
+    fontSize: "15px",
+    fontWeight: "500",
+    overflowWrap: "break-word",
+  },
+
+
+  /* ================= PAGINATION ================= */
+
+  pagination: {
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "space-between",
+    padding: "2px 15px 0",
+  },
+
+
+  pageNumber: {
+    fontSize: "14px",
+    fontWeight: "600",
+  },
+
+
+  nextButton: {
+    minWidth: "170px",
+    border: "1px solid #8f9d96",
+    background: "#dce9e3",
+    borderRadius: "11px",
+    padding: "7px 20px",
+    fontSize: "14px",
+    fontWeight: "600",
+    cursor: "pointer",
+  },
+
+
+  empty: {
+    padding: "40px",
+    textAlign: "center",
+  },
+};
