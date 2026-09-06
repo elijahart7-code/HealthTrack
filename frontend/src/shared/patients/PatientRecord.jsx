@@ -27,7 +27,7 @@ export function PatientRecord({
 
   const [patient, setPatient] = useState(null);
   const [appointments, setAppointments] = useState([]);
-  const [section, setSection] = useState("healthAssessment");
+  const [section, setSection] = useState("general");
   const [loading, setLoading] = useState(true);
 
   const [showAppointmentForm, setShowAppointmentForm] = useState(false);
@@ -153,24 +153,25 @@ export function PatientRecord({
       key: "vitalSigns",
       label: "Vital Signs",
       icon: HeartPulse,
+      recordType: "vital-signs",
     },
     {
       key: "healthAssessment",
       label: "Health Assessment",
       icon: ClipboardList,
-      recordType: "healthAssessment",
+      recordType: "health-assessment",
     },
     {
       key: "midwifeNotes",
       label: "Midwife Notes",
       icon: FileText,
-      recordType: "midwifeNotes",
+      recordType: "midwife-notes",
     },
     {
       key: "medicalHistory",
       label: "Medical Histories",
       icon: BriefcaseMedical,
-      recordType: "medicalHistory",
+      recordType: "medical-history",
     },
     {
       key: "allergies",
