@@ -338,6 +338,57 @@ export function ClinicalRecords({ patientId, type, role, readOnly = false }) {
               className="ht-assessment-c
             >
 
+            {/* CARD TOP */}
+              <div className="ht-assessment-details">
+                {Object.entries(definition.fields).map(
+                  ([column, field], index) => (
+                    <div
+                      key={column}
+                      className="ht-assessment-row"
+                    >
+                      <div className="ht-assessment-icon">
+                        {getFieldIcon(field.label, index)}
+                      </div>
+
+                      <div className="ht-assessment-label">
+                        {field.label}
+                      </div>
+
+                      <div className="ht-assessment-colon">
+                        :
+                      </div>
+
+                      <div className="ht-assessment-value">
+                        {field.type === "select" ? (
+                          <span
+                            className={
+                              field.label
+                                .toLowerCase()
+                                .includes("status")
+                                ? "ht-status-active"
+                                : ""
+                            }
+                          >
+                            {formatValue(
+                              record[column],
+                              field
+                            )}
+                          </span>
+                        ) : (
+                          formatValue(
+                            record[column],
+                            field
+                          )
+                        )}
+                      </div>
+                    </div>
+                  )
+                )
+              }
+
+              
+
+
 
 
 
