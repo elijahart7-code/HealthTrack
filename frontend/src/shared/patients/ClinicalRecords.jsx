@@ -90,6 +90,33 @@ export function ClinicalRecords({ patientId, type, role, readOnly = false }) {
     }
   }
 
+  function getFieldIcon(label, index) {
+    const text = label.toLowerCase();
+    if (text.includes("condition") || text.includes("diagnosis")) {
+      return <Activity size={17} />;
+    }
+    if (text.includes("description")) {
+      return <FileText size={17} />;
+    }
+    if (text.includes("date")) {
+      return <CalendarDays size={17} />;
+    }
+    if (text.includes("status")) {
+      return <CheckCircle2 size={17} />;
+    }
+    if (text.includes("medication") || text.includes("medicine")) {
+      return <Pill size={17} />;
+    }
+    if (text.includes("remarks") || text.includes("note")) {
+      return <MessageSquare size={17} />;
+    }
+    if (index === 0) {
+      return <Activity size={17} />; 
+    }
+    return <ClipboardList size={17} />;
+  }
+  
+
   const columnFields = Object.entries(definition.fields).filter(([, f]) => f.column || f.primary);
   const primaryField = Object.entries(definition.fields).find(([, f]) => f.primary);
   const extraFields = columnFields.filter(([key]) => !primaryField || key !== primaryField[0]);
