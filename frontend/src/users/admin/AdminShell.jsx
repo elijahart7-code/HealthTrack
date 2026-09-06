@@ -20,18 +20,30 @@ export function AdminShell() {
   const [patients, setPatients] = useState([]);
   const [appointments, setAppointments] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [loadError, setLoadError] = useState(null);
 
   const loadData = useCallback(async () => {
     setLoading(true);
-    const [dashboardRes, patientsRes, appointmentsRes] = await Promise.all([
-      api.get("/admin/dashboard"),
-      api.get("/patients"),
-      api.get("/admin/appointments"),
-    ]);
-    setDashboard(dashboardRes.data);
-    setPatients(patientsRes.data.patients);
-    setAppointments(appointmentsRes.data.appointments);
-    setLoading(false);
+    setLoadError(null);
+
+    try {
+      const [dashboardRes, patientsRes, appointmentsRes] = await Promise.all([
+        api.get("/admin/dashboard"),
+        api.get("/patients"),
+        api.get("/admin/appointments"),
+      ]);
+      setDashboard(dashboardRes.data);
+      setPatients(patientsRes.data.patients);
+      setAppointments(appointmentsRes.data.appointments);
+    } catch (error) {
+      console.error(error);
+      setLoadError(
+        error?.response?.data?.error ||
+          "Could not load the admin dashboard. Check that the server is running and sign in again."
+      );
+    } finally {
+      setLoading(false);
+    }
   }, []);
 
   useEffect(() => {
@@ -52,7 +64,11 @@ export function AdminShell() {
       </header>
 
       <main className="ht-content">
-        {loading || !dashboard ? (
+        {loadError ? (
+          <div className="ht-panel">
+            <p className="ht-muted text-sm">{loadError}</p>
+          </div>
+        ) : loading || !dashboard ? (
           <p className="ht-muted text-sm">Loading...</p>
         ) : page === "patients" ? (
           <Patients patients={patients} loadData={loadData} />
