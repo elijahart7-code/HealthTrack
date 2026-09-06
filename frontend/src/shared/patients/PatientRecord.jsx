@@ -702,8 +702,7 @@ export function PatientRecord({
         .ht-brand {
           display: flex;
           align-items: center;
-          gap: 10px;
-          min-width: 220px;
+          flex: 0 0 220px;
         }
 
         .ht-brand-logo {
@@ -728,7 +727,8 @@ export function PatientRecord({
         .ht-main-nav {
           display: flex;
           align-items: center;
-          gap: 6px;
+          gap: 8px;
+          flex: 1;
         }
 
         .ht-main-nav-item {
@@ -750,8 +750,8 @@ export function PatientRecord({
         .ht-user-area {
           display: flex;
           align-items: center;
-          gap: 14px;
-          min-width: 220px;
+          gap: 12px;
+          flex: 0 0 220px;
           justify-content: flex-end;
         }
 
