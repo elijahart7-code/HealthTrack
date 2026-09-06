@@ -298,7 +298,46 @@ export function ClinicalRecords({ patientId, type, role, readOnly = false }) {
       )
       }
 
-      
+      {/* CONTENT */}
+      {loading ? (
+        <div className="ht-health-empty">
+          <p>Loading health assessments...</p>
+        </div>
+      ) : records.length === 0 ? (
+        <div className="ht-health-empty">
+          <div className="ht-health-empty-icon">
+            <ClipboardList size={25} />
+          </div>
+
+          <h3>No Health Assessment</h3>
+
+          <p>
+            No health assessment has been recorded
+            for this patient.
+          </p>
+
+          {canManage && (
+            <button
+              type="button"
+              onClick={() => {
+                resetForm();
+                setShowForm(true);
+              }}
+              className="ht-health-empty-button"
+            >
+              <Plus size={16} />
+              Add New Assessment
+            </button>
+          )}
+        </div>
+      ) : (
+        <>
+          {records.map((record) => (
+            <div
+              key={record.record_id}
+              className="ht-assessment-c
+            >
+
 
 
 
