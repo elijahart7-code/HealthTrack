@@ -29,6 +29,7 @@ export function PatientRecord({
   const [appointments, setAppointments] = useState([]);
   const [section, setSection] = useState("general");
   const [loading, setLoading] = useState(true);
+  const [loadError, setLoadError] = useState(null);
 
   const [showAppointmentForm, setShowAppointmentForm] = useState(false);
   const [scheduledAt, setScheduledAt] = useState("");
@@ -43,6 +44,7 @@ export function PatientRecord({
 
   async function load() {
     setLoading(true);
+    setLoadError(null);
 
     try {
       const [patientRes, apptRes] = await Promise.all([
@@ -54,6 +56,10 @@ export function PatientRecord({
       setAppointments(apptRes.data.appointments || []);
     } catch (error) {
       console.error(error);
+      setLoadError(
+        error?.response?.data?.error ||
+          "Could not load this patient record. Check that the server is running and sign in again."
+      );
     } finally {
       setLoading(false);
     }
@@ -135,10 +141,18 @@ export function PatientRecord({
     }
   }
 
-  if (loading || !patient) {
+  if (loading) {
     return (
       <div className="ht-loading">
         Loading...
+      </div>
+    );
+  }
+
+  if (loadError || !patient) {
+    return (
+      <div className="ht-loading">
+        {loadError || "Patient record not found."}
       </div>
     );
   }
@@ -150,25 +164,25 @@ export function PatientRecord({
       icon: UserRound,
     },
     {
-      key: "vitalSigns",
+      key: "vital-signs",
       label: "Vital Signs",
       icon: HeartPulse,
       recordType: "vital-signs",
     },
     {
-      key: "healthAssessment",
+      key: "health-assessment",
       label: "Health Assessment",
       icon: ClipboardList,
       recordType: "health-assessment",
     },
     {
-      key: "midwifeNotes",
+      key: "midwife-notes",
       label: "Midwife Notes",
       icon: FileText,
       recordType: "midwife-notes",
     },
     {
-      key: "medicalHistory",
+      key: "medical-history",
       label: "Medical Histories",
       icon: BriefcaseMedical,
       recordType: "medical-history",
