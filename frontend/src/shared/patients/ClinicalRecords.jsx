@@ -146,7 +146,50 @@ export function ClinicalRecords({ patientId, type, role, readOnly = false }) {
       minute: "2-digit",
     });
   }
-  
+  function getRecordedBy(record) {
+    return (
+      record.created_by_name ||
+      record.createdByName ||
+      record.recorded_by_name ||
+      record.recordedByName ||
+      record.created_by ||
+      record.recorded_by ||
+      null );
+    }
+    return (
+    <div className="ht-health-assessment">
+      {/* HEADER */}
+      <div className="ht-health-assessment-header">
+        <div>
+          <h2>{definition.label}</h2>
+        </div>
+
+        <div className="ht-health-assessment-actions">
+          <span className="ht-health-count">
+            {records.length} total
+          </span>
+
+          {canManage && (
+            <button
+              type="button"
+              onClick={toggleForm}
+              className="ht-health-add-button"
+            >
+              {showForm ? (
+                <>
+                  <X size={16} />
+                  Cancel
+                </>
+              ) : (
+                <>
+                  <Plus size={16} />
+                  Add New Assessment
+                </>
+              )}
+            </button>
+          )}
+        </div>
+      </div>
 
   const columnFields = Object.entries(definition.fields).filter(([, f]) => f.column || f.primary);
   const primaryField = Object.entries(definition.fields).find(([, f]) => f.primary);
