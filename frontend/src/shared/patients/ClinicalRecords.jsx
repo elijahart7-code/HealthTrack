@@ -134,7 +134,11 @@ export function ClinicalRecords({ patientId, type, role, readOnly = false }) {
       year: "numeric",
     });
   }
-  
+  function getCreatedDate(record) {
+    const value = record.created_at || record.createdAt || record.recorded_at || record.recordedAt;
+    if (!value) return null;
+
+    
 
   const columnFields = Object.entries(definition.fields).filter(([, f]) => f.column || f.primary);
   const primaryField = Object.entries(definition.fields).find(([, f]) => f.primary);
