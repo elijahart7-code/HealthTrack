@@ -138,7 +138,15 @@ export function ClinicalRecords({ patientId, type, role, readOnly = false }) {
     const value = record.created_at || record.createdAt || record.recorded_at || record.recordedAt;
     if (!value) return null;
 
-    
+    return new Date(value).toLocaleDateString(undefined, {
+      month: "long",
+      day: "2-digit",
+      year: "numeric",
+      hour: "numeric",
+      minute: "2-digit",
+    });
+  }
+  
 
   const columnFields = Object.entries(definition.fields).filter(([, f]) => f.column || f.primary);
   const primaryField = Object.entries(definition.fields).find(([, f]) => f.primary);
