@@ -692,17 +692,16 @@ export function PatientRecord({
           height: 72px;
           display: flex;
           align-items: center;
-          justify-content: space-between;
+          grid-template-columns: 1fr auto 1fr;
           width: 100%;
           padding: 0 42px;
+          boxing-sizing: border-box;
           background: #f8fcfa;
           border-bottom: 1px solid #dce9e2;
         }
 
         .ht-brand {
-          display: flex;
-          align-items: center;
-          flex: 0 0 220px;
+          justify-self: start;
         }
 
         .ht-brand-logo {
@@ -727,8 +726,8 @@ export function PatientRecord({
         .ht-main-nav {
           display: flex;
           align-items: center;
+          justify-content: center;
           gap: 8px;
-          flex: 1;
         }
 
         .ht-main-nav-item {
@@ -751,8 +750,7 @@ export function PatientRecord({
           display: flex;
           align-items: center;
           gap: 12px;
-          flex: 0 0 220px;
-          justify-content: flex-end;
+          justify-content: end;
         }
 
         .ht-user-info {
