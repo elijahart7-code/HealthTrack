@@ -695,10 +695,9 @@ export function PatientRecord({
           grid-template-columns: 1fr auto 1fr;
           width: 100%;
           padding: 0 42px;
+          boxing-sizing: border-box;
           background: #f8fcfa;
           border-bottom: 1px solid #dce9e2;
-          position: relative;
-          justify-content: space-between;
         }
 
         .ht-brand {
@@ -725,9 +724,6 @@ export function PatientRecord({
         }
 
         .ht-main-nav {
-          position: absolute;
-          left: 50%;
-          transform: translateX(-50%);
           display: flex;
           align-items: center;
           justify-content: center;
