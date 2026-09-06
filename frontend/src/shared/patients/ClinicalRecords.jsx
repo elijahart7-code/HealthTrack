@@ -60,8 +60,10 @@ export function ClinicalRecords({ patientId, type, role, readOnly = false }) {
   }
 
   function toggleForm() {
-    setShowForm((v) => !v);
-    if (showForm) resetForm();
+    if (showForm) {
+      resetForm();
+    }
+    setShowForm((value) => !value);
   }
 
   async function handleSave() {
