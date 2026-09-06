@@ -79,9 +79,15 @@ export function ClinicalRecords({ patientId, type, role, readOnly = false }) {
   }
 
   async function handleDelete(recordId) {
-    if (!confirm(`Remove this ${definition.singular.toLowerCase()}? This cannot be undone.`)) return;
+    if (!confirm(`Remove this ${definition.singular.toLowerCase()}? This cannot be undone.`)) return;}
+    try {
     await api.delete(`/patients/${patientId}/records/${type}/${recordId}`);
     load();
+  } catch (err) 
+    {
+    console.error(err);
+    alert("Could not delete this record.");
+    }
   }
 
   const columnFields = Object.entries(definition.fields).filter(([, f]) => f.column || f.primary);
