@@ -1,8 +1,9 @@
 import axios from "axios";
+import { clearSession } from "./auth";
 
 /**
- * Single axios instance -- inject Authorization: Bearer <token> from
- * localStorage on every request.
+ * Single axios instance -- inject the session token from localStorage on
+ * every request.
  */
 export const api = axios.create({
   baseURL: import.meta.env.VITE_API_BASE_URL || "/api",
@@ -15,3 +16,18 @@ api.interceptors.request.use((config) => {
   }
   return config;
 });
+
+api.interceptors.response.use(
+  (response) => response,
+  (error) => {
+    const requestUrl = error.config?.url || "";
+    const isLoginRequest = requestUrl.endsWith("/auth/login");
+
+    if (error.response?.status === 401 && !isLoginRequest) {
+      clearSession();
+      window.location.replace("/login");
+    }
+
+    return Promise.reject(error);
+  }
+);
