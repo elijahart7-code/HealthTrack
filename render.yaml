@@ -1,7 +1,0 @@
-services:
-  - type: web
-    name: healthtrack
-    runtime: node
-    plan: free
-    buildCommand: npm run build
-    startCommand: npm start
