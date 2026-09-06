@@ -115,6 +115,15 @@ export function ClinicalRecords({ patientId, type, role, readOnly = false }) {
     }
     return <ClipboardList size={17} />;
   }
+  function formatValue(value, field) {
+    if (value === null || value === undefined || value === "") {
+      return "--";
+    }
+    if (field.type === "select") {
+      return field.options?.[value] || value;
+    }
+    return value;
+  }
   
 
   const columnFields = Object.entries(definition.fields).filter(([, f]) => f.column || f.primary);
