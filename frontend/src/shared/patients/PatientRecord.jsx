@@ -2,22 +2,32 @@ import { useEffect, useState } from "react";
 import { api } from "../../lib/axios";
 import { calculateAge } from "../../utils/calculateAge";
 import { RECORD_TYPES } from "../../config/recordTypes";
-import { PageHeader } from "../../components/ui/PageHeader";
 import { Field, Input, Select, Textarea } from "../../components/ui/Input";
 import { Badge, EmptyState, Table, Th, Td } from "../../components/ui/Table";
 import { ClinicalRecords } from "./ClinicalRecords";
 
-/**
- * One patient's full record as seen by staff. The sidebar of section tabs is
- * built from the shared record-type config so the same layout works across
- * every clinical documentation section.
- */
-export function PatientRecord({ patientId, role, onBack, onPatientUpdated }) {
+import {
+  UserRound,
+  HeartPulse,
+  ClipboardList,
+  FileText,
+  BriefcaseMedical,
+  TriangleAlert,
+  ArrowLeft,
+  LogOut,
+} from "lucide-react";
+
+export function PatientRecord({
+  patientId,
+  role,
+  onBack,
+  onPatientUpdated,
+}) {
   const isAdmin = role === "admin";
 
   const [patient, setPatient] = useState(null);
   const [appointments, setAppointments] = useState([]);
-  const [section, setSection] = useState("general");
+  const [section, setSection] = useState("healthAssessment");
   const [loading, setLoading] = useState(true);
 
   const [showAppointmentForm, setShowAppointmentForm] = useState(false);
@@ -33,240 +43,1117 @@ export function PatientRecord({ patientId, role, onBack, onPatientUpdated }) {
 
   async function load() {
     setLoading(true);
-    const [patientRes, apptRes] = await Promise.all([
-      api.get(`/patients/${patientId}`),
-      api.get(`/patients/${patientId}/appointments`),
-    ]);
-    setPatient(patientRes.data.patient);
-    setAppointments(apptRes.data.appointments);
-    setLoading(false);
+
+    try {
+      const [patientRes, apptRes] = await Promise.all([
+        api.get(`/patients/${patientId}`),
+        api.get(`/patients/${patientId}/appointments`),
+      ]);
+
+      setPatient(patientRes.data.patient);
+      setAppointments(apptRes.data.appointments || []);
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setLoading(false);
+    }
   }
 
   useEffect(() => {
     load();
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [patientId]);
 
   async function scheduleAppointment() {
     setApptError(null);
+
     if (!scheduledAt || !reason) {
       setApptError("Date/time and reason are required.");
       return;
     }
+
     try {
-      await api.post(`/patients/${patientId}/appointments`, { scheduledAt, reason, notes, status });
+      await api.post(`/patients/${patientId}/appointments`, {
+        scheduledAt,
+        reason,
+        notes,
+        status,
+      });
+
       setScheduledAt("");
       setReason("");
       setNotes("");
       setStatus("pending");
       setShowAppointmentForm(false);
+
       load();
       onPatientUpdated?.();
     } catch (err) {
-      setApptError(err?.response?.data?.error || "Could not schedule that appointment.");
+      setApptError(
+        err?.response?.data?.error ||
+          "Could not schedule that appointment."
+      );
     }
   }
 
   async function deleteAppointment(appointmentId) {
     if (!confirm("Remove this appointment?")) return;
+
     await api.delete(`/appointments/${appointmentId}`);
+
     load();
     onPatientUpdated?.();
   }
 
   async function createPortalAccount() {
     setAccountError(null);
+
     if (!portalEmail) {
       setAccountError("Email address is required.");
       return;
     }
+
     try {
-      const { data } = await api.post(`/patients/${patientId}/portal-account`, { email: portalEmail });
+      const { data } = await api.post(
+        `/patients/${patientId}/portal-account`,
+        {
+          email: portalEmail,
+        }
+      );
+
       setPatient(data.patient);
       setPortalEmail("");
       setShowAccountForm(false);
+
       onPatientUpdated?.();
     } catch (err) {
-      setAccountError(err?.response?.data?.error || "Could not create that account.");
+      setAccountError(
+        err?.response?.data?.error ||
+          "Could not create that account."
+      );
     }
   }
 
-  if (loading || !patient) return <p className="ht-muted text-sm">Loading...</p>;
+  if (loading || !patient) {
+    return (
+      <div className="ht-loading">
+        Loading...
+      </div>
+    );
+  }
 
-  const sections = { general: "General", ...Object.fromEntries(Object.entries(RECORD_TYPES).map(([k, v]) => [k, v.label])) };
+  const sidebarItems = [
+    {
+      key: "general",
+      label: "Patient Information",
+      icon: UserRound,
+    },
+    {
+      key: "vitalSigns",
+      label: "Vital Signs",
+      icon: HeartPulse,
+    },
+    {
+      key: "healthAssessment",
+      label: "Health Assessment",
+      icon: ClipboardList,
+      recordType: "healthAssessment",
+    },
+    {
+      key: "midwifeNotes",
+      label: "Midwife Notes",
+      icon: FileText,
+      recordType: "midwifeNotes",
+    },
+    {
+      key: "medicalHistory",
+      label: "Medical Histories",
+      icon: BriefcaseMedical,
+      recordType: "medicalHistory",
+    },
+    {
+      key: "allergies",
+      label: "Allergies",
+      icon: TriangleAlert,
+      recordType: "allergies",
+    },
+  ];
 
   return (
-    <div className="grid gap-4">
-      <PageHeader
-        title={patient.full_name}
-        subtitle={`${patient.sex.charAt(0).toUpperCase() + patient.sex.slice(1)} | ${calculateAge(patient.birthdate)} years old | Born ${new Date(patient.birthdate).toLocaleDateString(undefined, { month: "short", day: "2-digit", year: "numeric" })}`}
-      >
-        <button onClick={onBack} className="ht-button ht-button-muted">
-          Back to patients
-        </button>
-      </PageHeader>
+    <div className="ht-patient-page">
 
-      <div className="ht-record-layout">
-        <nav className="ht-record-nav" aria-label="Record sections">
-          {Object.entries(sections).map(([key, label]) => (
-            <button key={key} onClick={() => setSection(key)} aria-current={section === key ? "page" : undefined}>
-              {label}
-            </button>
-          ))}
+      {/* ================= TOP NAVIGATION ================= */}
+      <header className="ht-topbar">
+
+        <div className="ht-brand">
+          <div className="ht-brand-logo">
+            HT
+          </div>
+
+          <div className="ht-brand-name">
+            HealthTrack
+          </div>
+        </div>
+
+        <nav className="ht-main-nav">
+
+          <button
+            type="button"
+            className="ht-main-nav-item"
+          >
+            Dashboard
+          </button>
+
+          <button
+            type="button"
+            className="ht-main-nav-item active"
+          >
+            Patients
+          </button>
+
+          <button
+            type="button"
+            className="ht-main-nav-item"
+          >
+            Appointments
+          </button>
+
         </nav>
 
-        <div className="grid gap-4">
-          {section === "general" ? (
-            <>
-              <div className="ht-panel">
-                <h2>Patient details</h2>
-                <dl className="grid gap-x-6 gap-y-3 text-sm sm:grid-cols-2">
-                  <Detail label="Civil status" value={patient.civil_status} />
-                  <Detail label="Blood type" value={patient.blood_type} />
-                  <Detail label="Occupation" value={patient.occupation} />
-                  <Detail label="Barangay ID number" value={patient.barangay_id_number} />
-                  <Detail label="Nationality" value={patient.nationality} />
-                  <Detail label="Place of birth" value={patient.place_of_birth} />
-                  <Detail label="Address" value={patient.address} />
-                  <Detail label="Contact number" value={patient.contact_number} />
-                  <Detail label="Emergency contact" value={patient.emergency_contact_name} />
-                  <Detail label="Emergency number" value={patient.emergency_contact_number} />
-                  <Detail label="Relationship" value={patient.emergency_contact_relationship} />
+        <div className="ht-user-area">
+
+          <div className="ht-user-info">
+            <strong>
+              {role === "admin"
+                ? "Admin User"
+                : "Midwife User"}
+            </strong>
+
+            <span>
+              {role === "admin" ? "Admin" : "Midwife"}
+            </span>
+          </div>
+
+          <button
+            type="button"
+            className="ht-logout-button"
+          >
+            <LogOut size={15} />
+            Log out
+          </button>
+
+        </div>
+      </header>
+
+
+      {/* ================= PATIENT HEADER ================= */}
+      <section className="ht-patient-header">
+
+        <div className="ht-patient-profile">
+
+          <div className="ht-profile-circle">
+            <UserRound size={29} />
+          </div>
+
+          <div>
+            <h1>{patient.full_name}</h1>
+
+            <p>
+              {patient.sex
+                ? patient.sex.charAt(0).toUpperCase() +
+                  patient.sex.slice(1)
+                : "--"}
+
+              {" | "}
+
+              {calculateAge(patient.birthdate)} years old
+
+              {" | Born "}
+
+              {new Date(
+                patient.birthdate
+              ).toLocaleDateString(undefined, {
+                month: "short",
+                day: "numeric",
+                year: "numeric",
+              })}
+            </p>
+          </div>
+
+        </div>
+
+        <button
+          type="button"
+          onClick={onBack}
+          className="ht-back-button"
+        >
+          <ArrowLeft size={16} />
+          Back to patients
+        </button>
+
+      </section>
+
+
+      {/* ================= MAIN CONTENT ================= */}
+      <div className="ht-patient-content">
+
+        {/* SIDEBAR */}
+        <aside className="ht-patient-sidebar">
+
+          {sidebarItems.map((item) => {
+            const Icon = item.icon;
+
+            const active =
+              section === item.key;
+
+            return (
+              <button
+                key={item.key}
+                type="button"
+                onClick={() =>
+                  setSection(item.key)
+                }
+                className={`ht-sidebar-item ${
+                  active ? "active" : ""
+                }`}
+              >
+
+                <span className="ht-sidebar-icon">
+                  <Icon size={18} />
+                </span>
+
+                <span>
+                  {item.label}
+                </span>
+
+              </button>
+            );
+          })}
+
+        </aside>
+
+
+        {/* ================= RIGHT CONTENT ================= */}
+        <main className="ht-patient-main">
+
+          {/* GENERAL / PATIENT INFORMATION */}
+          {section === "general" && (
+            <div className="grid gap-4">
+
+              <div className="ht-content-card">
+
+                <h2>Patient Information</h2>
+
+                <dl className="ht-detail-grid">
+
+                  <Detail
+                    label="Civil status"
+                    value={patient.civil_status}
+                  />
+
+                  <Detail
+                    label="Blood type"
+                    value={patient.blood_type}
+                  />
+
+                  <Detail
+                    label="Occupation"
+                    value={patient.occupation}
+                  />
+
+                  <Detail
+                    label="Barangay ID number"
+                    value={patient.barangay_id_number}
+                  />
+
+                  <Detail
+                    label="Nationality"
+                    value={patient.nationality}
+                  />
+
+                  <Detail
+                    label="Place of birth"
+                    value={patient.place_of_birth}
+                  />
+
+                  <Detail
+                    label="Address"
+                    value={patient.address}
+                  />
+
+                  <Detail
+                    label="Contact number"
+                    value={patient.contact_number}
+                  />
+
+                  <Detail
+                    label="Emergency contact"
+                    value={patient.emergency_contact_name}
+                  />
+
+                  <Detail
+                    label="Emergency number"
+                    value={patient.emergency_contact_number}
+                  />
+
+                  <Detail
+                    label="Relationship"
+                    value={patient.emergency_contact_relationship}
+                  />
+
                 </dl>
+
               </div>
 
-              <div className="ht-panel">
-                <div className="mb-3 flex flex-wrap items-center justify-between gap-2">
+
+              {/* PORTAL ACCOUNT */}
+              <div className="ht-content-card">
+
+                <div className="ht-card-heading">
+
                   <h2>Portal account</h2>
+
                   {!patient.user_id && isAdmin && (
-                    <button onClick={() => setShowAccountForm((v) => !v)} className="ht-button">
-                      {showAccountForm ? "Cancel" : "Create account"}
+                    <button
+                      onClick={() =>
+                        setShowAccountForm(
+                          (value) => !value
+                        )
+                      }
+                      className="ht-small-button"
+                    >
+                      {showAccountForm
+                        ? "Cancel"
+                        : "Create account"}
                     </button>
                   )}
+
                 </div>
 
                 {patient.user_id ? (
                   <>
-                    <p className="m-0 text-sm">
+                    <p>
                       Has a portal login.
                     </p>
-                    <p className="ht-muted m-0 mt-1 text-xs">
-                      The patient sets their own password with "Forgot password". Staff never see it.
+
+                    <p className="ht-muted">
+                      The patient sets their own
+                      password with "Forgot password".
+                      Staff never see it.
                     </p>
                   </>
                 ) : showAccountForm && isAdmin ? (
-                  <div className="grid gap-3 rounded-xl p-4" style={{ background: "var(--color-surface-muted)" }}>
-                    {accountError && <div className="ht-login-alert ht-login-alert-error">{accountError}</div>}
-                    <p className="ht-muted m-0 text-xs">
-                      Creates a login so this patient can view their own records. No password is set here -- they choose one
-                      themselves using the "Forgot password" link.
-                    </p>
-                    <div className="max-w-md">
-                      <Field label="Email address" required>
-                        <Input type="email" value={portalEmail} onChange={(e) => setPortalEmail(e.target.value)} />
-                      </Field>
-                    </div>
-                    <div className="flex gap-2">
-                      <button onClick={createPortalAccount} className="ht-button">
+                  <div className="ht-form-box">
+
+                    {accountError && (
+                      <div className="ht-login-alert ht-login-alert-error">
+                        {accountError}
+                      </div>
+                    )}
+
+                    <Field
+                      label="Email address"
+                      required
+                    >
+                      <Input
+                        type="email"
+                        value={portalEmail}
+                        onChange={(e) =>
+                          setPortalEmail(
+                            e.target.value
+                          )
+                        }
+                      />
+                    </Field>
+
+                    <div className="ht-form-buttons">
+
+                      <button
+                        onClick={createPortalAccount}
+                        className="ht-primary-button"
+                      >
                         Create account
                       </button>
-                      <button onClick={() => setShowAccountForm(false)} className="ht-button ht-button-muted">
+
+                      <button
+                        onClick={() =>
+                          setShowAccountForm(false)
+                        }
+                        className="ht-secondary-button"
+                      >
                         Cancel
                       </button>
+
                     </div>
+
                   </div>
                 ) : (
-                  <div className="ht-empty">No portal account.{!isAdmin && " Only the admin can create one."}</div>
+                  <div className="ht-empty">
+                    No portal account.
+                  </div>
                 )}
+
               </div>
 
-              <div className="ht-panel">
-                <div className="mb-3 flex flex-wrap items-center justify-between gap-2">
+
+              {/* APPOINTMENTS */}
+              <div className="ht-content-card">
+
+                <div className="ht-card-heading">
+
                   <h2>Appointments</h2>
-                  <div className="flex items-center gap-2">
-                    <span className="ht-pill">{appointments.length} total</span>
-                    {isAdmin && (
-                      <button onClick={() => setShowAppointmentForm((v) => !v)} className="ht-button">
-                        {showAppointmentForm ? "Cancel" : "Schedule appointment"}
-                      </button>
-                    )}
-                  </div>
+
+                  {isAdmin && (
+                    <button
+                      onClick={() =>
+                        setShowAppointmentForm(
+                          (value) => !value
+                        )
+                      }
+                      className="ht-small-button"
+                    >
+                      {showAppointmentForm
+                        ? "Cancel"
+                        : "Schedule appointment"}
+                    </button>
+                  )}
+
                 </div>
 
-                {showAppointmentForm && isAdmin && (
-                  <div className="mb-4 grid gap-3 rounded-xl p-4" style={{ background: "var(--color-surface-muted)" }}>
-                    {apptError && <div className="ht-login-alert ht-login-alert-error">{apptError}</div>}
+                {showAppointmentForm && (
+                  <div className="ht-form-box">
+
+                    {apptError && (
+                      <div className="ht-login-alert ht-login-alert-error">
+                        {apptError}
+                      </div>
+                    )}
+
                     <div className="grid gap-3 sm:grid-cols-2">
-                      <Field label="Date and time" required>
-                        <Input type="datetime-local" value={scheduledAt} onChange={(e) => setScheduledAt(e.target.value)} />
+
+                      <Field
+                        label="Date and time"
+                        required
+                      >
+                        <Input
+                          type="datetime-local"
+                          value={scheduledAt}
+                          onChange={(e) =>
+                            setScheduledAt(
+                              e.target.value
+                            )
+                          }
+                        />
                       </Field>
+
                       <Field label="Status">
-                        <Select value={status} onChange={(e) => setStatus(e.target.value)}>
-                          <option value="pending">Pending</option>
-                          <option value="confirmed">Confirmed</option>
-                          <option value="completed">Completed</option>
-                          <option value="cancelled">Cancelled</option>
+                        <Select
+                          value={status}
+                          onChange={(e) =>
+                            setStatus(
+                              e.target.value
+                            )
+                          }
+                        >
+                          <option value="pending">
+                            Pending
+                          </option>
+
+                          <option value="confirmed">
+                            Confirmed
+                          </option>
+
+                          <option value="completed">
+                            Completed
+                          </option>
+
+                          <option value="cancelled">
+                            Cancelled
+                          </option>
                         </Select>
                       </Field>
+
                     </div>
-                    <Field label="Reason" required>
-                      <Input value={reason} onChange={(e) => setReason(e.target.value)} placeholder="e.g. Prenatal check-up" />
+
+                    <Field
+                      label="Reason"
+                      required
+                    >
+                      <Input
+                        value={reason}
+                        onChange={(e) =>
+                          setReason(e.target.value)
+                        }
+                        placeholder="e.g. Prenatal check-up"
+                      />
                     </Field>
+
                     <Field label="Notes">
-                      <Textarea value={notes} onChange={(e) => setNotes(e.target.value)} />
+                      <Textarea
+                        value={notes}
+                        onChange={(e) =>
+                          setNotes(e.target.value)
+                        }
+                      />
                     </Field>
-                    <div className="flex gap-2">
-                      <button onClick={scheduleAppointment} className="ht-button">
+
+                    <div className="ht-form-buttons">
+
+                      <button
+                        onClick={
+                          scheduleAppointment
+                        }
+                        className="ht-primary-button"
+                      >
                         Save appointment
                       </button>
-                      <button onClick={() => setShowAppointmentForm(false)} className="ht-button ht-button-muted">
+
+                      <button
+                        onClick={() =>
+                          setShowAppointmentForm(false)
+                        }
+                        className="ht-secondary-button"
+                      >
                         Cancel
                       </button>
+
                     </div>
+
                   </div>
                 )}
 
                 {appointments.length === 0 ? (
-                  <EmptyState>No appointments for this patient.</EmptyState>
+                  <EmptyState>
+                    No appointments for this patient.
+                  </EmptyState>
                 ) : (
                   <Table>
+
                     <thead>
                       <tr>
                         <Th>Date and time</Th>
                         <Th>Reason</Th>
                         <Th>Status</Th>
-                        {isAdmin && <Th srOnly>Actions</Th>}
+
+                        {isAdmin && (
+                          <Th srOnly>
+                            Actions
+                          </Th>
+                        )}
                       </tr>
                     </thead>
+
                     <tbody>
-                      {appointments.map((a) => (
-                        <tr key={a.appointment_id}>
-                          <Td className="whitespace-nowrap font-bold" style={{ color: "var(--color-brand-strong)" }}>
-                            {new Date(a.scheduled_at).toLocaleString()}
-                          </Td>
-                          <Td>{a.reason}</Td>
+
+                      {appointments.map((appointment) => (
+                        <tr
+                          key={
+                            appointment.appointment_id
+                          }
+                        >
+
                           <Td>
-                            <Badge>{a.status}</Badge>
+                            {new Date(
+                              appointment.scheduled_at
+                            ).toLocaleString()}
                           </Td>
+
+                          <Td>
+                            {appointment.reason}
+                          </Td>
+
+                          <Td>
+                            <Badge>
+                              {appointment.status}
+                            </Badge>
+                          </Td>
+
                           {isAdmin && (
                             <Td>
-                              <button onClick={() => deleteAppointment(a.appointment_id)} className="ht-button ht-button-danger">
+
+                              <button
+                                onClick={() =>
+                                  deleteAppointment(
+                                    appointment.appointment_id
+                                  )
+                                }
+                                className="ht-delete-button"
+                              >
                                 Remove
                               </button>
+
                             </Td>
                           )}
+
                         </tr>
                       ))}
+
                     </tbody>
+
                   </Table>
                 )}
+
               </div>
-            </>
-          ) : (
-            <ClinicalRecords patientId={patientId} type={section} role={role} />
+
+            </div>
           )}
-        </div>
+
+
+          {/* CLINICAL RECORDS */}
+          {section !== "general" && (
+            <ClinicalRecords
+              patientId={patientId}
+              type={
+                sidebarItems.find(
+                  (item) =>
+                    item.key === section
+                )?.recordType
+              }
+              role={role}
+            />
+          )}
+
+        </main>
+
       </div>
+
+
+      {/* ================= DESIGN ================= */}
+      <style>{`
+
+        * {
+          box-sizing: border-box;
+        }
+
+        .ht-patient-page {
+          min-height: 100vh;
+          background: #f3f8f5;
+          color: #18231e;
+          font-family: Inter, system-ui, -apple-system,
+            BlinkMacSystemFont, "Segoe UI", sans-serif;
+          padding-bottom: 40px;
+        }
+
+        /* TOP BAR */
+
+        .ht-topbar {
+          height: 72px;
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          padding: 0 42px;
+          background: #f8fcfa;
+          border-bottom: 1px solid #dce9e2;
+        }
+
+        .ht-brand {
+          display: flex;
+          align-items: center;
+          gap: 10px;
+          min-width: 220px;
+        }
+
+        .ht-brand-logo {
+          width: 38px;
+          height: 38px;
+          border-radius: 9px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          background: #3d7c62;
+          color: white;
+          font-size: 14px;
+          font-weight: 800;
+        }
+
+        .ht-brand-name {
+          color: #225c45;
+          font-size: 18px;
+          font-weight: 800;
+        }
+
+        .ht-main-nav {
+          display: flex;
+          align-items: center;
+          gap: 6px;
+        }
+
+        .ht-main-nav-item {
+          border: none;
+          background: transparent;
+          padding: 10px 18px;
+          border-radius: 9px;
+          color: #24332c;
+          font-size: 12px;
+          font-weight: 600;
+          cursor: pointer;
+        }
+
+        .ht-main-nav-item.active {
+          background: #e0f0e8;
+          color: #245e48;
+        }
+
+        .ht-user-area {
+          display: flex;
+          align-items: center;
+          gap: 14px;
+          min-width: 220px;
+          justify-content: flex-end;
+        }
+
+        .ht-user-info {
+          display: flex;
+          flex-direction: column;
+          align-items: flex-end;
+        }
+
+        .ht-user-info strong {
+          font-size: 12px;
+        }
+
+        .ht-user-info span {
+          color: #7a8680;
+          font-size: 10px;
+        }
+
+        .ht-logout-button {
+          display: flex;
+          align-items: center;
+          gap: 6px;
+          padding: 9px 12px;
+          border: 1px solid #cbd9d2;
+          border-radius: 7px;
+          background: white;
+          color: #35443d;
+          font-size: 11px;
+          font-weight: 700;
+          cursor: pointer;
+        }
+
+        /* PATIENT HEADER */
+
+        .ht-patient-header {
+          margin: 24px 42px 16px;
+          min-height: 112px;
+          padding: 20px 28px;
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          gap: 20px;
+          background: #ffffff;
+          border: 1px solid #dfeae4;
+          border-radius: 13px;
+          box-shadow: 0 2px 8px rgba(31, 61, 48, 0.03);
+        }
+
+        .ht-patient-profile {
+          display: flex;
+          align-items: center;
+          gap: 16px;
+        }
+
+        .ht-profile-circle {
+          width: 64px;
+          height: 64px;
+          border-radius: 50%;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          background: #e3f2eb;
+          color: #27634b;
+        }
+
+        .ht-patient-profile h1 {
+          margin: 0;
+          font-size: 21px;
+          font-weight: 750;
+          color: #17211d;
+        }
+
+        .ht-patient-profile p {
+          margin: 5px 0 0;
+          color: #5f6b65;
+          font-size: 12px;
+        }
+
+        .ht-back-button {
+          display: flex;
+          align-items: center;
+          gap: 7px;
+          padding: 9px 13px;
+          border: 1px solid #aebfb6;
+          border-radius: 7px;
+          background: white;
+          color: #2c4036;
+          font-size: 11px;
+          font-weight: 700;
+          cursor: pointer;
+        }
+
+        /* MAIN */
+
+        .ht-patient-content {
+          display: grid;
+          grid-template-columns: 235px minmax(0, 1fr);
+          gap: 16px;
+          margin: 0 42px;
+          align-items: start;
+        }
+
+        /* SIDEBAR */
+
+        .ht-patient-sidebar {
+          background: #ffffff;
+          border: 1px solid #dfeae4;
+          border-radius: 12px;
+          padding: 10px;
+          min-height: 430px;
+        }
+
+        .ht-sidebar-item {
+          width: 100%;
+          min-height: 54px;
+          display: flex;
+          align-items: center;
+          gap: 11px;
+          padding: 8px 12px;
+          margin-bottom: 3px;
+          border: none;
+          border-radius: 9px;
+          background: transparent;
+          color: #29352f;
+          text-align: left;
+          font-size: 12px;
+          font-weight: 650;
+          cursor: pointer;
+          transition: 0.18s ease;
+        }
+
+        .ht-sidebar-item:hover {
+          background: #f0f7f3;
+        }
+
+        .ht-sidebar-item.active {
+          background: #e2f2ea;
+          color: #155b41;
+        }
+
+        .ht-sidebar-icon {
+          width: 31px;
+          height: 31px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          flex-shrink: 0;
+          color: #4c6258;
+        }
+
+        .ht-sidebar-item.active
+          .ht-sidebar-icon {
+          color: #226b50;
+        }
+
+        /* MAIN CARD */
+
+        .ht-patient-main {
+          min-width: 0;
+        }
+
+        .ht-content-card {
+          padding: 20px;
+          background: white;
+          border: 1px solid #dfeae4;
+          border-radius: 11px;
+        }
+
+        .ht-content-card h2 {
+          margin: 0 0 18px;
+          font-size: 16px;
+          font-weight: 750;
+        }
+
+        .ht-card-heading {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          gap: 12px;
+          margin-bottom: 16px;
+        }
+
+        .ht-card-heading h2 {
+          margin: 0;
+        }
+
+        .ht-detail-grid {
+          display: grid;
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+          gap: 18px 28px;
+        }
+
+        .ht-detail-grid dt {
+          margin-bottom: 4px;
+          font-size: 10px;
+          font-weight: 700;
+          color: #78837d;
+        }
+
+        .ht-detail-grid dd {
+          margin: 0;
+          font-size: 12px;
+          color: #28352f;
+        }
+
+        /* BUTTONS */
+
+        .ht-small-button {
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
+          min-height: 34px;
+          padding: 0 13px;
+          border: 1px solid #9eb7aa;
+          border-radius: 7px;
+          background: white;
+          color: #315846;
+          font-size: 11px;
+          font-weight: 700;
+          cursor: pointer;
+        }
+
+        .ht-primary-button {
+          padding: 9px 14px;
+          border: none;
+          border-radius: 7px;
+          background: #3f725b;
+          color: white;
+          font-size: 11px;
+          font-weight: 700;
+          cursor: pointer;
+        }
+
+        .ht-secondary-button {
+          padding: 9px 14px;
+          border: 1px solid #cbd8d1;
+          border-radius: 7px;
+          background: white;
+          color: #56645d;
+          font-size: 11px;
+          font-weight: 700;
+          cursor: pointer;
+        }
+
+        .ht-delete-button {
+          padding: 7px 10px;
+          border: 1px solid #ddb5b5;
+          border-radius: 6px;
+          background: #fffafa;
+          color: #a45151;
+          font-size: 10px;
+          font-weight: 700;
+          cursor: pointer;
+        }
+
+        /* FORMS */
+
+        .ht-form-box {
+          display: grid;
+          gap: 13px;
+          margin-bottom: 16px;
+          padding: 17px;
+          border-radius: 9px;
+          background: #f4f8f6;
+        }
+
+        .ht-form-buttons {
+          display: flex;
+          gap: 8px;
+        }
+
+        .ht-empty {
+          padding: 25px;
+          text-align: center;
+          border-radius: 8px;
+          background: #f8faf9;
+          color: #7b8580;
+          font-size: 12px;
+        }
+
+        .ht-muted {
+          color: #78837d;
+          font-size: 11px;
+        }
+
+        .ht-loading {
+          padding: 40px;
+          color: #65736c;
+          font-family: Inter, sans-serif;
+        }
+
+        @media (max-width: 900px) {
+
+          .ht-topbar {
+            padding: 0 20px;
+          }
+
+          .ht-main-nav {
+            display: none;
+          }
+
+          .ht-patient-header {
+            margin-left: 20px;
+            margin-right: 20px;
+          }
+
+          .ht-patient-content {
+            margin: 0 20px;
+            grid-template-columns: 190px minmax(0, 1fr);
+          }
+
+        }
+
+        @media (max-width: 700px) {
+
+          .ht-topbar {
+            padding: 0 14px;
+          }
+
+          .ht-brand-name {
+            display: none;
+          }
+
+          .ht-user-info {
+            display: none;
+          }
+
+          .ht-patient-header {
+            margin: 14px;
+            padding: 15px;
+            align-items: flex-start;
+            flex-direction: column;
+          }
+
+          .ht-patient-content {
+            margin: 0 14px;
+            grid-template-columns: 1fr;
+          }
+
+          .ht-patient-sidebar {
+            min-height: auto;
+          }
+
+          .ht-sidebar-item {
+            min-height: 45px;
+          }
+
+          .ht-detail-grid {
+            grid-template-columns: 1fr;
+          }
+
+        }
+
+      `}</style>
     </div>
   );
 }
@@ -274,8 +1161,8 @@ export function PatientRecord({ patientId, role, onBack, onPatientUpdated }) {
 function Detail({ label, value }) {
   return (
     <div>
-      <dt className="ht-muted text-xs font-bold">{label}</dt>
-      <dd className="m-0">{value || "--"}</dd>
+      <dt>{label}</dt>
+      <dd>{value || "--"}</dd>
     </div>
   );
 }
