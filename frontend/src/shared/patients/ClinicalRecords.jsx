@@ -191,6 +191,16 @@ export function ClinicalRecords({ patientId, type, role, readOnly = false }) {
         </div>
       </div>
 
+      {/* ADD FORM */}
+      {showForm && canManage && (
+        <div className="ht-health-form">
+          <div className="ht-health-form-title">
+            <ClipboardList size={18} />
+            <h3>New Health Assessment</h3>
+          </div>
+
+          
+
   const columnFields = Object.entries(definition.fields).filter(([, f]) => f.column || f.primary);
   const primaryField = Object.entries(definition.fields).find(([, f]) => f.primary);
   const extraFields = columnFields.filter(([key]) => !primaryField || key !== primaryField[0]);
