@@ -124,6 +124,16 @@ export function ClinicalRecords({ patientId, type, role, readOnly = false }) {
     }
     return value;
   }
+  function getRecordDate(record) {
+    const value = record[definition.dateField];
+    if (!value) return "--";
+
+    return new Date(value).toLocaleDateString(undefined, {
+      month: "long",
+      day: "numeric",
+      year: "numeric",
+    });
+  }
   
 
   const columnFields = Object.entries(definition.fields).filter(([, f]) => f.column || f.primary);
