@@ -386,124 +386,416 @@ export function ClinicalRecords({ patientId, type, role, readOnly = false }) {
                 )
               }
 
-              
+              {/* DATE */}
+                <div className="ht-assessment-row">
+                  <div className="ht-assessment-icon">
+                    <CalendarDays size={17} />
+                  </div>
 
+                  <div className="ht-assessment-label">
+                    {definition.dateLabel}
+                  </div>
 
+                  <div className="ht-assessment-colon">
+                    :
+                  </div>
 
+                  <div className="ht-assessment-value">
+                    {getRecordDate(record)}
+                  </div>
+                </div>
+              </div>
+              {/* FOOTER */}
+              <div className="ht-assessment-footer">
+                <div className="ht-assessment-meta">
+                  {getCreatedDate(record) && (
+                    <div>
+                      <CalendarDays size={14} />
+                      <span>
+                        Recorded on {getCreatedDate(record)}
+                      </span>
+                    </div>
+                  )}
 
+                  {getRecordedBy(record) && (
+                    <div>
+                      <UserRound size={14} />
+                      <span>
+                        Recorded by {getRecordedBy(record)}
+                      </span>
+                    </div>
+                  )}
+                </div>
 
-  const columnFields = Object.entries(definition.fields).filter(([, f]) => f.column || f.primary);
-  const primaryField = Object.entries(definition.fields).find(([, f]) => f.primary);
-  const extraFields = columnFields.filter(([key]) => !primaryField || key !== primaryField[0]);
+                {canManage && (
+                  <div className="ht-assessment-buttons">
+                    <button
+                      type="button"
+                      className="ht-edit-button"
+                      title="Edit assessment"
+                      onClick={() =>
+                        alert(
+                          "Edit functionality can be connected once the backend update endpoint is available."
+                        )
+                      }
+                    >
+                      <Pencil size={15} />
+                      Edit
+                    </button>
 
-  return (
-    <div className="ht-panel">
-      <div className="mb-3 flex flex-wrap items-center justify-between gap-2">
-        <h2>{definition.label}</h2>
-        <div className="flex items-center gap-2">
-          <span className="ht-pill">{records.length} total</span>
-          {canManage && (
-            <button type="button" onClick={toggleForm} className="ht-button">
-              {showForm ? "Cancel" : `Add ${definition.singular}`}
-            </button>
-          )}
-        </div>
-      </div>
-
-      {showForm && canManage && (
-        <div className="mb-4 grid gap-3 rounded-xl p-4" style={{ background: "var(--color-surface-muted)" }}>
-          {error && <div className="ht-login-alert ht-login-alert-error">{error}</div>}
-
-          {Object.entries(definition.fields).map(([column, field]) => (
-            <Field key={column} label={field.label} required={field.required}>
-              {field.type === "textarea" ? (
-                <Textarea value={form[column] || ""} onChange={(e) => setForm({ ...form, [column]: e.target.value })} />
-              ) : field.type === "select" ? (
-                <Select value={form[column] || ""} onChange={(e) => setForm({ ...form, [column]: e.target.value })}>
-                  <option value="">-- Select --</option>
-                  {Object.entries(field.options || {}).map(([value, label]) => (
-                    <option key={value} value={value}>
-                      {label}
-                    </option>
-                  ))}
-                </Select>
-              ) : (
-                <Input type={field.type === "number" ? "number" : "text"} value={form[column] || ""} onChange={(e) => setForm({ ...form, [column]: e.target.value })} />
-              )}
-            </Field>
+                    <button
+                      type="button"
+                      className="ht-delete-button"
+                      onClick={() =>
+                        handleDelete(record.record_id)
+                      }
+                    >
+                      <Trash2 size={15} />
+                      Delete
+                    </button>
+                  </div>
+                )}
+              </div>
+            </div>
           ))}
 
-          <Field label={definition.dateLabel} required>
-            <Input type="date" value={recordDate} onChange={(e) => setRecordDate(e.target.value)} max={new Date().toISOString().slice(0, 10)} />
-          </Field>
-
-          <div className="flex gap-2">
-            <button type="button" onClick={handleSave} className="ht-button">
-              Save {definition.singular}
-            </button>
-            <button type="button" onClick={toggleForm} className="ht-button ht-button-muted">
-              Cancel
-            </button>
-          </div>
-        </div>
-      )}
-
-      {loading ? (
-        <p className="ht-muted text-sm">Loading...</p>
-      ) : records.length === 0 ? (
-        <EmptyState>No {definition.label.toLowerCase()} recorded for this patient.</EmptyState>
-      ) : (
-        <>
-          <Table>
-            <thead>
-              <tr>
-                <Th>{primaryField?.[1]?.label}</Th>
-                {extraFields.map(([column, field]) => (
-                  <Th key={column}>{field.label}</Th>
-                ))}
-                <Th>{definition.dateLabel}</Th>
-                {canManage && <Th srOnly>Actions</Th>}
-              </tr>
-            </thead>
-            <tbody>
-              {records.map((record) => (
-                <tr key={record.record_id}>
-                  <Td className="font-bold" style={{ color: "var(--color-brand-strong)" }}>
-                    {primaryField ? record[primaryField[0]] : ""}
-                  </Td>
-                  {extraFields.map(([column, field]) =>
-                    field.type === "select" ? (
-                      <Td key={column}>
-                        {record[column] ? (
-                          <Badge>{field.options?.[record[column]] || record[column]}</Badge>
-                        ) : (
-                          <span className="ht-muted">--</span>
-                        )}
-                      </Td>
-                    ) : (
-                      <Td key={column}>{record[column] || "--"}</Td>
-                    )
-                  )}
-                  <Td className="whitespace-nowrap">{new Date(record[definition.dateField]).toLocaleDateString()}</Td>
-                  {canManage && (
-                    <Td>
-                      <button onClick={() => handleDelete(record.record_id)} className="ht-button ht-button-danger">
-                        Remove
-                      </button>
-                    </Td>
-                  )}
-                </tr>
-              ))}
-            </tbody>
-          </Table>
-
           {records.length >= perPage && (
-            <button onClick={() => setPerPage((p) => p + 10)} className="ht-button ht-button-muted mt-3">
+            <button
+              type="button"
+              onClick={() =>
+                setPerPage((p) => p + 10)
+              }
+              className="ht-show-more"
+            >
               Show more
             </button>
           )}
         </>
       )}
-    </div>
-  );
+
+      {/* DESIGN CSS */}
+      <style>{`
+        .ht-health-assessment {
+          width: 100%;
+        }
+
+        .ht-health-assessment-header {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          gap: 16px;
+          padding: 4px 2px 16px;
+        }
+
+        .ht-health-assessment-header h2 {
+          margin: 0;
+          font-size: 18px;
+          font-weight: 700;
+          color: #17211d;
+        }
+
+        .ht-health-assessment-actions {
+          display: flex;
+          align-items: center;
+          gap: 10px;
+        }
+
+        .ht-health-count {
+          font-size: 12px;
+          font-weight: 600;
+          color: #64716b;
+          white-space: nowrap;
+        }
+
+        .ht-health-add-button {
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
+          gap: 7px;
+          min-height: 38px;
+          padding: 0 14px;
+          border: 1px solid #aebdb5;
+          border-radius: 7px;
+          background: #f9fcfa;
+          color: #20312a;
+          font-size: 12px;
+          font-weight: 700;
+          cursor: pointer;
+          transition: 0.2s ease;
+        }
+
+        .ht-health-add-button:hover {
+          background: #eaf5ef;
+          border-color: #8ea99b;
+        }
+
+        .ht-health-form {
+          margin-bottom: 16px;
+          padding: 20px;
+          border: 1px solid #dce7e1;
+          border-radius: 10px;
+          background: #f8fbf9;
+        }
+
+        .ht-health-form-title {
+          display: flex;
+          align-items: center;
+          gap: 9px;
+          margin-bottom: 18px;
+          color: #263a31;
+        }
+
+        .ht-health-form-title h3 {
+          margin: 0;
+          font-size: 15px;
+        }
+
+        .ht-health-form-grid {
+          display: grid;
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+          gap: 14px;
+        }
+
+        .ht-health-form-buttons {
+          display: flex;
+          gap: 8px;
+          margin-top: 18px;
+        }
+
+        .ht-health-save-button,
+        .ht-health-cancel-button {
+          min-height: 38px;
+          padding: 0 15px;
+          border-radius: 7px;
+          font-size: 12px;
+          font-weight: 700;
+          cursor: pointer;
+        }
+
+        .ht-health-save-button {
+          border: 1px solid #496d5b;
+          background: #496d5b;
+          color: white;
+        }
+
+        .ht-health-cancel-button {
+          border: 1px solid #c7d2cc;
+          background: white;
+          color: #52605a;
+        }
+
+        .ht-health-empty {
+          min-height: 180px;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: center;
+          text-align: center;
+          border: 1px solid #e1e9e4;
+          border-radius: 10px;
+          background: #fbfdfc;
+          padding: 30px;
+        }
+
+        .ht-health-empty-icon {
+          width: 46px;
+          height: 46px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          margin-bottom: 10px;
+          border-radius: 50%;
+          background: #e5f1eb;
+          color: #557967;
+        }
+
+        .ht-health-empty h3 {
+          margin: 0 0 5px;
+          font-size: 14px;
+          color: #26332e;
+        }
+
+        .ht-health-empty p {
+          margin: 0;
+          font-size: 12px;
+          color: #7b8580;
+        }
+
+        .ht-health-empty-button {
+          display: inline-flex;
+          align-items: center;
+          gap: 6px;
+          margin-top: 14px;
+          padding: 8px 13px;
+          border: 0;
+          border-radius: 7px;
+          background: #496d5b;
+          color: white;
+          font-size: 12px;
+          font-weight: 700;
+          cursor: pointer;
+        }
+
+        .ht-assessment-card {
+          overflow: hidden;
+          border: 1px solid #dfe8e3;
+          border-radius: 10px;
+          background: #ffffff;
+          box-shadow: 0 2px 8px rgba(36, 55, 46, 0.04);
+        }
+
+        .ht-assessment-details {
+          padding: 7px 14px 10px;
+        }
+
+        .ht-assessment-row {
+          display: grid;
+          grid-template-columns: 34px 95px 18px minmax(0, 1fr);
+          align-items: center;
+          min-height: 48px;
+          border-bottom: 1px solid #edf1ef;
+          font-size: 12px;
+        }
+
+        .ht-assessment-row:last-child {
+          border-bottom: none;
+        }
+
+        .ht-assessment-icon {
+          width: 27px;
+          height: 27px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          border-radius: 7px;
+          background: #e9f3ed;
+          color: #557c67;
+        }
+
+        .ht-assessment-label {
+          font-weight: 700;
+          color: #34423b;
+        }
+
+        .ht-assessment-colon {
+          color: #8a948f;
+          font-weight: 600;
+        }
+
+        .ht-assessment-value {
+          color: #3e4843;
+          line-height: 1.5;
+        }
+
+        .ht-status-active {
+          color: #4d8264;
+          font-weight: 700;
+        }
+
+        .ht-assessment-footer {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          gap: 15px;
+          padding: 12px 14px;
+          border-top: 1px solid #e8eeeb;
+          background: #fbfcfb;
+        }
+
+        .ht-assessment-meta {
+          display: flex;
+          flex-direction: column;
+          gap: 6px;
+          color: #68736e;
+          font-size: 10px;
+        }
+
+        .ht-assessment-meta > div {
+          display: flex;
+          align-items: center;
+          gap: 6px;
+        }
+
+        .ht-assessment-buttons {
+          display: flex;
+          gap: 7px;
+        }
+
+        .ht-edit-button,
+        .ht-delete-button {
+          display: inline-flex;
+          align-items: center;
+          gap: 5px;
+          min-height: 30px;
+          padding: 0 11px;
+          border-radius: 6px;
+          font-size: 11px;
+          font-weight: 700;
+          cursor: pointer;
+        }
+
+        .ht-edit-button {
+          border: 1px solid #9eb4a8;
+          background: #f8fcfa;
+          color: #486657;
+        }
+
+        .ht-delete-button {
+          border: 1px solid #d9a7a7;
+          background: #fffafa;
+          color: #ad5b5b;
+        }
+
+        .ht-edit-button:hover {
+          background: #edf6f0;
+        }
+
+        .ht-delete-button:hover {
+          background: #fff0f0;
+        }
+
+        .ht-show-more {
+          display: block;
+          margin: 12px auto 0;
+          padding: 8px 15px;
+          border: 1px solid #cdd9d3;
+          border-radius: 7px;
+          background: white;
+          color: #53645b;
+          font-size: 11px;
+          font-weight: 700;
+          cursor: pointer;
+        }
+
+        @media (max-width: 700px) {
+          .ht-health-assessment-header {
+            align-items: flex-start;
+            flex-direction: column;
+          }
+
+          .ht-health-assessment-actions {
+            width: 100%;
+            justify-content: space-between;
+          }
+
+          .ht-health-form-grid {
+            grid-template-columns: 1fr;
+          }
+
+          .ht-assessment-row {
+            grid-template-columns: 32px 85px 14px minmax(0, 1fr);
+            font-size: 11px;
+          }
+
+          .ht-assessment-footer {
+            align-items: flex-start;
+            flex-direction: column;
+          }
+
+          .ht-assessment-buttons {
+            width: 100%;
+          }
+        }
+      `}</style>
+    </div>);
 }
