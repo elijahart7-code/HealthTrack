@@ -14,7 +14,6 @@ import {
   BriefcaseMedical,
   TriangleAlert,
   ArrowLeft,
-  LogOut,
 } from "lucide-react";
 
 export function PatientRecord({
@@ -183,70 +182,7 @@ export function PatientRecord({
   return (
     <div className="ht-patient-page">
 
-      {/* ================= TOP NAVIGATION ================= */}
-      <header className="ht-topbar">
-
-        <div className="ht-brand">
-          <div className="ht-brand-logo">
-            HT
-          </div>
-
-          <div className="ht-brand-name">
-            HealthTrack
-          </div>
-        </div>
-
-        <nav className="ht-main-nav">
-
-          <button
-            type="button"
-            className="ht-main-nav-item"
-          >
-            Dashboard
-          </button>
-
-          <button
-            type="button"
-            className="ht-main-nav-item active"
-          >
-            Patients
-          </button>
-
-          <button
-            type="button"
-            className="ht-main-nav-item"
-          >
-            Appointments
-          </button>
-
-        </nav>
-
-        <div className="ht-user-area">
-
-          <div className="ht-user-info">
-            <strong>
-              {role === "admin"
-                ? "Admin User"
-                : "Midwife User"}
-            </strong>
-
-            <span>
-              {role === "admin" ? "Admin" : "Midwife"}
-            </span>
-          </div>
-
-          <button
-            type="button"
-            className="ht-logout-button"
-          >
-            <LogOut size={15} />
-            Log out
-          </button>
-
-        </div>
-      </header>
-
-
+      
       {/* ================= PATIENT HEADER ================= */}
       <section className="ht-patient-header">
 
