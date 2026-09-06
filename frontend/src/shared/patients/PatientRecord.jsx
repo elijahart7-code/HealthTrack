@@ -14,6 +14,16 @@ import {
   BriefcaseMedical,
   TriangleAlert,
   ArrowLeft,
+  BriefcaseBusiness,
+  MapPin,
+  CalendarDays,
+  Cake,
+  Heart,
+  Droplets,
+  BriefcaseBusiness,
+  Flag,
+  Phone,
+  IdCard,
 } from "lucide-react";
 
 export function PatientRecord({
@@ -293,11 +303,13 @@ export function PatientRecord({
             <div className="ht-detail-grid">
 
             <Detail
+                 icon={UserRound size={20} />}
                  label="Full Name"
                  value={patient.full_name}
             />
 
             <Detail
+                 icon={UserRound size={20} />}
                  label="Sex"
                  value={
                  patient.sex
@@ -307,66 +319,79 @@ export function PatientRecord({
             />
 
             <Detail
+                icon={MapPin size={20} />}
                 label="Address"
                 value={patient.address}
             />
 
            <Detail
+                icon={CalendarDays size={20} />}
                 label="Date of Birth"
                 value={patient.birthdate}
             />
 
            <Detail
+               icon={Cake size={20} />}
                label="Age"
                value={`${calculateAge(patient.birthdate)} years old`}
             />
 
            <Detail
+              icon={Phone size={20} />}
               label="Contact Number"
               value={patient.contact_number}
             />
 
            <Detail
+              icon={Heart size={20} />}
               label="Civil Status"
               value={patient.civil_status}
             />
 
            <Detail
+              icon={Droplets size={20} />}
               label="Blood Type"
               value={patient.blood_type}
             />
 
            <Detail
+              icon={BriefcaseBusiness size={20} />}
               label="Occupation"
               value={patient.occupation}
             />
 
            <Detail
+               icon={IdCard size={20} />}
                label="Barangay ID Number"
                value={patient.barangay_id}
             />
 
            <Detail
+               icon={Flag size={20} />}
                label="Nationality"
                value={patient.nationality}
             />
 
           <Detail
+               icon={MapPin size={20} />}
                label="Place of Birth"
                value={patient.place_of_birth}
            />
 
           <Detail
+               icon={UserRound size={20} />}
                label="Emergency Contact Name"
                value={patient.emergency_contact_name}
            />
 
           <Detail
-                label="Emergency Contact Number"
-                value={patient.emergency_contact_number}
+               icon={Phone size={20} />}
+               label="Emergency Contact Number"
+               value={patient.emergency_contact_number}
           />
 
           <Detail
+                icon={UserRound size={20} />}
                 label="Relationship"
                 value={patient.emergency_contact_relationship}
           />
@@ -957,22 +982,48 @@ export function PatientRecord({
         }
 
         .ht-detail-grid {
+        .ht-emergency-grid {
           display: grid;
-          grid-template-columns: repeat(2, minmax(0, 1fr));
-          gap: 18px 28px;
+          grid-template-columns: repeat(3, minmax(0, 1fr));
+          column gap: 40px;
+          row gap: 24px;
         }
-
-        .ht-detail-grid dt {
-          margin-bottom: 4px;
-          font-size: 10px;
-          font-weight: 700;
-          color: #78837d;
+          .ht-emergency-grid {
+          margin-top: 24px;
+          padding-top: 24px;
+          border-top: 1px solid #dfe8e2;
         }
-
-        .ht-detail-grid dd {
-          margin: 0;
+          .ht-detail-item {
+          display: flex;
+          align-items: flex-start;
+          gap: 12px; 
+        }
+        
+         .ht-detail-icon {
+         width: 38px;
+         height: 38px;
+         min-width: 38px;
+         display: flex;
+         align-items: center;
+         justify-content: center;
+         background: #17834a;
+         border-radius: 8%;
+       }
+         .ht-detail-text {
+          display: flex;
+          flex-direction: column;
+          gap: 4px;
+          min-width: 0;
+        }
+          .ht-detail-label {
           font-size: 12px;
-          color: #28352f;
+          font-weight: 600;
+          color: #333;
+        }
+          .ht-detail-value {
+          font-size: 13px;
+          color: #222;
+          line-height: 1.4;
         }
 
         /* BUTTONS */
@@ -1128,11 +1179,16 @@ export function PatientRecord({
   );
 }
 
-function Detail({ label, value }) {
+function Detail({ icon, label, value }) {
   return (
-    <div>
-      <dt>{label}</dt>
-      <dd>{value || "--"}</dd>
+    <div className="ht-detail-item">
+      <div className="ht-detail-icon">
+        {icon}
+      </div>  
+      <div className="ht-detail-text">
+        <span className="ht-detail-label">{label}</span>
+        <span className="ht-detail-value">{value || "--"}</span>
+    </div>
     </div>
   );
 }
