@@ -290,72 +290,88 @@ export function PatientRecord({
 
           {/* GENERAL / PATIENT INFORMATION */}
           {section === "general" && (
-            <div className="grid gap-4">
+            <div className="ht-detail-grid">
 
-              <div className="ht-content-card">
+            <Detail
+                 label="Full Name"
+                 value={patient.full_name}
+            />
 
-                <h2>Patient Information</h2>
+            <Detail
+                 label="Sex"
+                 value={
+                 patient.sex
+                ? patient.sex.charAt(0).toUpperCase() + patient.sex.slice(1)
+                : "—"
+        }
+            />
 
-                <dl className="ht-detail-grid">
+            <Detail
+                label="Address"
+                value={patient.address}
+            />
 
-                  <Detail
-                    label="Civil status"
-                    value={patient.civil_status}
-                  />
+           <Detail
+                label="Date of Birth"
+                value={patient.birthdate}
+            />
 
-                  <Detail
-                    label="Blood type"
-                    value={patient.blood_type}
-                  />
+           <Detail
+               label="Age"
+               value={`${calculateAge(patient.birthdate)} years old`}
+            />
 
-                  <Detail
-                    label="Occupation"
-                    value={patient.occupation}
-                  />
+           <Detail
+              label="Contact Number"
+              value={patient.contact_number}
+            />
 
-                  <Detail
-                    label="Barangay ID number"
-                    value={patient.barangay_id_number}
-                  />
+           <Detail
+              label="Civil Status"
+              value={patient.civil_status}
+            />
 
-                  <Detail
-                    label="Nationality"
-                    value={patient.nationality}
-                  />
+           <Detail
+              label="Blood Type"
+              value={patient.blood_type}
+            />
 
-                  <Detail
-                    label="Place of birth"
-                    value={patient.place_of_birth}
-                  />
+           <Detail
+              label="Occupation"
+              value={patient.occupation}
+            />
 
-                  <Detail
-                    label="Address"
-                    value={patient.address}
-                  />
+           <Detail
+               label="Barangay ID Number"
+               value={patient.barangay_id}
+            />
 
-                  <Detail
-                    label="Contact number"
-                    value={patient.contact_number}
-                  />
+           <Detail
+               label="Nationality"
+               value={patient.nationality}
+            />
 
-                  <Detail
-                    label="Emergency contact"
-                    value={patient.emergency_contact_name}
-                  />
+          <Detail
+               label="Place of Birth"
+               value={patient.place_of_birth}
+           />
 
-                  <Detail
-                    label="Emergency number"
-                    value={patient.emergency_contact_number}
-                  />
+          <Detail
+               label="Emergency Contact Name"
+               value={patient.emergency_contact_name}
+           />
 
-                  <Detail
-                    label="Relationship"
-                    value={patient.emergency_contact_relationship}
-                  />
+          <Detail
+                label="Emergency Contact Number"
+                value={patient.emergency_contact_number}
+          />
 
-                </dl>
+          <Detail
+                label="Relationship"
+                value={patient.emergency_contact_relationship}
+          />
 
-              </div>
+          </div>
 
 
               {/* PORTAL ACCOUNT */}
