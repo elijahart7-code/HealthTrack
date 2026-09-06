@@ -1,9 +1,21 @@
 import { useEffect, useState } from "react";
 import { api } from "../../lib/axios";
 import { RECORD_TYPES } from "../../config/recordTypes";
+import {
+  Activity,
+  CalendarDays,
+  CheckCircle2,
+  ClipboardList,
+  FileText,
+  MessageSquare,
+  Pill,
+  Plus,
+  Trash2,
+  UserRound,
+  Pencil,
+  X,
+} from "lucide-react";
 import { Field, Input, Select, Textarea } from "../../components/ui/Input";
-import { Badge, EmptyState, Table, Th, Td } from "../../components/ui/Table";
-
 /**
  * Table + form for one clinical record type. It is driven entirely by the
  * shared `RECORD_TYPES` config and renders generic fields without any
@@ -23,9 +35,15 @@ export function ClinicalRecords({ patientId, type, role, readOnly = false }) {
 
   async function load() {
     setLoading(true);
+    try{
     const { data } = await api.get(`/patients/${patientId}/records/${type}`, { params: { perPage } });
-    setRecords(data.records);
+    setRecords(data.records || []);
+    } catch (err) {
+      console.error(err);
+      setRecords([]);
+    } finally {
     setLoading(false);
+    } 
   }
 
   useEffect(() => {
