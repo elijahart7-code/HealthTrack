@@ -199,7 +199,108 @@ export function ClinicalRecords({ patientId, type, role, readOnly = false }) {
             <h3>New Health Assessment</h3>
           </div>
 
-          
+          {error && (
+            <div className="ht-login-alert ht-login-alert-error">
+              {error}
+            </div>
+          )}
+
+          <div className="ht-health-form-grid">
+            {Object.entries(definition.fields).map(
+              ([column, field]) => (
+                <Field
+                  key={column}
+                  label={field.label}
+                  required={field.required}
+                >
+                  {field.type === "textarea" ? (
+                    <Textarea
+                      value={form[column] || ""}
+                      onChange={(e) =>
+                        setForm({
+                          ...form,
+                          [column]: e.target.value,
+                        })
+                      }
+                    />
+                  ) : field.type === "select" ? (
+                    <Select
+                      value={form[column] || ""}
+                      onChange={(e) =>
+                        setForm({
+                          ...form,
+                          [column]: e.target.value,
+                        })
+                      }
+                    >
+                      <option value="">-- Select --</option>
+
+                      {Object.entries(
+                        field.options || {}
+                      ).map(([value, label]) => (
+                        <option key={value} value={value}>
+                          {label}
+                        </option>
+                      ))}
+                    </Select>
+                  ) : (
+                    <Input
+                      type={
+                        field.type === "number"
+                          ? "number"
+                          : "text"
+                      }
+                      value={form[column] || ""}
+                      onChange={(e) =>
+                        setForm({
+                          ...form,
+                          [column]: e.target.value,
+                        })
+                      }
+                    />
+                  )}
+                </Field>
+              )
+            )}
+
+            <Field label={definition.dateLabel} required>
+              <Input
+                type="date"
+                value={recordDate}
+                onChange={(e) =>
+                  setRecordDate(e.target.value)
+                }
+                max={new Date()
+                  .toISOString()
+                  .slice(0, 10)}
+              />
+            </Field>
+          </div>
+
+          <div className="ht-health-form-buttons">
+            <button
+              type="button"
+              onClick={handleSave}
+              className="ht-health-save-button"
+            >
+              Save Assessment
+            </button>
+
+            <button
+              type="button"
+              onClick={toggleForm}
+              className="ht-health-cancel-button"
+            >
+              Cancel
+            </button>
+          </div>
+        </div>
+      )
+      }
+
+      
+
+
 
   const columnFields = Object.entries(definition.fields).filter(([, f]) => f.column || f.primary);
   const primaryField = Object.entries(definition.fields).find(([, f]) => f.primary);
