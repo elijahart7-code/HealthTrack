@@ -693,6 +693,7 @@ export function PatientRecord({
           display: flex;
           align-items: center;
           justify-content: space-between;
+          width: 100%;
           padding: 0 42px;
           background: #f8fcfa;
           border-bottom: 1px solid #dce9e2;
