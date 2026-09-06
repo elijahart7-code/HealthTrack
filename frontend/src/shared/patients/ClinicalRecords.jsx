@@ -16,44 +16,61 @@ import {
   X,
 } from "lucide-react";
 import { Field, Input, Select, Textarea } from "../../components/ui/Input";
+
 /**
  * Table + form for one clinical record type. It is driven entirely by the
  * shared `RECORD_TYPES` config and renders generic fields without any
  * per-record-type branching.
  */
+
 export function ClinicalRecords({ patientId, type, role, readOnly = false }) {
   const definition = RECORD_TYPES[type];
+
   const [records, setRecords] = useState([]);
   const [loading, setLoading] = useState(true);
   const [showForm, setShowForm] = useState(false);
   const [perPage, setPerPage] = useState(10);
   const [form, setForm] = useState({});
-  const [recordDate, setRecordDate] = useState(new Date().toISOString().slice(0, 10));
+  const [recordDate, setRecordDate] = useState(
+    new Date().toISOString().slice(0, 10)
+  );
   const [error, setError] = useState(null);
 
   const canManage = !readOnly && role === "admin";
 
   async function load() {
     setLoading(true);
-    try{
-    const { data } = await api.get(`/patients/${patientId}/records/${type}`, { params: { perPage } });
-    setRecords(data.records || []);
+
+    try {
+      const { data } = await api.get(
+        `/patients/${patientId}/records/${type}`,
+        {
+          params: { perPage },
+        }
+      );
+
+      setRecords(data.records || []);
     } catch (err) {
       console.error(err);
       setRecords([]);
     } finally {
-    setLoading(false);
-    } 
+      setLoading(false);
+    }
   }
 
   useEffect(() => {
     load();
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [type, perPage]);
 
   function resetForm() {
     const blank = {};
-    Object.keys(definition.fields).forEach((c) => (blank[c] = ""));
+
+    Object.keys(definition.fields).forEach((column) => {
+      blank[column] = "";
+    });
+
     setForm(blank);
     setRecordDate(new Date().toISOString().slice(0, 10));
     setError(null);
@@ -63,69 +80,103 @@ export function ClinicalRecords({ patientId, type, role, readOnly = false }) {
     if (showForm) {
       resetForm();
     }
+
     setShowForm((value) => !value);
   }
 
   async function handleSave() {
     setError(null);
+
     try {
-      await api.post(`/patients/${patientId}/records/${type}`, { ...form, recordDate });
+      await api.post(
+        `/patients/${patientId}/records/${type}`,
+        {
+          ...form,
+          recordDate,
+        }
+      );
+
       resetForm();
       setShowForm(false);
       load();
     } catch (err) {
-      setError(err?.response?.data?.error || "Could not save that record.");
+      setError(
+        err?.response?.data?.error ||
+          "Could not save that record."
+      );
     }
   }
 
   async function handleDelete(recordId) {
-    if (!confirm(`Remove this ${definition.singular.toLowerCase()}? This cannot be undone.`)) return;}
+    if (
+      !confirm(
+        `Remove this ${definition.singular.toLowerCase()}? This cannot be undone.`
+      )
+    ) {
+      return;
+    }
+
     try {
-    await api.delete(`/patients/${patientId}/records/${type}/${recordId}`);
-    load();
-  } catch (err) 
-    {
-    console.error(err);
-    alert("Could not delete this record.");
+      await api.delete(
+        `/patients/${patientId}/records/${type}/${recordId}`
+      );
+
+      load();
+    } catch (err) {
+      console.error(err);
+      alert("Could not delete this record.");
     }
   }
 
   function getFieldIcon(label, index) {
     const text = label.toLowerCase();
+
     if (text.includes("condition") || text.includes("diagnosis")) {
       return <Activity size={17} />;
     }
+
     if (text.includes("description")) {
       return <FileText size={17} />;
     }
+
     if (text.includes("date")) {
       return <CalendarDays size={17} />;
     }
+
     if (text.includes("status")) {
       return <CheckCircle2 size={17} />;
     }
+
     if (text.includes("medication") || text.includes("medicine")) {
       return <Pill size={17} />;
     }
-    if (text.includes("remarks") || text.includes("note")) {
+
+    if (text.includes("remark") || text.includes("note")) {
       return <MessageSquare size={17} />;
     }
+
     if (index === 0) {
-      return <Activity size={17} />; 
+      return <Activity size={17} />;
     }
+
     return <ClipboardList size={17} />;
   }
+
   function formatValue(value, field) {
     if (value === null || value === undefined || value === "") {
       return "--";
     }
+
     if (field.type === "select") {
       return field.options?.[value] || value;
     }
+
     return value;
   }
+
   function getRecordDate(record) {
     const value = record[definition.dateField];
+
     if (!value) return "--";
 
     return new Date(value).toLocaleDateString(undefined, {
@@ -134,18 +185,25 @@ export function ClinicalRecords({ patientId, type, role, readOnly = false }) {
       year: "numeric",
     });
   }
+
   function getCreatedDate(record) {
-    const value = record.created_at || record.createdAt || record.recorded_at || record.recordedAt;
+    const value =
+      record.created_at ||
+      record.createdAt ||
+      record.recorded_at ||
+      record.recordedAt;
+
     if (!value) return null;
 
-    return new Date(value).toLocaleDateString(undefined, {
-      month: "long",
+    return new Date(value).toLocaleString(undefined, {
+      month: "short",
       day: "2-digit",
       year: "numeric",
       hour: "numeric",
       minute: "2-digit",
     });
   }
+
   function getRecordedBy(record) {
     return (
       record.created_by_name ||
@@ -154,9 +212,11 @@ export function ClinicalRecords({ patientId, type, role, readOnly = false }) {
       record.recordedByName ||
       record.created_by ||
       record.recorded_by ||
-      null );
-    }
-    return (
+      null
+    );
+  }
+
+  return (
     <div className="ht-health-assessment">
       {/* HEADER */}
       <div className="ht-health-assessment-header">
@@ -295,8 +355,7 @@ export function ClinicalRecords({ patientId, type, role, readOnly = false }) {
             </button>
           </div>
         </div>
-      )
-      }
+      )}
 
       {/* CONTENT */}
       {loading ? (
@@ -335,10 +394,9 @@ export function ClinicalRecords({ patientId, type, role, readOnly = false }) {
           {records.map((record) => (
             <div
               key={record.record_id}
-              className="ht-assessment-c
+              className="ht-assessment-card"
             >
-
-            {/* CARD TOP */}
+              {/* CARD TOP */}
               <div className="ht-assessment-details">
                 {Object.entries(definition.fields).map(
                   ([column, field], index) => (
@@ -383,10 +441,9 @@ export function ClinicalRecords({ patientId, type, role, readOnly = false }) {
                       </div>
                     </div>
                   )
-                )
-              }
+                )}
 
-              {/* DATE */}
+                {/* DATE */}
                 <div className="ht-assessment-row">
                   <div className="ht-assessment-icon">
                     <CalendarDays size={17} />
@@ -405,6 +462,7 @@ export function ClinicalRecords({ patientId, type, role, readOnly = false }) {
                   </div>
                 </div>
               </div>
+
               {/* FOOTER */}
               <div className="ht-assessment-footer">
                 <div className="ht-assessment-meta">
@@ -797,5 +855,6 @@ export function ClinicalRecords({ patientId, type, role, readOnly = false }) {
           }
         }
       `}</style>
-    </div>);
+    </div>
+  );
 }
