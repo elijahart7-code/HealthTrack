@@ -344,12 +344,11 @@ export function PatientRecord({
               : "--"
             }
             />
-  <Detail
-    icon={<UserRound size={20} />}
-    label="Age"
-    value={`${calculateAge(patient.birthdate)} years old`}
-  />
-
+            <Detail
+                icon={<UserRound size={20} />}
+                label="Age"
+                value={`${calculateAge(patient.birthdate)} years old`}
+            />
   <Detail
     icon={<Phone size={20} />}
     label="Contact Number"
