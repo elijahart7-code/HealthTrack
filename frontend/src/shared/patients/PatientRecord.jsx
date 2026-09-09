@@ -1067,18 +1067,18 @@ export function PatientRecord({
           color: #28352f;
           font-weight: 600;
         }
-/* Active badge */
-.ht-account-status {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  padding: 5px 14px;
-  border-radius: 7px;
-  background: #e2f5e9;
-  color: #277548;
-  font-size: 11px;
-  font-weight: 700;
-}
+            /* Active badge */
+        .ht-account-status {
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
+          padding: 5px 14px;
+          border-radius: 7px;
+          background: #e2f5e9;
+          color: #277548;
+          font-size: 11px;
+          font-weight: 700;
+        }
         .ht-card-heading {
           display: flex;
           align-items: center;
