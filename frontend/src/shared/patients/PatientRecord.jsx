@@ -1002,80 +1002,71 @@ export function PatientRecord({
         }
         /* ================= PORTAL ACCOUNT ================= */
 
-.ht-portal-card {
-  border: 1px solid #9eb7aa;
-  border-radius: 11px;
-  padding: 20px 28px;
-}
-
-.ht-portal-card .ht-card-heading {
-  margin-bottom: 18px;
-}
-
-.ht-portal-info {
-  display: flex;
-  align-items: center;
-  gap: 35px;
-  min-height: 105px;
-}
-
-/* Large account icon */
-.ht-portal-avatar {
-  position: relative;
-  width: 92px;
-  height: 92px;
-  min-width: 92px;
-  border-radius: 50%;
-  background: #eaf7f0;
-  color: #3f725b;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-/* Green check */
-.ht-portal-check {
-  position: absolute;
-  right: 2px;
-  bottom: 4px;
-  width: 25px;
-  height: 25px;
-  border-radius: 50%;
-  background: #24824f;
-  color: white;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 14px;
-  font-weight: 800;
-  border: 3px solid white;
-}
-
-/* Details */
-.ht-portal-details {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
-
-.ht-portal-detail {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  font-size: 12px;
-}
-
-.ht-portal-detail > span:first-child {
-  width: 135px;
-  color: #56645d;
-  font-weight: 700;
-}
-
-.ht-portal-detail strong {
-  color: #28352f;
-  font-weight: 600;
-}
-
+        .ht-portal-card {
+          border: 1px solid #9eb7aa;
+          border-radius: 11px;
+          padding: 20px 28px;
+        }
+        .ht-portal-card .ht-card-heading {
+          margin-bottom: 18px;
+        }
+        .ht-portal-info {
+          display: flex;
+          align-items: center;
+          gap: 35px;
+          min-height: 105px;
+        }
+         /* Large account icon */
+        .ht-portal-avatar {
+          position: relative;
+          width: 92px;
+          height: 92px;
+          min-width: 92px;
+          border-radius: 50%;
+          background: #eaf7f0;
+          color: #3f725b;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+        }
+         /* Green check */
+        .ht-portal-check {
+          position: absolute;
+          right: 2px;
+          bottom: 4px;
+          width: 25px;
+          height: 25px;
+          border-radius: 50%;
+          background: #24824f;
+          color: white;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          font-size: 14px;
+          font-weight: 800;
+          border: 3px solid white;
+        }
+         /* Details */
+        .ht-portal-details {
+          display: flex;
+          flex-direction: column;
+          gap: 10px;
+        }
+        .ht-portal-detail {
+          display: flex;
+          align-items: center;
+          gap: 12px;
+          font-size: 12px;
+        }
+        .ht-portal-detail > span:first-child {
+          width: 135px;
+          color: #56645d;
+          font-weight: 700;
+        }
+        .ht-portal-detail strong {
+          color: #28352f;
+          font-weight: 600;
+        }
 /* Active badge */
 .ht-account-status {
   display: inline-flex;
