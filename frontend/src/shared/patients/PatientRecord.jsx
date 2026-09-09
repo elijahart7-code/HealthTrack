@@ -327,24 +327,23 @@ export function PatientRecord({
                 label="Address"
                 value={patient.address}
             />
-  {/* ROW 2 */}
-  <Detail
-    icon={<Calendar size={20} />}
-    label="Date of Birth"
-    value={
-      patient.birthdate
-        ? new Date(patient.birthdate).toLocaleDateString(
-            undefined,
-            {
-              month: "long",
-              day: "numeric",
-              year: "numeric",
+                    {/* ROW 2 */}
+            <Detail
+                icon={<Calendar size={20} />}
+                label="Date of Birth"
+                value={
+                patient.birthdate
+                ? new Date(patient.birthdate).toLocaleDateString(
+                  undefined,
+               {
+                  month: "long",
+                  day: "numeric",
+                  year: "numeric",
+               }
+             )
+              : "--"
             }
-          )
-        : "--"
-    }
-  />
-
+            />
   <Detail
     icon={<UserRound size={20} />}
     label="Age"
