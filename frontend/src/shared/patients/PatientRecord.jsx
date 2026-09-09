@@ -306,24 +306,22 @@ export function PatientRecord({
 
                 <dl className="ht-detail-grid">
 
-  {/* ROW 1 */}
-  <Detail
-    icon={<UserRound size={20} />}
-    label="Full Name"
-    value={patient.full_name}
-  />
-
-  <Detail
-    icon={<User size={20} />}
-    label="Sex"
-    value={
-      patient.sex
-        ? patient.sex.charAt(0).toUpperCase() +
-          patient.sex.slice(1)
-        : "--"
-    }
-  />
-
+                      {/* ROW 1 */}
+            <Detail
+                icon={<UserRound size={20} />}
+                label="Full Name"
+                value={patient.full_name}
+            />
+            <Detail
+                icon={<User size={20} />}
+                label="Sex"
+                value={
+                patient.sex
+                ? patient.sex.charAt(0).toUpperCase() +
+                  patient.sex.slice(1)
+                  : "--"
+                }
+            />
   <Detail
     icon={<MapPin size={20} />}
     label="Address"
