@@ -22,6 +22,7 @@ import {
   IdCard,
   Flag,
   User,
+  Pencil,
 } from "lucide-react";
 
 export function PatientRecord({
