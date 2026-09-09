@@ -223,18 +223,24 @@ export function PatientRecord({
 
         </div>
 
-        <button
-          type="button"
-          onClick={onBack}
-          className="ht-back-button"
-        >
-          <ArrowLeft size={16} />
-          Back to patients
-        </button>
-
+         <div className="ht-patient-actions">
+          <button
+            type="button"
+            onClick={onBack}
+            className="ht-back-button"
+          >
+            <ArrowLeft size={16} />
+            Back to patients
+          </button>
+          <button
+            type="button"
+            onClick={() => setShowEditInformation(true)}
+          >
+            <Pencil size={16} />
+            Edit Information
+          </button>
+        </div>
       </section>
-
-
       {/* ================= MAIN CONTENT ================= */}
       <div className="ht-patient-content">
 
