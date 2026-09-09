@@ -354,72 +354,59 @@ export function PatientRecord({
                 label="Contact Number"
                 value={patient.contact_number}
             />
-  {/* ROW 3 */}
-  <Detail
-    icon={<Heart size={20} />}
-    label="Civil Status"
-    value={patient.civil_status}
-  />
-
-  <Detail
-    icon={<Droplet size={20} />}
-    label="Blood Type"
-    value={patient.blood_type}
-  />
-
-  <Detail
-    icon={<BriefcaseMedical size={20} />}
-    label="Occupation"
-    value={patient.occupation}
-  />
-
-  {/* ROW 4 */}
-  <Detail
-    icon={<IdCard size={20} />}
-    label="Barangay ID Number"
-    value={patient.barangay_id_number}
-  />
-
-  <Detail
-    icon={<Flag size={20} />}
-    label="Nationality"
-    value={patient.nationality}
-  />
-
-  <Detail
-    icon={<MapPin size={20} />}
-    label="Place of Birth"
-    value={patient.place_of_birth}
-  />
-
-  {/* ROW 5 - EMERGENCY INFORMATION */}
-  <div className="ht-emergency-row">
-
-    <Detail
-      icon={<UserRound size={20} />}
-      label="Emergency Contact"
-      value={patient.emergency_contact_name}
-    />
-
-    <Detail
-      icon={<Phone size={20} />}
-      label="Emergency Number"
-      value={patient.emergency_contact_number}
-    />
-
-    <Detail
-      icon={<User size={20} />}
-      label="Relationship"
-      value={patient.emergency_contact_relationship}
-    />
-
-  </div>
-
-</dl>
-              </div>
-
-
-              {/* PORTAL ACCOUNT */}
+                {/* ROW 3 */}
+            <Detail
+                icon={<Heart size={20} />}
+                label="Civil Status"
+                value={patient.civil_status}
+            />
+            <Detail
+                icon={<Droplet size={20} />}
+                label="Blood Type"
+                value={patient.blood_type}
+            />
+            <Detail
+                icon={<BriefcaseMedical size={20} />}
+                label="Occupation"
+                value={patient.occupation}
+            />
+                {/* ROW 4 */}
+            <Detail
+                icon={<IdCard size={20} />}
+                label="Barangay ID Number"
+                value={patient.barangay_id_number}
+            />
+            <Detail
+                icon={<Flag size={20} />}
+                label="Nationality"
+                value={patient.nationality}
+            />
+            <Detail
+                icon={<MapPin size={20} />}
+                label="Place of Birth"
+                value={patient.place_of_birth}
+            />
+                {/* ROW 5 - EMERGENCY INFORMATION */}
+            <div className="ht-emergency-row">
+            <Detail
+                icon={<UserRound size={20} />}
+                label="Emergency Contact"
+                value={patient.emergency_contact_name}
+            />
+            <Detail
+                icon={<Phone size={20} />}
+                label="Emergency Number"
+                value={patient.emergency_contact_number}
+            />
+            <Detail
+                icon={<User size={20} />}
+                label="Relationship"
+                value={patient.emergency_contact_relationship}
+            />
+            </div>
+          </dl>
+        </div>
+                {/* PORTAL ACCOUNT */}
 <div className="ht-content-card ht-portal-card">
 
   <div className="ht-card-heading">
