@@ -49,6 +49,7 @@ export function PatientRecord({
   const [showAccountForm, setShowAccountForm] = useState(false);
   const [portalEmail, setPortalEmail] = useState("");
   const [accountError, setAccountError] = useState(null);
+  const [showEditInformation, setShowEditInformation] = useState(false);
 
   async function load() {
     setLoading(true);
