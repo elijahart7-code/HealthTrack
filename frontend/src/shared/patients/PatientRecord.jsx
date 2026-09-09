@@ -1115,29 +1115,26 @@ export function PatientRecord({
         .ht-detail-content {
           min-width: 0;
         }
-.ht-detail-grid dt {
-  margin-bottom: 5px;
-  font-size: 11px;
-  font-weight: 700;
-  color: #56645d;
-}
-
-.ht-detail-grid dd {
-  margin: 0;
-  font-size: 13px;
-  color: #28352f;
-  line-height: 1.45;
-}
-
-.ht-emergency-row {
-  grid-column: 1 / -1;
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 28px 45px;
-  border-top: 1px solid #dfeae4;
-  padding-top: 24px;
-}
-
+        .ht-detail-grid dt {
+          margin-bottom: 5px;
+          font-size: 11px;
+          font-weight: 700;
+          color: #56645d;
+        }
+        .ht-detail-grid dd {
+          margin: 0;
+          font-size: 13px;
+          color: #28352f;
+          line-height: 1.45;
+        }
+        .ht-emergency-row {
+          grid-column: 1 / -1;
+          display: grid;
+          grid-template-columns: repeat(3, minmax(0, 1fr));
+          gap: 28px 45px;
+          border-top: 1px solid #dfeae4;
+          padding-top: 24px;
+        }
         /* BUTTONS */
 
         .ht-small-button {
