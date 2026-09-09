@@ -322,12 +322,11 @@ export function PatientRecord({
                   : "--"
                 }
             />
-  <Detail
-    icon={<MapPin size={20} />}
-    label="Address"
-    value={patient.address}
-  />
-
+            <Detail
+                icon={<MapPin size={20} />}
+                label="Address"
+                value={patient.address}
+            />
   {/* ROW 2 */}
   <Detail
     icon={<Calendar size={20} />}
