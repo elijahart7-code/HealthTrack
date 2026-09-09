@@ -407,43 +407,35 @@ export function PatientRecord({
           </dl>
         </div>
                 {/* PORTAL ACCOUNT */}
-<div className="ht-content-card ht-portal-card">
-
-  <div className="ht-card-heading">
-    <h2>Patient Portal Account</h2>
-
-    {!patient.user_id && isAdmin && (
-      <button
-        onClick={() =>
-          setShowAccountForm((value) => !value)
-        }
-        className="ht-small-button"
-      >
-        {showAccountForm
-          ? "Cancel"
-          : "Create account"}
-      </button>
-    )}
-  </div>
-
-  {patient.user_id ? (
-    <div className="ht-portal-info">
-
-      {/* Account Icon */}
-      <div className="ht-portal-avatar">
-        <UserRound size={46} strokeWidth={1.8} />
-
-        <span className="ht-portal-check">
-          ✓
-        </span>
-      </div>
-
-      {/* Account Details */}
-      <div className="ht-portal-details">
-
-        <div className="ht-portal-detail">
+           <div className="ht-content-card ht-portal-card">
+             <div className="ht-card-heading">
+                <h2>Patient Portal Account</h2>
+                   {!patient.user_id && isAdmin && (
+                  <button
+                  onClick={() =>
+                  setShowAccountForm((value) => !value)
+                }
+                className="ht-small-button"
+                >
+                {showAccountForm
+                ? "Cancel"
+                : "Create account"}
+                </button>
+            )}
+       </div>
+               {patient.user_id ? (
+          <div className="ht-portal-info">
+                {/* Account Icon */}
+          <div className="ht-portal-avatar">
+          <UserRound size={46} strokeWidth={1.8} />
+          <span className="ht-portal-check">
+           ✓
+          </span>
+          </div>
+              {/* Account Details */}
+          <div className="ht-portal-details">
+          <div className="ht-portal-detail">
           <span>Account Status:</span>
-
           <span className="ht-account-status">
             Active
           </span>
