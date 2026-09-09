@@ -214,7 +214,7 @@ export function PatientRecord({
         <div className="ht-patient-profile">
 
           <div className="ht-profile-circle">
-            <UserRound size={32} />
+            <UserRound size={29} />
           </div>
 
           <div>
@@ -893,19 +893,70 @@ export function PatientRecord({
           font-size: 12px;
         }
 
-        .ht-back-button {
-          display: flex;
-          align-items: center;
-          gap: 7px;
-          padding: 9px 13px;
-          border: 1px solid #aebfb6;
-          border-radius: 7px;
-          background: white;
-          color: #2c4036;
-          font-size: 11px;
-          font-weight: 700;
-          cursor: pointer;
-        }
+          /* Patient header actions */
+.ht-patient-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+/* Edit Information button */
+.ht-edit-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+
+  height: 40px;
+  padding: 0 16px;
+
+  border: 1px solid #3f725b;
+  border-radius: 7px;
+
+  background: #3f725b;
+  color: white;
+
+  font-family: inherit;
+  font-size: 12px;
+  font-weight: 600;
+
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.ht-edit-button:hover {
+  background: #315f4b;
+  border-color: #315f4b;
+}
+
+/* Back button */
+.ht-back-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+
+  height: 40px;
+  padding: 0 16px;
+
+  border: 1px solid #b8c9c0;
+  border-radius: 7px;
+
+  background: white;
+  color: #40534a;
+
+  font-family: inherit;
+  font-size: 12px;
+  font-weight: 600;
+
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.ht-back-button:hover {
+  background: #f4f8f6;
+}
+        
 
         /* MAIN */
 
