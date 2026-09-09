@@ -217,27 +217,6 @@ export function PatientRecord({
 
           <div>
             <h1>{patient.full_name}</h1>
-
-            <p>
-              {patient.sex
-                ? patient.sex.charAt(0).toUpperCase() +
-                  patient.sex.slice(1)
-                : "--"}
-
-              {" | "}
-
-              {calculateAge(patient.birthdate)} years old
-
-              {" | Born "}
-
-              {new Date(
-                patient.birthdate
-              ).toLocaleDateString(undefined, {
-                month: "short",
-                day: "numeric",
-                year: "numeric",
-              })}
-            </p>
           </div>
 
         </div>
