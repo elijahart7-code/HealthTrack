@@ -214,7 +214,7 @@ export function PatientRecord({
         <div className="ht-patient-profile">
 
           <div className="ht-profile-circle">
-            <UserRound size={29} />
+            <UserRound size={32} />
           </div>
 
           <div>
@@ -235,6 +235,7 @@ export function PatientRecord({
           <button
             type="button"
             onClick={() => setShowEditInformation(true)}
+            className="ht-edit-button"
           >
             <Pencil size={16} />
             Edit Information
