@@ -14,6 +14,14 @@ import {
   BriefcaseMedical,
   TriangleAlert,
   ArrowLeft,
+  Calendar,
+  MapPin,
+  Phone,
+  Heart,
+  Droplet,
+  IdCard,
+  Flag,
+  User,
 } from "lucide-react";
 
 export function PatientRecord({
@@ -298,63 +306,122 @@ export function PatientRecord({
 
                 <dl className="ht-detail-grid">
 
-                  <Detail
-                    label="Civil status"
-                    value={patient.civil_status}
-                  />
+  {/* ROW 1 */}
+  <Detail
+    icon={<UserRound size={20} />}
+    label="Full Name"
+    value={patient.full_name}
+  />
 
-                  <Detail
-                    label="Blood type"
-                    value={patient.blood_type}
-                  />
+  <Detail
+    icon={<User size={20} />}
+    label="Sex"
+    value={
+      patient.sex
+        ? patient.sex.charAt(0).toUpperCase() +
+          patient.sex.slice(1)
+        : "--"
+    }
+  />
 
-                  <Detail
-                    label="Occupation"
-                    value={patient.occupation}
-                  />
+  <Detail
+    icon={<MapPin size={20} />}
+    label="Address"
+    value={patient.address}
+  />
 
-                  <Detail
-                    label="Barangay ID number"
-                    value={patient.barangay_id_number}
-                  />
+  {/* ROW 2 */}
+  <Detail
+    icon={<Calendar size={20} />}
+    label="Date of Birth"
+    value={
+      patient.birthdate
+        ? new Date(patient.birthdate).toLocaleDateString(
+            undefined,
+            {
+              month: "long",
+              day: "numeric",
+              year: "numeric",
+            }
+          )
+        : "--"
+    }
+  />
 
-                  <Detail
-                    label="Nationality"
-                    value={patient.nationality}
-                  />
+  <Detail
+    icon={<UserRound size={20} />}
+    label="Age"
+    value={`${calculateAge(patient.birthdate)} years old`}
+  />
 
-                  <Detail
-                    label="Place of birth"
-                    value={patient.place_of_birth}
-                  />
+  <Detail
+    icon={<Phone size={20} />}
+    label="Contact Number"
+    value={patient.contact_number}
+  />
 
-                  <Detail
-                    label="Address"
-                    value={patient.address}
-                  />
+  {/* ROW 3 */}
+  <Detail
+    icon={<Heart size={20} />}
+    label="Civil Status"
+    value={patient.civil_status}
+  />
 
-                  <Detail
-                    label="Contact number"
-                    value={patient.contact_number}
-                  />
+  <Detail
+    icon={<Droplet size={20} />}
+    label="Blood Type"
+    value={patient.blood_type}
+  />
 
-                  <Detail
-                    label="Emergency contact"
-                    value={patient.emergency_contact_name}
-                  />
+  <Detail
+    icon={<BriefcaseMedical size={20} />}
+    label="Occupation"
+    value={patient.occupation}
+  />
 
-                  <Detail
-                    label="Emergency number"
-                    value={patient.emergency_contact_number}
-                  />
+  {/* ROW 4 */}
+  <Detail
+    icon={<IdCard size={20} />}
+    label="Barangay ID Number"
+    value={patient.barangay_id_number}
+  />
 
-                  <Detail
-                    label="Relationship"
-                    value={patient.emergency_contact_relationship}
-                  />
+  <Detail
+    icon={<Flag size={20} />}
+    label="Nationality"
+    value={patient.nationality}
+  />
 
-                </dl>
+  <Detail
+    icon={<MapPin size={20} />}
+    label="Place of Birth"
+    value={patient.place_of_birth}
+  />
 
+  {/* ROW 5 - EMERGENCY INFORMATION */}
+  <div className="ht-emergency-row">
+
+    <Detail
+      icon={<UserRound size={20} />}
+      label="Emergency Contact"
+      value={patient.emergency_contact_name}
+    />
+
+    <Detail
+      icon={<Phone size={20} />}
+      label="Emergency Number"
+      value={patient.emergency_contact_number}
+    />
+
+    <Detail
+      icon={<User size={20} />}
+      label="Relationship"
+      value={patient.emergency_contact_relationship}
+    />
+
+  </div>
+
+</dl>
               </div>
 
 
@@ -937,23 +1004,56 @@ export function PatientRecord({
         }
 
         .ht-detail-grid {
-          display: grid;
-          grid-template-columns: repeat(2, minmax(0, 1fr));
-          gap: 18px 28px;
-        }
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 28px 45px;
+}
 
-        .ht-detail-grid dt {
-          margin-bottom: 4px;
-          font-size: 10px;
-          font-weight: 700;
-          color: #78837d;
-        }
+.ht-detail-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  min-width: 0;
+}
 
-        .ht-detail-grid dd {
-          margin: 0;
-          font-size: 12px;
-          color: #28352f;
-        }
+.ht-detail-icon {
+  width: 40px;
+  height: 40px;
+  min-width: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #eaf7f0;
+  color: #3f725b;
+  border-radius: 9px;
+}
+
+.ht-detail-content {
+  min-width: 0;
+}
+
+.ht-detail-grid dt {
+  margin-bottom: 5px;
+  font-size: 11px;
+  font-weight: 700;
+  color: #56645d;
+}
+
+.ht-detail-grid dd {
+  margin: 0;
+  font-size: 13px;
+  color: #28352f;
+  line-height: 1.45;
+}
+
+.ht-emergency-row {
+  grid-column: 1 / -1;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 28px 45px;
+  border-top: 1px solid #dfeae4;
+  padding-top: 24px;
+}
 
         /* BUTTONS */
 
@@ -1108,11 +1208,17 @@ export function PatientRecord({
   );
 }
 
-function Detail({ label, value }) {
+function Detail({ icon, label, value }) {
   return (
-    <div>
-      <dt>{label}</dt>
-      <dd>{value || "--"}</dd>
+    <div className="ht-detail-item">
+      <div className="ht-detail-icon">
+        {icon}
+      </div>
+
+      <div className="ht-detail-content">
+        <dt>{label}</dt>
+        <dd>{value || "--"}</dd>
+      </div>
     </div>
   );
 }
