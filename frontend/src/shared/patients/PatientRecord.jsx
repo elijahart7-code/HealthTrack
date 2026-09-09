@@ -1136,7 +1136,6 @@ export function PatientRecord({
           padding-top: 24px;
         }
         /* BUTTONS */
-
         .ht-small-button {
           display: inline-flex;
           align-items: center;
