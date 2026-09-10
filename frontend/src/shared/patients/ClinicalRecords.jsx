@@ -216,6 +216,25 @@ export function ClinicalRecords({ patientId, type, role, readOnly = false }) {
     );
   }
 
+  function getMidwifeNoteItems(value) {
+    if (!value) return ["No notes recorded."];
+
+    const segments = value
+      .replace(/\r\n/g, "\n")
+      .split(/\n+/)
+      .flatMap((chunk) =>
+        chunk
+          .split(/(?<=[.!?])\s+/)
+          .map((item) => item.trim())
+          .filter(Boolean)
+      )
+      .filter(Boolean);
+
+    return segments.length > 0 ? segments : ["No notes recorded."];
+  }
+
+  const isMidwifeNotes = type === "midwife-notes";
+
   return (
     <div className="ht-health-assessment">
       {/* HEADER */}
@@ -243,7 +262,7 @@ export function ClinicalRecords({ patientId, type, role, readOnly = false }) {
               ) : (
                 <>
                   <Plus size={16} />
-                  Add New Assessment
+                  {isMidwifeNotes ? "Add Midwife Note" : "Add New Assessment"}
                 </>
               )}
             </button>
@@ -368,11 +387,12 @@ export function ClinicalRecords({ patientId, type, role, readOnly = false }) {
             <ClipboardList size={25} />
           </div>
 
-          <h3>No Health Assessment</h3>
+          <h3>{isMidwifeNotes ? "No Midwife Notes" : "No Health Assessment"}</h3>
 
           <p>
-            No health assessment has been recorded
-            for this patient.
+            {isMidwifeNotes
+              ? "No midwife notes have been recorded for this patient."
+              : "No health assessment has been recorded for this patient."}
           </p>
 
           {canManage && (
@@ -385,10 +405,55 @@ export function ClinicalRecords({ patientId, type, role, readOnly = false }) {
               className="ht-health-empty-button"
             >
               <Plus size={16} />
-              Add New Assessment
+              {isMidwifeNotes ? "Add Midwife Note" : "Add New Assessment"}
             </button>
           )}
         </div>
+      ) : isMidwifeNotes ? (
+        <>
+          {records.map((record) => (
+            <div key={record.record_id} className="ht-midwife-note-card">
+              <div className="ht-midwife-card-rail">
+                <div className="ht-midwife-card-icon">
+                  <FileText size={22} />
+                </div>
+              </div>
+
+              <div className="ht-midwife-card-content">
+                <div className="ht-midwife-meta-grid">
+                  <div className="ht-midwife-meta-item">
+                    <span>Consultation Date:</span>
+                    <strong>{getRecordDate(record)}</strong>
+                  </div>
+
+                  <div className="ht-midwife-meta-item">
+                    <span>Recorded By:</span>
+                    <strong>{getRecordedBy(record) || "Midwife User"}</strong>
+                  </div>
+                </div>
+
+                <div className="ht-midwife-notes-block">
+                  <span>Notes:</span>
+                  <ul>
+                    {getMidwifeNoteItems(record.notes).map((line, index) => (
+                      <li key={`${record.record_id}-${index}`}>{line}</li>
+                    ))}
+                  </ul>
+                </div>
+              </div>
+            </div>
+          ))}
+
+          {records.length >= perPage && (
+            <button
+              type="button"
+              onClick={() => setPerPage((p) => p + 10)}
+              className="ht-show-more"
+            >
+              Show more
+            </button>
+          )}
+        </>
       ) : (
         <>
           {records.map((record) => (
@@ -694,6 +759,90 @@ export function ClinicalRecords({ patientId, type, role, readOnly = false }) {
           cursor: pointer;
         }
 
+        .ht-midwife-note-card {
+          display: flex;
+          overflow: hidden;
+          border: 1px solid #dfe8e3;
+          border-radius: 12px;
+          background: #f6faf7;
+          box-shadow: 0 2px 8px rgba(36, 55, 46, 0.04);
+        }
+
+        .ht-midwife-card-rail {
+          display: flex;
+          align-items: stretch;
+          justify-content: center;
+          width: 72px;
+          background: #dfeee5;
+          border-right: 1px solid #d1e5d8;
+        }
+
+        .ht-midwife-card-icon {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          width: 42px;
+          height: 42px;
+          margin-top: 24px;
+          border-radius: 12px;
+          background: #edf7f0;
+          color: #3a7d62;
+        }
+
+        .ht-midwife-card-content {
+          flex: 1;
+          padding: 20px 24px 18px;
+        }
+
+        .ht-midwife-meta-grid {
+          display: grid;
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+          gap: 14px 24px;
+          padding-bottom: 10px;
+          border-bottom: 1px solid #e3e9e5;
+        }
+
+        .ht-midwife-meta-item {
+          display: flex;
+          flex-direction: column;
+          gap: 6px;
+          font-size: 12px;
+          color: #2e3f38;
+        }
+
+        .ht-midwife-meta-item span {
+          font-weight: 700;
+        }
+
+        .ht-midwife-meta-item strong {
+          font-weight: 600;
+          color: #1d2f29;
+        }
+
+        .ht-midwife-notes-block {
+          margin-top: 18px;
+          font-size: 12px;
+          color: #2e3f38;
+        }
+
+        .ht-midwife-notes-block span {
+          display: inline-block;
+          margin-bottom: 10px;
+          font-weight: 700;
+          color: #24352f;
+        }
+
+        .ht-midwife-notes-block ul {
+          margin: 0;
+          padding-left: 18px;
+          line-height: 1.7;
+        }
+
+        .ht-midwife-notes-block li {
+          margin-bottom: 2px;
+          color: #1d2d29;
+        }
+
         .ht-assessment-card {
           overflow: hidden;
           border: 1px solid #dfe8e3;
@@ -837,6 +986,25 @@ export function ClinicalRecords({ patientId, type, role, readOnly = false }) {
           }
 
           .ht-health-form-grid {
+            grid-template-columns: 1fr;
+          }
+
+          .ht-midwife-note-card {
+            flex-direction: column;
+          }
+
+          .ht-midwife-card-rail {
+            width: 100%;
+            min-height: 58px;
+            border-right: none;
+            border-bottom: 1px solid #d1e5d8;
+          }
+
+          .ht-midwife-card-icon {
+            margin-top: 0;
+          }
+
+          .ht-midwife-meta-grid {
             grid-template-columns: 1fr;
           }
 
