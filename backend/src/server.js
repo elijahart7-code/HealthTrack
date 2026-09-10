@@ -69,6 +69,11 @@ app.get("/api/health", (_req, res) => {
   });
 });
 
+app.use((error, _req, res, _next) => {
+  console.error("[server] Request failed:", error);
+  res.status(500).json({ error: "An internal server error occurred." });
+});
+
 // Serve React frontend
 const frontendPath = path.join(__dirname, "../../frontend/dist");
 
