@@ -28,10 +28,21 @@ function createLocalSql(connectionString) {
   return sql;
 }
 
+function createNeonSql(connectionString) {
+  const neonSql = neon(connectionString);
+
+  // Keep the tagged-template API and the positional-query API identical
+  // across local PostgreSQL and Neon deployments.
+  const sql = (strings, ...values) => neonSql(strings, ...values);
+  sql.query = (text, values = []) => neonSql.query(text, values);
+
+  return sql;
+}
+
 const databaseUrl = new URL(DATABASE_URL);
 export const sql = ["localhost", "127.0.0.1", "::1"].includes(databaseUrl.hostname)
   ? createLocalSql(DATABASE_URL)
-  : neon(DATABASE_URL);
+  : createNeonSql(DATABASE_URL);
 
 // =======================================================================
 // TABLE DEFINITIONS
