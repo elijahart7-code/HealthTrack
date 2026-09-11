@@ -23,7 +23,7 @@ export function HealthWorkerShell() {
       api.get("/patients"),
     ]);
     setDashboard(dashboardRes.data);
-    setPatients(patientsRes.data.);
+    setPatients(patientsRes.data.patients);
     setLoading(false);
   }, []);
 
