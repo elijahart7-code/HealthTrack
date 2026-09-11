@@ -61,17 +61,17 @@ export function Dashboard({ dashboard }) {
       <div className="patient-metric-grid">
 
         <PatientMetricCard
-          icon={<CalendarDays size={25} strokeWidth={1.8} />}
+          icon={<CalendarDays size={25} strokeWidth={1.10} />}
           title="Upcoming Appointment"
         />
 
         <PatientMetricCard
-          icon={<HeartPulse size={25} strokeWidth={1.8} />}
+          icon={<HeartPulse size={25} strokeWidth={1.10} />}
           title="Updated Vital Signs"
         />
 
         <PatientMetricCard
-          icon={<ClipboardList size={25} strokeWidth={1.8} />}
+          icon={<ClipboardList size={25} strokeWidth={1.10} />}
           title="Health Assessment"
         />
 
