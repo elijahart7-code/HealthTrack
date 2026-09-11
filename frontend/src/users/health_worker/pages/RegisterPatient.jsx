@@ -187,23 +187,27 @@ export function RegisterPatient({ loadData, onRegistered }) {
         </div>
 
         <div className="ht-panel ht-form-panel ht-portal-panel">
-          <h2>
-            <span className="ht-section-icon" aria-hidden="true">
-              <User size={16} strokeWidth={1.8} />
+          <h2 className="ht-panel-title-row">
+            <span className="ht-section-title-wrap">
+              <span className="ht-section-icon" aria-hidden="true">
+                <User size={16} strokeWidth={1.8} />
+              </span>
+              Patient Portal Account
             </span>
-            Patient Portal Account
+            <span className="ht-portal-account-status">
+              <span>Account Status:</span>
+              <span className="ht-portal-status ht-portal-status-inactive">Inactive</span>
+            </span>
           </h2>
 
           <div className="ht-portal-layout">
             <div className="ht-portal-summary">
               <div className="ht-portal-info-block">
-                <p className="ht-portal-info-label">About Patient Portal</p>
+                <div className="ht-portal-info-title">
+                  <span className="ht-portal-mini-check">✓</span>
+                  <span>About Patient Portal</span>
+                </div>
                 <p className="ht-portal-info-text">The patient will use this email address to sign in and view their health information, appointments, and medical records.</p>
-              </div>
-
-              <div className="ht-portal-status-row">
-                <span className="ht-portal-status-label">Account Status:</span>
-                <span className="ht-portal-status ht-portal-status-inactive">Inactive</span>
               </div>
             </div>
 

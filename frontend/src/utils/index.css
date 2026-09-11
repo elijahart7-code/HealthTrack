@@ -91,6 +91,29 @@
         box-shadow: none;
     }
 
+    .ht-panel-title-row {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 0.75rem;
+        margin-bottom: 0.9rem;
+    }
+
+    .ht-section-title-wrap {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.625rem;
+    }
+
+    .ht-portal-account-status {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.45rem;
+        color: #1d2d28;
+        font-size: 0.75rem;
+        font-weight: 700;
+    }
+
     .ht-register-form {
         display: grid;
         gap: 1rem;
@@ -878,8 +901,8 @@
 
     .ht-portal-layout {
         display: grid;
-        grid-template-columns: minmax(0, 1.1fr) minmax(0, 1.6fr);
-        gap: 1.25rem;
+        grid-template-columns: minmax(0, 1.05fr) minmax(0, 1.55fr);
+        gap: 1.4rem;
         align-items: start;
     }
 
@@ -896,11 +919,26 @@
         padding: 0.9rem 0.95rem;
     }
 
-    .ht-portal-info-label {
-        margin: 0 0 0.4rem;
-        font-size: 0.76rem;
+    .ht-portal-info-title {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        margin-bottom: 0.45rem;
+        font-size: 0.8rem;
         font-weight: 700;
         color: #1d2d28;
+    }
+
+    .ht-portal-mini-check {
+        display: grid;
+        place-items: center;
+        width: 18px;
+        height: 18px;
+        border-radius: 50%;
+        font-size: 0.7rem;
+        font-weight: 800;
+        background: rgba(15, 107, 95, 0.12);
+        color: var(--color-brand);
     }
 
     .ht-portal-info-text {
@@ -908,14 +946,6 @@
         line-height: 1.5;
         color: #4a534f;
         font-size: 0.76rem;
-    }
-
-    .ht-portal-status-row {
-        display: flex;
-        align-items: center;
-        gap: 0.5rem;
-        font-size: 0.8rem;
-        color: #1d2d28;
     }
 
     .ht-portal-status {
@@ -951,6 +981,8 @@
     }
 
     .ht-checkbox-inline input {
+        width: 14px;
+        height: 14px;
         margin-top: 0.15rem;
         accent-color: var(--color-brand);
     }
