@@ -205,21 +205,23 @@ export function RegisterPatient({ loadData, onRegistered }) {
                 </div>
                 <p className="ht-portal-info-text">The patient will use this email address to sign in and view their health information, appointments, and medical records.</p>
               </div>
+            </div>
 
+            <div className="ht-portal-form">
               <div className="ht-portal-status-row">
                 <span>Account Status:</span>
                 <span className="ht-portal-status ht-portal-status-inactive">Inactive</span>
               </div>
-            </div>
 
-            <div className="ht-portal-form">
               <Field label="Email Address" required={form.portal_enabled}>
                 <Input
                   type="email"
                   value={form.portal_email}
-                  onChange={(e) => set("portal_email", e.target.value)}
+                  onChange={(e) => {
+                    set("portal_email", e.target.value);
+                    set("portal_enabled", true);
+                  }}
                   placeholder="Enter email address (used for portal login)"
-                  disabled={!form.portal_enabled}
                 />
               </Field>
 
@@ -228,7 +230,6 @@ export function RegisterPatient({ loadData, onRegistered }) {
                   type="checkbox"
                   checked={form.send_login_credentials}
                   onChange={(e) => set("send_login_credentials", e.target.checked)}
-                  disabled={!form.portal_enabled}
                 />
                 <span>Send login credentials to this email address</span>
               </label>
