@@ -954,17 +954,18 @@
         display: inline-flex;
         align-items: center;
         justify-content: center;
-        padding: 0.2rem 0.5rem;
+        padding: 0.15rem 0.5rem;
         border-radius: 999px;
         font-size: 0.7rem;
         font-weight: 700;
         border: 1px solid transparent;
+        line-height: 1.5;
     }
 
     .ht-portal-status-inactive {
         background: rgba(178, 69, 62, 0.08);
         color: #b2453e;
-        border-color: rgba(178, 69, 62, 0.18);
+        border-color: rgba(178, 69, 62, 0.16);
     }
 
     .ht-portal-form {
@@ -974,18 +975,19 @@
 
     .ht-checkbox-inline {
         display: inline-flex;
-        align-items: flex-start;
-        gap: 0.6rem;
+        align-items: center;
+        gap: 0.55rem;
         color: #1d2d28;
         font-size: 0.76rem;
         line-height: 1.4;
         cursor: pointer;
+        margin-top: 0.25rem;
     }
 
     .ht-checkbox-inline input {
-        width: 14px;
-        height: 14px;
-        margin-top: 0.15rem;
+        width: 15px;
+        height: 15px;
+        margin: 0;
         accent-color: var(--color-brand);
     }
 
