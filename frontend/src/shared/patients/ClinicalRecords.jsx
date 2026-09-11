@@ -767,10 +767,10 @@ export function ClinicalRecords({ patientId, type, role, readOnly = false }) {
           gap: 14px;
           width: 100%;
           padding: 16px;
-          border: 1px solid #dfe8e3;
+          border: 1px solid rgba(12, 79, 70, 0.08);
           border-radius: 14px;
-          background: #edf4ef;
-          box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.5);
+          background: #f2faf5;
+          box-shadow: 0 4px 18px rgba(15, 29, 26, 0.04);
           box-sizing: border-box;
           margin-top: 4px;
         }
