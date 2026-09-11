@@ -194,10 +194,6 @@ export function RegisterPatient({ loadData, onRegistered }) {
               </span>
               Patient Portal Account
             </span>
-            <span className="ht-portal-account-status">
-              <span>Account Status:</span>
-              <span className="ht-portal-status ht-portal-status-inactive">Inactive</span>
-            </span>
           </h2>
 
           <div className="ht-portal-layout">
@@ -208,6 +204,11 @@ export function RegisterPatient({ loadData, onRegistered }) {
                   <span>About Patient Portal</span>
                 </div>
                 <p className="ht-portal-info-text">The patient will use this email address to sign in and view their health information, appointments, and medical records.</p>
+              </div>
+
+              <div className="ht-portal-status-row">
+                <span>Account Status:</span>
+                <span className="ht-portal-status ht-portal-status-inactive">Inactive</span>
               </div>
             </div>
 
