@@ -761,6 +761,8 @@ export function ClinicalRecords({ patientId, type, role, readOnly = false }) {
 
         .ht-midwife-note-card {
           display: flex;
+          width: 100%;
+          align-items: stretch;
           overflow: hidden;
           border: 1px solid #dfe8e3;
           border-radius: 12px;
@@ -770,9 +772,11 @@ export function ClinicalRecords({ patientId, type, role, readOnly = false }) {
 
         .ht-midwife-card-rail {
           display: flex;
-          align-items: stretch;
+          align-items: flex-start;
           justify-content: center;
           width: 72px;
+          min-width: 72px;
+          padding-top: 18px;
           background: #dfeee5;
           border-right: 1px solid #d1e5d8;
         }
@@ -791,6 +795,7 @@ export function ClinicalRecords({ patientId, type, role, readOnly = false }) {
 
         .ht-midwife-card-content {
           flex: 1;
+          min-width: 0;
           padding: 20px 24px 18px;
         }
 
