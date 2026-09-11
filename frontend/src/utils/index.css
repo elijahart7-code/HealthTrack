@@ -89,6 +89,7 @@
         border-radius: 18px;
         border: 1px solid rgba(15, 107, 95, 0.14);
         box-shadow: none;
+        padding: 0.9rem 1.1rem 1rem;
     }
 
     .ht-panel-title-row {
@@ -974,7 +975,8 @@
 
     .ht-portal-form {
         display: grid;
-        gap: 0.9rem;
+        gap: 0.7rem;
+        padding-top: 0.2rem;
     }
 
     .ht-checkbox-inline {
@@ -985,7 +987,7 @@
         font-size: 0.76rem;
         line-height: 1.4;
         cursor: pointer;
-        margin-top: 0.25rem;
+        margin-top: 0.15rem;
     }
 
     .ht-checkbox-inline input {
