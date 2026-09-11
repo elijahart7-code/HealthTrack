@@ -411,38 +411,40 @@ export function ClinicalRecords({ patientId, type, role, readOnly = false }) {
         </div>
       ) : isMidwifeNotes ? (
         <>
-          {records.map((record) => (
-            <div key={record.record_id} className="ht-midwife-note-card">
-              <div className="ht-midwife-card-rail">
-                <div className="ht-midwife-card-icon">
-                  <FileText size={22} />
-                </div>
-              </div>
-
-              <div className="ht-midwife-card-content">
-                <div className="ht-midwife-meta-grid">
-                  <div className="ht-midwife-meta-item">
-                    <span>Consultation Date:</span>
-                    <strong>{getRecordDate(record)}</strong>
-                  </div>
-
-                  <div className="ht-midwife-meta-item">
-                    <span>Recorded By:</span>
-                    <strong>{getRecordedBy(record) || "Midwife User"}</strong>
+          <div className="ht-midwife-notes-stack">
+            {records.map((record) => (
+              <div key={record.record_id} className="ht-midwife-note-card">
+                <div className="ht-midwife-card-rail">
+                  <div className="ht-midwife-card-icon">
+                    <FileText size={22} />
                   </div>
                 </div>
 
-                <div className="ht-midwife-notes-block">
-                  <span>Notes:</span>
-                  <ul>
-                    {getMidwifeNoteItems(record.notes).map((line, index) => (
-                      <li key={`${record.record_id}-${index}`}>{line}</li>
-                    ))}
-                  </ul>
+                <div className="ht-midwife-card-content">
+                  <div className="ht-midwife-meta-grid">
+                    <div className="ht-midwife-meta-item">
+                      <span>Consultation Date:</span>
+                      <strong>{getRecordDate(record)}</strong>
+                    </div>
+
+                    <div className="ht-midwife-meta-item">
+                      <span>Recorded By:</span>
+                      <strong>{getRecordedBy(record) || "Midwife User"}</strong>
+                    </div>
+                  </div>
+
+                  <div className="ht-midwife-notes-block">
+                    <span>Notes:</span>
+                    <ul>
+                      {getMidwifeNoteItems(record.notes).map((line, index) => (
+                        <li key={`${record.record_id}-${index}`}>{line}</li>
+                      ))}
+                    </ul>
+                  </div>
                 </div>
               </div>
-            </div>
-          ))}
+            ))}
+          </div>
 
           {records.length >= perPage && (
             <button
@@ -759,6 +761,17 @@ export function ClinicalRecords({ patientId, type, role, readOnly = false }) {
           cursor: pointer;
         }
 
+        .ht-midwife-notes-stack {
+          display: flex;
+          flex-direction: column;
+          gap: 14px;
+          padding: 16px;
+          border: 1px solid #dfe8e3;
+          border-radius: 14px;
+          background: #edf4ef;
+          box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.5);
+        }
+
         .ht-midwife-note-card {
           display: flex;
           width: 100%;
@@ -849,14 +862,18 @@ export function ClinicalRecords({ patientId, type, role, readOnly = false }) {
         }
 
         .ht-assessment-card {
+          display: flex;
+          flex-direction: column;
+          width: 100%;
           overflow: hidden;
           border: 1px solid #dfe8e3;
-          border-radius: 10px;
+          border-radius: 12px;
           background: #ffffff;
           box-shadow: 0 2px 8px rgba(36, 55, 46, 0.04);
         }
 
         .ht-assessment-details {
+          width: 100%;
           padding: 7px 14px 10px;
         }
 
