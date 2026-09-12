@@ -518,6 +518,36 @@
         background: rgba(15, 107, 95, 0.04);
     }
 
+    .ht-action-button {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.35rem;
+        min-height: 30px;
+        padding: 0.35rem 0.6rem;
+        border: 1px solid rgba(15, 107, 95, 0.2);
+        border-radius: 7px;
+        background: rgba(255, 255, 255, 0.7);
+        color: var(--color-brand-strong);
+        font-size: 0.7rem;
+        font-weight: 600;
+        line-height: 1.2;
+        cursor: pointer;
+        white-space: nowrap;
+    }
+
+    .ht-action-button:hover,
+    .ht-action-button:focus-visible {
+        background: rgba(15, 107, 95, 0.06);
+        outline: none;
+    }
+
+    .ht-action-eye {
+        width: 14px;
+        height: 14px;
+        flex: 0 0 auto;
+    }
+
     .ht-table-scroll {
         overflow-x: auto;
     }
