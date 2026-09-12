@@ -57,7 +57,7 @@ export function Patients({ patients, loadData }) {
 
       <div className="ht-panel">
         <div className="mb-3 grid gap-3 sm:grid-cols-[2fr_1fr]">
-          <Field label="Patient List">
+          <Field label="Patients List:">
             <Input type="search" value={search} onChange={(e) => setSearch(e.target.value)} placeholder="Name or contact number" />
           </Field>
           <Field label="Sort by">
