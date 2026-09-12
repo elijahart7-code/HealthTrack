@@ -548,6 +548,16 @@
         flex: 0 0 auto;
     }
 
+    .ht-panel-table .ht-table-action {
+        width: 132px;
+        text-align: center;
+        vertical-align: middle;
+    }
+
+    .ht-panel-table .ht-action-button {
+        min-width: 104px;
+    }
+
     .ht-panel-table .ht-table-header-row {
         display: flex;
         align-items: center;
