@@ -95,6 +95,7 @@ export function Patients({ patients, loadData }) {
                 <Th>Name</Th>
                 <Th>Age</Th>
                 <Th>Sex</Th>
+                <Th>Birthdate</Th>
                 <Th>Contact</Th>
                 <Th>Portal access</Th>
                 <Th srOnly>Actions</Th>
@@ -108,6 +109,9 @@ export function Patients({ patients, loadData }) {
                   </Td>
                   <Td>{calculateAge(p.birthdate)}</Td>
                   <Td className="capitalize">{p.sex}</Td>
+                  <Td className="whitespace-nowrap">
+                    {new Date(p.birthdate).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" })}
+                  </Td>
                   <Td>{p.contact_number || "--"}</Td>
                   <Td>{p.user_id ? <Badge>Yes</Badge> : <span className="ht-muted text-xs">No login</span>}</Td>
                   <Td>
