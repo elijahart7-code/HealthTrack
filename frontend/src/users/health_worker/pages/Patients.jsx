@@ -99,6 +99,7 @@ export function Patients({ patients, loadData }) {
                 <Th>Contact Number</Th>
                 <Th>Civil Status</Th>
                 <Th>Blood Type</Th>
+                <Th>Occupation</Th>
                 <Th>Portal access</Th>
                 <Th srOnly>Actions</Th>
               </tr>
@@ -117,6 +118,7 @@ export function Patients({ patients, loadData }) {
                   <Td>{p.contact_number || "--"}</Td>
                   <Td className="capitalize">{p.civil_status || "--"}</Td>
                   <Td>{p.blood_type || "--"}</Td>
+                  <Td>{p.occupation || "--"}</Td>
                   <Td>{p.user_id ? <Badge>Yes</Badge> : <span className="ht-muted text-xs">No login</span>}</Td>
                   <Td>
                     <button
