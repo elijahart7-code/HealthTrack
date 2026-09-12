@@ -96,7 +96,8 @@ export function Patients({ patients, loadData }) {
                 <Th>Age</Th>
                 <Th>Sex</Th>
                 <Th>Birthdate</Th>
-                <Th>Contact</Th>
+                <Th>Contact Number</Th>
+                <Th>Civil Status</Th>
                 <Th>Portal access</Th>
                 <Th srOnly>Actions</Th>
               </tr>
@@ -113,6 +114,7 @@ export function Patients({ patients, loadData }) {
                     {new Date(p.birthdate).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" })}
                   </Td>
                   <Td>{p.contact_number || "--"}</Td>
+                  <Td className="capitalize">{p.civil_status || "--"}</Td>
                   <Td>{p.user_id ? <Badge>Yes</Badge> : <span className="ht-muted text-xs">No login</span>}</Td>
                   <Td>
                     <button
