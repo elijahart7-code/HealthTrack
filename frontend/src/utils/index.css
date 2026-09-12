@@ -554,6 +554,16 @@
         vertical-align: middle;
     }
 
+    .ht-panel-table {
+        padding: 0.65rem 0.8rem 0.8rem;
+    }
+
+    .ht-panel-table .ht-table th,
+    .ht-panel-table .ht-table td {
+        padding: 0.42rem 0.6rem;
+        vertical-align: middle;
+    }
+
     .ht-panel-table .ht-action-button {
         min-width: 104px;
     }
