@@ -611,6 +611,20 @@
         white-space: nowrap;
     }
 
+    .ht-panel-table .ht-pagination {
+        gap: 0.35rem;
+        padding: 0.45rem 0 0;
+    }
+
+    .ht-panel-table .ht-page-btn {
+        min-width: 24px;
+        width: 24px;
+        height: 24px;
+        padding: 0;
+        border-radius: 6px;
+        font-size: 0.68rem;
+    }
+
     .ht-table-scroll {
         overflow-x: auto;
     }

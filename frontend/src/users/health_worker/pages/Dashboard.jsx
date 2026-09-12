@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import { useSearchParams } from "react-router";
 import { Users, CalendarDays, ShieldCheck, UserRoundX, Clock3 } from "lucide-react";
 import { PageHeader } from "../../../components/ui/PageHeader";
@@ -8,6 +9,16 @@ import { calculateAge } from "../../../utils/calculateAge";
 /** Dashboard screen for health workers. */
 export function Dashboard({ dashboard, onRegisterClick }) {
   const [, setSearchParams] = useSearchParams();
+  const [page, setPage] = useState(1);
+  const pageSize = 10;
+  const totalPages = Math.max(1, Math.ceil(dashboard.recentPatients.length / pageSize));
+  const pageStart = (page - 1) * pageSize;
+  const pagePatients = dashboard.recentPatients.slice(pageStart, pageStart + pageSize);
+
+  useEffect(() => {
+    if (page > totalPages) setPage(totalPages);
+  }, [page, totalPages]);
+
   return (
     <div className="grid gap-4">
       <PageHeader title="Health Worker Dashboard" subtitle="Register patients and view patient information.">
@@ -50,7 +61,7 @@ export function Dashboard({ dashboard, onRegisterClick }) {
               </tr>
             </thead>
             <tbody>
-              {dashboard.recentPatients.map((p) => (
+              {pagePatients.map((p) => (
                 <tr key={p.patient_id}>
                   <Td className="font-bold" style={{ color: "var(--color-brand-strong)" }}>
                     {p.last_name}, {p.first_name}
@@ -74,6 +85,38 @@ export function Dashboard({ dashboard, onRegisterClick }) {
               ))}
             </tbody>
           </Table>
+        )}
+
+        {dashboard.recentPatients.length > 0 && totalPages > 1 && (
+          <div className="ht-pagination">
+            <button
+              className="ht-page-btn ht-page-btn-secondary"
+              aria-label="Previous page"
+              disabled={page === 1}
+              onClick={() => setPage((current) => Math.max(1, current - 1))}
+            >
+              ‹
+            </button>
+
+            {Array.from({ length: totalPages }, (_, index) => index + 1).map((value) => (
+              <button
+                key={value}
+                className={`ht-page-btn ${page === value ? "ht-page-btn-active" : ""}`}
+                onClick={() => setPage(value)}
+              >
+                {value}
+              </button>
+            ))}
+
+            <button
+              className="ht-page-btn ht-page-btn-secondary"
+              aria-label="Next page"
+              disabled={page === totalPages}
+              onClick={() => setPage((current) => Math.min(totalPages, current + 1))}
+            >
+              ›
+            </button>
+          </div>
         )}
       </div>
     </div>
