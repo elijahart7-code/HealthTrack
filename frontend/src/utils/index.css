@@ -612,6 +612,7 @@
     }
 
     .ht-panel-table .ht-pagination {
+        justify-content: flex-end;
         gap: 0.35rem;
         padding: 0.45rem 0 0;
     }
