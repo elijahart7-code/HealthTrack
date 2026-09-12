@@ -14,6 +14,9 @@ export function Dashboard({ dashboard, onRegisterClick }) {
   const totalPages = Math.max(1, Math.ceil(dashboard.recentPatients.length / pageSize));
   const pageStart = (page - 1) * pageSize;
   const pagePatients = dashboard.recentPatients.slice(pageStart, pageStart + pageSize);
+  const visiblePageCount = Math.min(5, totalPages);
+  const firstVisiblePage = Math.min(Math.max(1, page - 2), totalPages - visiblePageCount + 1);
+  const pageNumbers = Array.from({ length: visiblePageCount }, (_, index) => firstVisiblePage + index);
 
   useEffect(() => {
     if (page > totalPages) setPage(totalPages);
@@ -98,7 +101,7 @@ export function Dashboard({ dashboard, onRegisterClick }) {
               ‹
             </button>
 
-            {Array.from({ length: totalPages }, (_, index) => index + 1).map((value) => (
+            {pageNumbers.map((value) => (
               <button
                 key={value}
                 className={`ht-page-btn ${page === value ? "ht-page-btn-active" : ""}`}
