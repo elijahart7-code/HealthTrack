@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useSearchParams } from "react-router";
 import { calculateAge } from "../../../utils/calculateAge";
 import { PageHeader } from "../../../components/ui/PageHeader";
@@ -13,6 +13,8 @@ export function Patients({ patients, loadData }) {
 
   const [search, setSearch] = useState("");
   const [sortBy, setSortBy] = useState("last_name");
+  const [page, setPage] = useState(1);
+  const pageSize = 10;
 
   const visible = useMemo(() => {
     const term = search.trim().toLowerCase();
@@ -35,6 +37,21 @@ export function Patients({ patients, loadData }) {
     });
   }, [patients, search, sortBy]);
 
+  const totalPages = Math.max(1, Math.ceil(visible.length / pageSize));
+  const pageStart = (page - 1) * pageSize;
+  const pageItems = visible.slice(pageStart, pageStart + pageSize);
+  const visiblePageCount = Math.min(5, totalPages);
+  const firstVisiblePage = Math.min(Math.max(1, page - 2), totalPages - visiblePageCount + 1);
+  const pageNumbers = Array.from({ length: visiblePageCount }, (_, index) => firstVisiblePage + index);
+
+  useEffect(() => {
+    setPage(1);
+  }, [search, sortBy]);
+
+  useEffect(() => {
+    if (page > totalPages) setPage(totalPages);
+  }, [page, totalPages]);
+
   if (selectedId) {
     return (
       <PatientRecord
@@ -55,7 +72,7 @@ export function Patients({ patients, loadData }) {
         </button>
       </PageHeader>
 
-      <div className="ht-panel">
+      <div className="ht-panel ht-healthworker-patients-panel">
         <div className="mb-3 grid gap-3 sm:grid-cols-[2fr_1fr]">
           <Field label="Patients List:">
             <Input type="search" value={search} onChange={(e) => setSearch(e.target.value)} placeholder="Name or contact number" />
@@ -84,7 +101,7 @@ export function Patients({ patients, loadData }) {
               </tr>
             </thead>
             <tbody>
-              {visible.map((p) => (
+              {pageItems.map((p) => (
                 <tr key={p.patient_id}>
                   <Td className="font-bold" style={{ color: "var(--color-brand-strong)" }}>
                     {p.full_name}
@@ -105,6 +122,38 @@ export function Patients({ patients, loadData }) {
               ))}
             </tbody>
           </Table>
+        )}
+
+        {visible.length > 0 && totalPages > 1 && (
+          <div className="ht-pagination">
+            <button
+              className="ht-page-btn ht-page-btn-secondary"
+              aria-label="Previous page"
+              disabled={page === 1}
+              onClick={() => setPage((current) => Math.max(1, current - 1))}
+            >
+              ‹
+            </button>
+
+            {pageNumbers.map((value) => (
+              <button
+                key={value}
+                className={`ht-page-btn ${page === value ? "ht-page-btn-active" : ""}`}
+                onClick={() => setPage(value)}
+              >
+                {value}
+              </button>
+            ))}
+
+            <button
+              className="ht-page-btn ht-page-btn-secondary"
+              aria-label="Next page"
+              disabled={page === totalPages}
+              onClick={() => setPage((current) => Math.min(totalPages, current + 1))}
+            >
+              ›
+            </button>
+          </div>
         )}
       </div>
     </div>

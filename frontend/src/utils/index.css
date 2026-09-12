@@ -626,6 +626,21 @@
         font-size: 0.85rem;
     }
 
+    .ht-healthworker-patients-panel .ht-pagination {
+        justify-content: flex-end;
+        gap: 0.55rem;
+        padding: 0.45rem 0 0;
+    }
+
+    .ht-healthworker-patients-panel .ht-page-btn {
+        min-width: 34px;
+        width: 34px;
+        height: 34px;
+        padding: 0;
+        border-radius: 8px;
+        font-size: 0.85rem;
+    }
+
     .ht-table-scroll {
         overflow-x: auto;
     }
