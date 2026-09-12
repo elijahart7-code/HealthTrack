@@ -548,6 +548,49 @@
         flex: 0 0 auto;
     }
 
+    .ht-panel-table .ht-table-header-row {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 0.75rem;
+        margin-bottom: 0.5rem;
+    }
+
+    .ht-panel-table .ht-section-title-with-icon {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.45rem;
+        margin: 0;
+        font-size: 0.85rem;
+        line-height: 1.2;
+        font-weight: 700;
+    }
+
+    .ht-panel-table .ht-section-icon {
+        width: 22px;
+        height: 22px;
+        border-radius: 7px;
+    }
+
+    .ht-panel-table .ht-section-icon svg {
+        width: 14px;
+        height: 14px;
+    }
+
+    .ht-panel-table .ht-link-button {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.25rem;
+        min-height: 28px;
+        padding: 0.3rem 0.55rem;
+        border: 1px solid rgba(15, 107, 95, 0.14);
+        border-radius: 7px;
+        background: rgba(255, 255, 255, 0.72);
+        font-size: 0.68rem;
+        line-height: 1.2;
+        white-space: nowrap;
+    }
+
     .ht-table-scroll {
         overflow-x: auto;
     }
