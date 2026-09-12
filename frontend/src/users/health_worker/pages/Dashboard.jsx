@@ -18,9 +18,9 @@ export function Dashboard({ dashboard, onRegisterClick }) {
 
       <div className="ht-metric-grid">
         <StatCard label="Registered Patients" value={dashboard.patientCount} tone="brand" icon={Users} />
-        <StatCard label="Registered This Month" value={dashboard.registeredThisMonth} tone="warm" icon={CalendarDays} />
+        <StatCard label="Registered This Month" value={dashboard.registeredThisMonth} tone="brand" icon={CalendarDays} />
         <StatCard label="With Portal Account" value={dashboard.withPortalAccount ?? dashboard.patientCount - dashboard.withoutPortalLogin} tone="brand" icon={ShieldCheck} />
-        <StatCard label="Without Portal Account" value={dashboard.withoutPortalLogin} tone="warm" icon={UserRoundX} />
+        <StatCard label="Without Portal Account" value={dashboard.withoutPortalLogin} tone="brand" icon={UserRoundX} />
       </div>
 
       <div className="ht-panel ht-panel-table">
