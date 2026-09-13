@@ -506,147 +506,247 @@ export function ClinicalRecords({ patientId, type, role, readOnly = false }) {
             </button>
           )}
         </>
-      ) : (
-        <>
-          {records.map((record) => (
-            <div
-              key={record.record_id}
-              className="ht-assessment-card"
-            >
-              {/* CARD TOP */}
-              <div className="ht-assessment-details">
-                {Object.entries(definition.fields).map(
-                  ([column, field], index) => (
-                    <div
-                      key={column}
-                      className="ht-assessment-row"
-                    >
-                      <div className="ht-assessment-icon">
-                        {getFieldIcon(field.label, index)}
-                      </div>
+      ) : type === "vital-signs" ? (
+  <>
+    {records.map((record) => (
+      <div
+        key={record.record_id}
+        className="ht-vital-record-card"
+      >
+        <div className="ht-vital-grid">
+          {Object.entries(definition.fields).map(
+            ([column, field]) => (
+              <div
+                key={column}
+                className="ht-vital-card"
+              >
+                <div className="ht-vital-icon">
+                  {getVitalSignIcon(field.label)}
+                </div>
 
-                      <div className="ht-assessment-label">
-                        {field.label}
-                      </div>
-
-                      <div className="ht-assessment-colon">
-                        :
-                      </div>
-
-                      <div className="ht-assessment-value">
-                        {field.type === "select" ? (
-                          <span
-                            className={
-                              field.label
-                                .toLowerCase()
-                                .includes("status")
-                                ? "ht-status-active"
-                                : ""
-                            }
-                          >
-                            {formatValue(
-                              record[column],
-                              field
-                            )}
-                          </span>
-                        ) : (
-                          formatValue(
-                            record[column],
-                            field
-                          )
-                        )}
-                      </div>
-                    </div>
-                  )
-                )}
-
-                {/* DATE */}
-                <div className="ht-assessment-row">
-                  <div className="ht-assessment-icon">
-                    <CalendarDays size={17} />
+                <div className="ht-vital-content">
+                  <div className="ht-vital-label">
+                    {field.label}
                   </div>
 
-                  <div className="ht-assessment-label">
-                    {definition.dateLabel}
-                  </div>
-
-                  <div className="ht-assessment-colon">
-                    :
-                  </div>
-
-                  <div className="ht-assessment-value">
-                    {getRecordDate(record)}
+                  <div className="ht-vital-value">
+                    {formatValue(
+                      record[column],
+                      field
+                    )}
                   </div>
                 </div>
               </div>
-
-              {/* FOOTER */}
-              <div className="ht-assessment-footer">
-                <div className="ht-assessment-meta">
-                  {getCreatedDate(record) && (
-                    <div>
-                      <CalendarDays size={14} />
-                      <span>
-                        Recorded on {getCreatedDate(record)}
-                      </span>
-                    </div>
-                  )}
-
-                  {getRecordedBy(record) && (
-                    <div>
-                      <UserRound size={14} />
-                      <span>
-                        Recorded by {getRecordedBy(record)}
-                      </span>
-                    </div>
-                  )}
-                </div>
-
-                {canManage && (
-                  <div className="ht-assessment-buttons">
-                    <button
-                      type="button"
-                      className="ht-edit-button"
-                      title="Edit assessment"
-                      onClick={() =>
-                        alert(
-                          "Edit functionality can be connected once the backend update endpoint is available."
-                        )
-                      }
-                    >
-                      <Pencil size={15} />
-                      Edit
-                    </button>
-
-                    <button
-                      type="button"
-                      className="ht-delete-button"
-                      onClick={() =>
-                        handleDelete(record.record_id)
-                      }
-                    >
-                      <Trash2 size={15} />
-                      Delete
-                    </button>
-                  </div>
-                )}
-              </div>
-            </div>
-          ))}
-
-          {records.length >= perPage && (
-            <button
-              type="button"
-              onClick={() =>
-                setPerPage((p) => p + 10)
-              }
-              className="ht-show-more"
-            >
-              Show more
-            </button>
+            )
           )}
-        </>
-      )}
+        </div>
+
+        <div className="ht-vital-footer">
+          <div className="ht-assessment-meta">
+            {getCreatedDate(record) && (
+              <div>
+                <CalendarDays size={14} />
+                <span>
+                  Recorded on {getCreatedDate(record)}
+                </span>
+              </div>
+            )}
+
+            {getRecordedBy(record) && (
+              <div>
+                <UserRound size={14} />
+                <span>
+                  Recorded by {getRecordedBy(record)}
+                </span>
+              </div>
+            )}
+          </div>
+
+          {canManage && (
+            <div className="ht-assessment-buttons">
+              <button
+                type="button"
+                className="ht-edit-button"
+                title="Edit vital signs"
+                onClick={() =>
+                  alert(
+                    "Edit functionality can be connected once the backend update endpoint is available."
+                  )
+                }
+              >
+                <Pencil size={15} />
+                Edit
+              </button>
+
+              <button
+                type="button"
+                className="ht-delete-button"
+                onClick={() =>
+                  handleDelete(record.record_id)
+                }
+              >
+                <Trash2 size={15} />
+                Delete
+              </button>
+            </div>
+          )}
+        </div>
+      </div>
+    ))}
+
+    {records.length >= perPage && (
+      <button
+        type="button"
+        onClick={() =>
+          setPerPage((p) => p + 10)
+        }
+        className="ht-show-more"
+      >
+        Show more
+      </button>
+    )}
+  </>
+) : (
+  <>
+    {records.map((record) => (
+      <div
+        key={record.record_id}
+        className="ht-assessment-card"
+      >
+        <div className="ht-assessment-details">
+          {Object.entries(definition.fields).map(
+            ([column, field], index) => (
+              <div
+                key={column}
+                className="ht-assessment-row"
+              >
+                <div className="ht-assessment-icon">
+                  {getFieldIcon(
+                    field.label,
+                    index
+                  )}
+                </div>
+
+                <div className="ht-assessment-label">
+                  {field.label}
+                </div>
+
+                <div className="ht-assessment-colon">
+                  :
+                </div>
+
+                <div className="ht-assessment-value">
+                  {field.type === "select" ? (
+                    <span
+                      className={
+                        field.label
+                          .toLowerCase()
+                          .includes("status")
+                          ? "ht-status-active"
+                          : ""
+                      }
+                    >
+                      {formatValue(
+                        record[column],
+                        field
+                      )}
+                    </span>
+                  ) : (
+                    formatValue(
+                      record[column],
+                      field
+                    )
+                  )}
+                </div>
+              </div>
+            )
+          )}
+
+          <div className="ht-assessment-row">
+            <div className="ht-assessment-icon">
+              <CalendarDays size={17} />
+            </div>
+
+            <div className="ht-assessment-label">
+              {definition.dateLabel}
+            </div>
+
+            <div className="ht-assessment-colon">
+              :
+            </div>
+
+            <div className="ht-assessment-value">
+              {getRecordDate(record)}
+            </div>
+          </div>
+        </div>
+
+        <div className="ht-assessment-footer">
+          <div className="ht-assessment-meta">
+            {getCreatedDate(record) && (
+              <div>
+                <CalendarDays size={14} />
+                <span>
+                  Recorded on {getCreatedDate(record)}
+                </span>
+              </div>
+            )}
+
+            {getRecordedBy(record) && (
+              <div>
+                <UserRound size={14} />
+                <span>
+                  Recorded by {getRecordedBy(record)}
+                </span>
+              </div>
+            )}
+          </div>
+
+          {canManage && (
+            <div className="ht-assessment-buttons">
+              <button
+                type="button"
+                className="ht-edit-button"
+                title="Edit assessment"
+                onClick={() =>
+                  alert(
+                    "Edit functionality can be connected once the backend update endpoint is available."
+                  )
+                }
+              >
+                <Pencil size={15} />
+                Edit
+              </button>
+
+              <button
+                type="button"
+                className="ht-delete-button"
+                onClick={() =>
+                  handleDelete(record.record_id)
+                }
+              >
+                <Trash2 size={15} />
+                Delete
+              </button>
+            </div>
+          )}
+        </div>
+      </div>
+    ))}
+
+    {records.length >= perPage && (
+      <button
+        type="button"
+        onClick={() =>
+          setPerPage((p) => p + 10)
+        }
+        className="ht-show-more"
+      >
+        Show more
+      </button>
+    )}
+  </>
+)}
 
       {/* DESIGN CSS */}
       <style>{`
