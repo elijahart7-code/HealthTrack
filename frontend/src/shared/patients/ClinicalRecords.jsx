@@ -14,6 +14,15 @@ import {
   UserRound,
   Pencil,
   X,
+  HeartPulse,
+  Thermometer,
+  Activity,
+  Wind,
+  Ruler,
+  Scale,
+  PersonStanding,
+  Droplets,
+  Smile,
 } from "lucide-react";
 import { Field, Input, Select, Textarea } from "../../components/ui/Input";
 
@@ -161,6 +170,47 @@ export function ClinicalRecords({ patientId, type, role, readOnly = false }) {
 
     return <ClipboardList size={17} />;
   }
+    function getVitalSignIcon(label) {
+  const text = label.toLowerCase();
+
+  if (text.includes("blood pressure")) {
+    return <HeartPulse size={21} />;
+  }
+
+  if (text.includes("temperature")) {
+    return <Thermometer size={21} />;
+  }
+
+  if (text.includes("pulse")) {
+    return <Activity size={21} />;
+  }
+
+  if (text.includes("respiratory")) {
+    return <Wind size={21} />;
+  }
+
+  if (text.includes("height")) {
+    return <Ruler size={21} />;
+  }
+
+  if (text.includes("weight")) {
+    return <Scale size={21} />;
+  }
+
+  if (text.includes("body mass") || text.includes("bmi")) {
+    return <PersonStanding size={21} />;
+  }
+
+  if (text.includes("oxygen") || text.includes("spo2")) {
+    return <Droplets size={21} />;
+  }
+
+  if (text.includes("pain")) {
+    return <Smile size={21} />;
+  }
+
+  return <HeartPulse size={21} />;
+}
 
   function formatValue(value, field) {
     if (value === null || value === undefined || value === "") {
