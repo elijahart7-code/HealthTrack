@@ -753,14 +753,14 @@ export function ClinicalRecords({ patientId, type, role, readOnly = false }) {
       <style>{`
         /* VITAL SIGNS */
 
-.ht-vital-record-card {
-  width: 100%;
-  padding: 14px;
-  border: 1px solid #dfe8e3;
-  border-radius: 12px;
-  background: #ffffff;
-  box-shadow: 0 2px 8px rgba(36, 55, 46, 0.04);
-}
+      .ht-vital-record-card {
+       width: 100%;
+       padding: 14px;
+       border: 1px solid #dfe8e3;
+       border-radius: 12px;
+       background: #ffffff;
+       box-shadow: 0 2px 8px rgba(36, 55, 46, 0.04);
+      }
 
 .ht-vital-grid {
   display: grid;
