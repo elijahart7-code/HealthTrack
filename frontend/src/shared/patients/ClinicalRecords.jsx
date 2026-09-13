@@ -749,7 +749,76 @@ export function ClinicalRecords({ patientId, type, role, readOnly = false }) {
 )}
 
       {/* DESIGN CSS */}
+
       <style>{`
+        /* VITAL SIGNS */
+
+.ht-vital-record-card {
+  width: 100%;
+  padding: 14px;
+  border: 1px solid #dfe8e3;
+  border-radius: 12px;
+  background: #ffffff;
+  box-shadow: 0 2px 8px rgba(36, 55, 46, 0.04);
+}
+
+.ht-vital-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.ht-vital-card {
+  min-height: 92px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px;
+  border: 1px solid #e1ebe5;
+  border-radius: 9px;
+  background: #fbfdfc;
+  box-sizing: border-box;
+}
+
+.ht-vital-icon {
+  width: 42px;
+  height: 42px;
+  min-width: 42px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: #e5f3eb;
+  color: #3f765d;
+}
+
+.ht-vital-content {
+  min-width: 0;
+}
+
+.ht-vital-label {
+  margin-bottom: 5px;
+  font-size: 10px;
+  font-weight: 700;
+  color: #53635b;
+}
+
+.ht-vital-value {
+  font-size: 13px;
+  font-weight: 600;
+  color: #26352e;
+  line-height: 1.4;
+}
+
+.ht-vital-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 15px;
+  margin-top: 14px;
+  padding-top: 12px;
+  border-top: 1px solid #e8eeeb;
+}
         .ht-health-assessment {
           width: 100%;
         }
