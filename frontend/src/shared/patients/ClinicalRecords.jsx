@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { api } from "../../lib/axios";
 import { RECORD_TYPES } from "../../config/recordTypes";
 import {
-  Activity,
+  Stethoscope,
   CalendarDays,
   CheckCircle2,
   ClipboardList,
@@ -132,7 +132,7 @@ export function ClinicalRecords({ patientId, type, role, readOnly = false }) {
     const text = label.toLowerCase();
 
     if (text.includes("condition") || text.includes("diagnosis")) {
-      return <Activity size={17} />;
+      return <Stethoscope size={17} />;
     }
 
     if (text.includes("description")) {
@@ -156,7 +156,7 @@ export function ClinicalRecords({ patientId, type, role, readOnly = false }) {
     }
 
     if (index === 0) {
-      return <Activity size={17} />;
+      return <Stethoscope size={17} />;
     }
 
     return <ClipboardList size={17} />;
